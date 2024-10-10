@@ -7,8 +7,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Kaiadmin - Bootstrap 5 Admin Dashboard</title>
     <meta
@@ -186,124 +184,54 @@
               <a href="/member/update"><button>수정</button></a>
             </div>
             
-<div class="tabs">
-  <a href="#" class="account">계좌 정보</a>
-  <a href="#" class="license">자격증</a>
-  <a href="#" class="his_edu">교육 이력</a>
-  <a href="#" class="reward">포상/징계</a>
-  <a href="#" class="eval">인사 평가</a>
-</div>            
- 
- <script>
-$(document).ready(function() {
-    // 계좌 탭 클릭 시 AJAX 요청
-    $(".tabs a.account").click(function(e) {
-        e.preventDefault();
-        $.ajax({
-            url: '/tab/account',
-            type: 'GET',
-            data: { emp_id: '${memberVO.emp_id}' }, 
-            success: function(data) {
-                // 계좌 정보를 화면에 출력
-                $("table.info-table").html(
-                    '<tr><th>예금주</th><td>' + data.emp_account_name + '</td>' +
-                    '<th>계좌번호</th><td>' + data.emp_account_num + '</td>' +
-                    '<th>은행명</th><td>' + data.emp_bank_name + '</td></tr>'
-                );
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX Error: " + error);
-            }
-        });
-    });
+            <!-- 탭 -->
+<!--             <div class="tabs"> -->
+<!--               <a href="" class="active">계좌</a> -->
+<!--               <a href="">자격증</a> -->
+<!--               <a href="">인사발령</a> -->
+<!--               <a href="">포상/징계</a> -->
+<!--               <a href="">인사평가</a>               -->
+<!--             </div> -->
+            
+            <div class="tabs">
+			  <a href="javascript:void(0);" id="accountTab" class="active" data-tab="account">계좌</a>
+			  <a href="javascript:void(0);" id="certificateTab" data-tab="certificate">자격증</a>
+			  <a href="javascript:void(0);" id="promotionTab" data-tab="promotion">인사발령</a>
+			  <a href="javascript:void(0);" id="rewardTab" data-tab="reward">포상/징계</a>
+			  <a href="javascript:void(0);" id="evaluationTab" data-tab="evaluation">인사평가</a>
+		    </div>
+            <!-- 탭 -->   
+            <!-- 첫번째 탭  -->
+<!--             <div class="info-container"> -->
+<!--                	<table class="info-table" style="width: 70%;"> -->
+<!--                	<tr>                   	            -->
+<!--                   <th>예금주</th> -->
+<%--                   <td>${memberVO.emp_account_name}</td> --%>
+<!--                   <th>계좌번호</th> -->
+<%--                   <td>${memberVO.emp_account_num}</td> --%>
+<!--                	  <th>은행명</th> -->
+<%--                   <td>${memberVO.emp_bank_name}</td> --%>
+<!--                 </tr>                -->
+<!--                 </table>                    -->
+<!--             </div>                     -->
 
-    // 자격증 탭 클릭 시 AJAX 요청
-    $(".tabs a.license").click(function(e) {
-        e.preventDefault();
-        $.ajax({
-            url: '/tab/license',
-            type: 'GET',
-            data: { emp_id: '${memberVO.emp_id}' },
-            success: function(data) {
-                let tableContent = '';
-                data.forEach(function(license) {
-                    tableContent += '<tr><th>자격증명</th><td>' + license.li_name + '</td>' +
-                                    '<th>발급일</th><td>' + license.li_date + '</td></tr>';
-                });
-                $("table.info-table").html(tableContent);
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX Error: " + error);
-            }
-        });
-    });
-
-    // 교육이력 탭 클릭 시 AJAX 요청
-    $(".tabs a.his_edu").click(function(e) {
-        e.preventDefault();
-        $.ajax({
-            url: '/tab/his_edu',
-            type: 'GET',
-            data: { emp_id: '${memberVO.emp_id}' },
-            success: function(data) {
-                let tableContent = '';
-                data.forEach(function(edu) {
-                    tableContent += '<tr><th>교육과정</th><td>' + edu.eid + '</td>' +
-                                    '<th>이수일자</th><td>' + edu.edate + '</td></tr>';
-                });
-                $("table.info-table").html(tableContent);
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX Error: " + error);
-            }
-        });
-    });
-
-    // 포상/징계 탭 클릭 시 AJAX 요청
-    $(".tabs a.reward").click(function(e) {
-        e.preventDefault();
-        $.ajax({
-            url: '/tab/reward',
-            type: 'GET',
-            data: { emp_id: '${memberVO.emp_id}' },
-            success: function(data) {
-                let tableContent = '';
-                data.forEach(function(reward) {
-                    tableContent += '<tr><th>날짜</th><td>' + reward.rdate + '</td>' +
-                                    '<th>유형</th><td>' + reward.division + '</td>' +
-                                    '<th>내용</th><td>' + reward.reason + '</td></tr>';
-                });
-                $("table.info-table").html(tableContent);
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX Error: " + error);
-            }
-        });
-    });
-
-    // 인사평가 탭 클릭 시 AJAX 요청
-    $(".tabs a.eval").click(function(e) {
-        e.preventDefault();
-        $.ajax({
-            url: '/tab/eval',
-            type: 'GET',
-            data: { emp_id: '${memberVO.emp_id}' },
-            success: function(data) {
-                let tableContent = '';
-                data.forEach(function(eval) {
-                    tableContent += '<tr><th>평가일자</th><td>' + eval.evalDate + '</td>' +
-                                    '<th>점수</th><td>' + eval.score1 + '</td>' +
-                                    '<th>평가자</th><td>' + eval.valuator + '</td></tr>';
-                });
-                $("table.info-table").html(tableContent);
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX Error: " + error);
-            }
-        });
-    });
-});
-
+          
+				<div id="tabContent">				
+				  <div class="info-container">
+				    <table class="info-table" style="width: 70%;">
+				      <tr>                   
+				        <th>예금주</th>
+				        <td>${memberVO.emp_account_name}</td>
+				        <th>계좌번호</th>
+				        <td>${memberVO.emp_account_num}</td>
+				        <th>은행명</th>
+				        <td>${memberVO.emp_bank_name}</td>
+				      </tr>               
+				    </table>                   
+				  </div>
+				</div>
+          
+            <!-- 첫번째 탭  -->
 <!------------------------------------------------------------------------------------------------------------------>
           </div>
           <!-- page-inner -->
@@ -347,7 +275,7 @@ $(document).ready(function() {
 
     <!-- Kaiadmin JS -->
     <script src="${pageContext.request.contextPath }/resources/assets/js/kaiadmin.min.js"></script>
-	
+
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="${pageContext.request.contextPath }/resources/assets/js/setting-demo.js"></script>
     <script src="${pageContext.request.contextPath }/resources/assets/js/demo.js"></script>
@@ -378,6 +306,6 @@ $(document).ready(function() {
         lineColor: "#ffa534",
         fillColor: "rgba(255, 165, 52, .14)",
       });
-    </script>    
+    </script>
   </body>
 </html>

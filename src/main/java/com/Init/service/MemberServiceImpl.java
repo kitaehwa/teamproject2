@@ -7,7 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.Init.domain.AccountVO;
+import com.Init.domain.EvalVO;
+import com.Init.domain.His_eduVO;
+import com.Init.domain.LicenseVO;
 import com.Init.domain.MemberVO;
+import com.Init.domain.RewardVO;
 import com.Init.persistence.MemberDAO;
 
 @Service
@@ -52,4 +57,36 @@ public class MemberServiceImpl implements MemberService{
 		
 		return result;
 	}
+
+	@Override
+	public AccountVO getAccount(String emp_id) {
+		
+		return mdao.getAccount(emp_id);
+	}
+
+	@Override
+	public List<LicenseVO> getLicense(String emp_id) {
+		
+		return mdao.getLicense(emp_id);
+	}
+
+	@Override
+	public List<His_eduVO> getHis_edu(String emp_id) {
+		
+		return mdao.getHis_edu(emp_id);
+	}
+
+	@Override
+	public List<RewardVO> getReward(String emp_id) {
+		
+		return mdao.getReward(emp_id);
+	}
+
+	@Override
+	public List<EvalVO> getEval(String emp_id) {
+		
+		return mdao.getEval(emp_id);
+	}
+	
+	
 }

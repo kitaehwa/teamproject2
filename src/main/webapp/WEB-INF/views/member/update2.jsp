@@ -192,7 +192,30 @@
                   <button type="submit">저장</button>
                   <button type="button" class="delete" onclick="location.href='/member/info'">취소</button>
                 </div>
-                        
+                  
+                    <!-- 탭 -->
+		            <div class="tabs">
+		              <a href="" class="active">계좌정보</a>
+		              <a href="">자격증</a>
+		              <a href="">교육이력</a>
+		              <a href="">포상/징계</a>
+		              <a href="">인사평가</a>
+		              <!-- 추가 탭 -->
+		            </div>
+                
+                  
+                <div class="info-container">
+               	<table class="info-table" style="width: 70%;">           
+                  <tr>                 
+                    <th>예금주</th>
+                    <td><input type="text" size=6 name="account_name" value="${memberVO.emp_account_name}" /></td>
+                    <th>계좌번호</th>
+                    <td><input type="text" name="account_num" value="${memberVO.emp_account_num}" /></td>
+                    <th>은행명</th>                   
+                    <td><input type="text" name="bank_name" value="${memberVO.emp_bank_name}" /></td>              
+				  </tr>
+				 </table>                   
+                 </div>        
                                         
 <!------------------------------------------------------------------------------------------------------------------>
           </div>

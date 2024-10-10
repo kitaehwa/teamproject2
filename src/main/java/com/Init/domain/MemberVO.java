@@ -22,9 +22,9 @@ public class MemberVO {
 	private String emp_dnum; 
 	private String emp_position;  
 	private String emp_job; 
-	private Integer emp_status; 
-	private Integer emp_bnum; 
-	private Integer emp_work_type; 
+	private String emp_status; 
+	private String emp_bnum; 
+	private String emp_work_type; 
 	private Integer emp_salary; 
 	private String emp_account_num; 
 	private String emp_bank_name; 
@@ -34,7 +34,7 @@ public class MemberVO {
 	private Date emp_restart_date; 
 	private Date emp_quit_date; 
 	private String emp_power; 
-	private Integer emp_level;
+	private String emp_level;
 	private Timestamp update_date;	
 	
 }

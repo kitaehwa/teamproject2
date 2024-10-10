@@ -10,7 +10,12 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Repository;
 
+import com.Init.domain.AccountVO;
+import com.Init.domain.EvalVO;
+import com.Init.domain.His_eduVO;
+import com.Init.domain.LicenseVO;
 import com.Init.domain.MemberVO;
+import com.Init.domain.RewardVO;
 
 
 
@@ -78,6 +83,38 @@ public class MemberDAOImpl implements MemberDAO{
 	public void insertHisMember(MemberVO uvo) {
 		sqlSession.insert(NAMESPACE+".insertHisMember", uvo);
 	}
+
+	@Override
+	public AccountVO getAccount(String emp_id) {
+		
+		return sqlSession.selectOne(NAMESPACE+".getAccount",emp_id);
+	}
+
+	@Override
+	public List<LicenseVO> getLicense(String emp_id) {
+		
+		return sqlSession.selectList(NAMESPACE+".getLicense",emp_id);
+	}
+
+	@Override
+	public List<His_eduVO> getHis_edu(String emp_id) {
+		
+		return sqlSession.selectList(NAMESPACE+".getHis_edu",emp_id);
+	}
+
+	@Override
+	public List<RewardVO> getReward(String emp_id) {
+		
+		return sqlSession.selectList(NAMESPACE+".getReward",emp_id);
+	}
+
+	@Override
+	public List<EvalVO> getEval(String emp_id) {
+		
+		return sqlSession.selectList(NAMESPACE+".getEval",emp_id);
+	}
+	
+	
 	
 	
 	

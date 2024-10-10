@@ -16,8 +16,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.Init.domain.AccountVO;
+import com.Init.domain.EvalVO;
+import com.Init.domain.His_eduVO;
+import com.Init.domain.LicenseVO;
 import com.Init.domain.MemberVO;
+import com.Init.domain.RewardVO;
 import com.Init.service.MemberService;
 
 @Controller
@@ -135,6 +141,43 @@ public class MemberController {
 	// 수정 성공
 	return "redirect:/member/info";
 }
+	
+	// 회원정보 탭 - 비동기
+	// 계좌 정보 조회
+    @ResponseBody
+    @GetMapping("/tab/account")
+    public AccountVO getAccount(@RequestParam("emp_id") String emp_id) {
+        return mService.getAccount(emp_id);
+    }
+
+    // 자격증 정보 조회
+    @ResponseBody
+    @GetMapping("/tab/license")
+    public List<LicenseVO> getLicense(@RequestParam("emp_id") String emp_id) {
+        return mService.getLicense(emp_id);
+    }
+
+    // 교육이력 정보 조회
+    @ResponseBody
+    @GetMapping("/tab/his_edu")
+    public List<His_eduVO> getHis_edu(@RequestParam("emp_id") String emp_id) {
+        return mService.getHis_edu(emp_id);
+    }
+
+    // 포상/징계 정보 조회
+    @ResponseBody
+    @GetMapping("/tab/reward")
+    public List<RewardVO> getReward(@RequestParam("emp_id") String emp_id) {
+        return mService.getReward(emp_id);
+    }
+
+    // 인사평가 정보 조회
+    @ResponseBody
+    @GetMapping("/tab/eval")
+    public List<EvalVO> getEval(@RequestParam("emp_id") String emp_id) {
+        return mService.getEval(emp_id);
+    }
+
 	
 	
 	// 템플릿 적용 확인

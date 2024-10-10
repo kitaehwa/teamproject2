@@ -58,5 +58,40 @@
   	<select id="getMemberList" resultType="MemberVO">
   		select * from employee
   	</select>
+  	
+  	<!-- 계좌 정보 조회 -->
+    <select id="getAccount" parameterType="String" resultType="AccountVO">
+        SELECT emp_account_name, emp_account_num, emp_bank_name
+        FROM employee
+        WHERE emp_id = #{emp_id}
+    </select>
+
+    <!-- 자격증 정보 조회 -->
+    <select id="getLicense" parameterType="String" resultType="LicenseVO">
+        SELECT li_id, li_date
+        FROM license
+        WHERE emp_id = #{emp_id}
+    </select>
+
+    <!-- 교육이력 정보 조회 -->
+    <select id="getHis_edu" parameterType="String" resultType="His_eduVO">
+        SELECT eid, edate, end_date, estatus, approval
+        FROM his_edu
+        WHERE emp_id = #{emp_id}
+    </select>
+
+    <!-- 포상/징계 정보 조회 -->
+    <select id="getReward" parameterType="String" resultType="RewardVO">
+        SELECT rid, division, rname, reason, rdate
+        FROM reward
+        WHERE emp_id = #{emp_id}
+    </select>
+
+    <!-- 인사평가 정보 조회 -->
+    <select id="getEval" parameterType="String" resultType="EvalVO">
+        SELECT eval_id, score1, score2, score3, att, feedback, valuator, eval_date
+        FROM eval
+        WHERE emp_id = #{emp_id}
+    </select>
 	
 </mapper>
