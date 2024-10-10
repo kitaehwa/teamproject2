@@ -186,7 +186,7 @@
             
             <!-- 탭 -->
             <div class="tabs">
-              <a href="" class="active">계좌정보</a>
+              <a href="" class="active">계좌</a>
               <a href="">자격증</a>
               <a href="">인사발령</a>
               <a href="">포상/징계</a>
