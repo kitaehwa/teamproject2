@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	
+	<!-- HikariCP 설정정보 객체 -->
+	<bean id="hikariconfig"
+		  class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
+		<property name="jdbcUrl" value="jdbc:log4jdbc:mysql://itwillbs.com:3306/c6d2406t2" />
+		<property name="username" value="c6d2406t2"/>
+		<property name="password" value="1234"/>
+	</bean>
+	<!-- HikariCP 설정정보 객체 -->
+	
+	<bean id="dataSource"
+		  class="com.zaxxer.hikari.HikariDataSource" 
+		  destroy-method="close">
+		  <constructor-arg ref="hikariconfig"/>
+		  
+	</bean>
+	
+	
+	<bean id="sqlSessionFactory" 
+		  class="org.mybatis.spring.SqlSessionFactoryBean">
+			
+			<property name="dataSource" ref="dataSource"/>
+			
+			<property name="configLocation" 
+			          value="classpath:/mybatis-config.xml"/>
+			<property name="mapperLocations"
+			          value="classpath:/mappers/**/*Mapper.xml" />
+	
+	</bean>
+	
+	
+	<!-- SqlSession (SqlSessionTemplate) : (자동)connection 생성(+연결정보), SQL쿼리 실행,
+		 Mybatis 접근 + 자원해제(자동) -->
+	<bean id="sqlSession"
+		  class="org.mybatis.spring.SqlSessionTemplate" 
+		  destroy-method="clearCache">
+		  
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
+	
+	</bean>
+	<!-- SqlSession (SqlSessionTemplate) : connection 생성(+연결정보), SQL쿼리 실행, Mybatis 접근 + 자원해제(자동) -->
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	    <property name="maxUploadSize" value="104857600"/>
+	    <property name="maxUploadSizePerFile" value="104857600"/>
+	    <property name="maxInMemorySize" value="104857600"/>
+	</bean>
+	
+	<context:component-scan base-package="com.Init.persistence"/>
+	
+	<context:component-scan base-package="com.Init.service"/>
+	
+	
+</beans>
