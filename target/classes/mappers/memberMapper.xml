@@ -68,16 +68,18 @@
 
     <!-- 자격증 정보 조회 -->
     <select id="getLicense" parameterType="String" resultType="LicenseVO">
-        SELECT li_id, li_date
-        FROM license
-        WHERE emp_id = #{emp_id}
+        SELECT li_list.li_name, li_list.li_issu, license.li_date 
+		FROM license JOIN li_list 
+		ON license.li_id = li_list.li_id
+		WHERE license.emp_id = #{emp_id}
     </select>
 
     <!-- 교육이력 정보 조회 -->
     <select id="getHis_edu" parameterType="String" resultType="His_eduVO">
-        SELECT eid, edate, end_date, estatus, approval
-        FROM his_edu
-        WHERE emp_id = #{emp_id}
+		SELECT his_edu.emp_id, his_edu.edate, his_edu.end_edate, his_edu.estatus, his_edu.approval, new_edu.ename, new_edu.teacher
+		FROM his_edu JOIN new_edu 
+        ON his_edu.eid = new_edu.eid
+		WHERE his_edu.emp_id = #{emp_id}
     </select>
 
     <!-- 포상/징계 정보 조회 -->
@@ -89,7 +91,7 @@
 
     <!-- 인사평가 정보 조회 -->
     <select id="getEval" parameterType="String" resultType="EvalVO">
-        SELECT eval_id, score1, score2, score3, att, feedback, valuator, eval_date
+        SELECT eval_name, score1, score2, score3, total, feedback, valuator, eval_date
         FROM eval
         WHERE emp_id = #{emp_id}
     </select>

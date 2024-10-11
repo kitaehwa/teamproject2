@@ -3,6 +3,7 @@
     
 <!-- JSTL-core 라이브러리 추가 -->
 <%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -91,7 +92,7 @@
         margin-left: 67%;
         border: none;
         border-radius: 4px;
-        background-color: #4caf50;
+        background-color: #0055FF;
         color: white;
         cursor: pointer;     
       }
@@ -186,123 +187,17 @@
               <a href="/member/update"><button>수정</button></a>
             </div>
             
-<div class="tabs">
-  <a href="#" class="account">계좌 정보</a>
-  <a href="#" class="license">자격증</a>
-  <a href="#" class="his_edu">교육 이력</a>
-  <a href="#" class="reward">포상/징계</a>
-  <a href="#" class="eval">인사 평가</a>
-</div>            
+			<div class="tabs" style="width: 70%;">
+			  <a href="#" class="account">계좌 정보</a>
+			  <a href="#" class="license">자격증</a>
+			  <a href="#" class="his_edu">교육 이력</a>
+			  <a href="#" class="reward">포상/징계</a>
+			  <a href="#" class="eval">인사 평가</a>
+			</div>            
  
- <script>
-$(document).ready(function() {
-    // 계좌 탭 클릭 시 AJAX 요청
-    $(".tabs a.account").click(function(e) {
-        e.preventDefault();
-        $.ajax({
-            url: '/tab/account',
-            type: 'GET',
-            data: { emp_id: '${memberVO.emp_id}' }, 
-            success: function(data) {
-                // 계좌 정보를 화면에 출력
-                $("table.info-table").html(
-                    '<tr><th>예금주</th><td>' + data.emp_account_name + '</td>' +
-                    '<th>계좌번호</th><td>' + data.emp_account_num + '</td>' +
-                    '<th>은행명</th><td>' + data.emp_bank_name + '</td></tr>'
-                );
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX Error: " + error);
-            }
-        });
-    });
-
-    // 자격증 탭 클릭 시 AJAX 요청
-    $(".tabs a.license").click(function(e) {
-        e.preventDefault();
-        $.ajax({
-            url: '/tab/license',
-            type: 'GET',
-            data: { emp_id: '${memberVO.emp_id}' },
-            success: function(data) {
-                let tableContent = '';
-                data.forEach(function(license) {
-                    tableContent += '<tr><th>자격증명</th><td>' + license.li_name + '</td>' +
-                                    '<th>발급일</th><td>' + license.li_date + '</td></tr>';
-                });
-                $("table.info-table").html(tableContent);
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX Error: " + error);
-            }
-        });
-    });
-
-    // 교육이력 탭 클릭 시 AJAX 요청
-    $(".tabs a.his_edu").click(function(e) {
-        e.preventDefault();
-        $.ajax({
-            url: '/tab/his_edu',
-            type: 'GET',
-            data: { emp_id: '${memberVO.emp_id}' },
-            success: function(data) {
-                let tableContent = '';
-                data.forEach(function(edu) {
-                    tableContent += '<tr><th>교육과정</th><td>' + edu.eid + '</td>' +
-                                    '<th>이수일자</th><td>' + edu.edate + '</td></tr>';
-                });
-                $("table.info-table").html(tableContent);
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX Error: " + error);
-            }
-        });
-    });
-
-    // 포상/징계 탭 클릭 시 AJAX 요청
-    $(".tabs a.reward").click(function(e) {
-        e.preventDefault();
-        $.ajax({
-            url: '/tab/reward',
-            type: 'GET',
-            data: { emp_id: '${memberVO.emp_id}' },
-            success: function(data) {
-                let tableContent = '';
-                data.forEach(function(reward) {
-                    tableContent += '<tr><th>날짜</th><td>' + reward.rdate + '</td>' +
-                                    '<th>유형</th><td>' + reward.division + '</td>' +
-                                    '<th>내용</th><td>' + reward.reason + '</td></tr>';
-                });
-                $("table.info-table").html(tableContent);
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX Error: " + error);
-            }
-        });
-    });
-
-    // 인사평가 탭 클릭 시 AJAX 요청
-    $(".tabs a.eval").click(function(e) {
-        e.preventDefault();
-        $.ajax({
-            url: '/tab/eval',
-            type: 'GET',
-            data: { emp_id: '${memberVO.emp_id}' },
-            success: function(data) {
-                let tableContent = '';
-                data.forEach(function(eval) {
-                    tableContent += '<tr><th>평가일자</th><td>' + eval.evalDate + '</td>' +
-                                    '<th>점수</th><td>' + eval.score1 + '</td>' +
-                                    '<th>평가자</th><td>' + eval.valuator + '</td></tr>';
-                });
-                $("table.info-table").html(tableContent);
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX Error: " + error);
-            }
-        });
-    });
-});
+			<div class="tab-content" style="width: 70%;">
+				<!-- 탭 클릭 시 정보가 여기에 표시됩니다. -->
+			</div>
 
 <!------------------------------------------------------------------------------------------------------------------>
           </div>
@@ -314,7 +209,103 @@ $(document).ready(function() {
       <!-- main-panel -->
     </div>
     <!-- main-wrapper -->
-    
+	<script>
+      $(document).ready(function() {
+        // 탭 클릭 시 active 클래스를 적용하고 AJAX 요청을 처리하는 로직
+        $(".tabs a").click(function(e) {
+          e.preventDefault();
+          $(".tabs a").removeClass("active");
+          $(this).addClass("active");
+
+          const tabType = $(this).attr('class').split(' ')[0];
+          let url = '';
+
+          switch (tabType) {
+            case 'account':
+              url = '/member/account';
+              break;
+            case 'license':
+              url = '/member/license';
+              break;
+            case 'his_edu':
+              url = '/member/his_edu';
+              break;
+            case 'reward':
+              url = '/member/reward';
+              break;
+            case 'eval':
+              url = '/member/eval';
+              break;
+          }
+
+          // AJAX 요청
+          $.ajax({
+              url: url,
+              type: 'GET',
+              data: { emp_id: '${memberVO.emp_id}'},
+              success: function(data) {
+                console.log(data); // 데이터 구조를 확인
+                let content = '';
+
+                if (tabType === 'account') {
+                  // assuming data is an object
+                  content = '<table class="info-table"><tr><th>예금주</th><td>' + data.emp_account_name + '</td>' +
+                            '<th>계좌번호</th><td>' + data.emp_account_num + '</td>' +
+                            '<th>은행명</th><td>' + data.emp_bank_name + '</td></tr></table>';
+                } else if (tabType === 'license') {
+                  // Check if data is an array
+                  if (Array.isArray(data)) {
+                    content += '<table class="info-table"><tr><th>자격증명</th><th>발급기관</th><th>취득일</th></tr>';
+                    data.forEach(function(license) {
+                      content += '<tr><td>' + license.li_name + '</td><td>' + license.li_issu + '</td><td>' + license.li_date + '</td></tr>';
+                    });
+                    content += '</table>';
+                  } else {
+                    content = '<p>자격증 정보가 없습니다.</p>';
+                  }
+                } else if (tabType === 'his_edu') {
+                  if (Array.isArray(data)) {
+                    content += '<table class="info-table"><tr><th>교육명</th><th>강사명</th><th>신청일</th><th>수료일</th><th>수료현황</th></tr>';
+                    data.forEach(function(his_edu) {
+                      content += '<tr><td>' + his_edu.ename + '</td><td>' + his_edu.teacher + '</td><td>' + his_edu.edate + '</td><td>' + his_edu.end_edate + '</td><td>' + his_edu.estatus + '</td></tr>';
+                    });
+                    content += '</table>';
+                  } else {
+                    content = '<p>교육 이력이 없습니다.</p>';
+                  }
+                } else if (tabType === 'reward') {
+                    if (Array.isArray(data)) {
+                        content += '<table class="info-table"><tr><th>유형</th><th>이름</th><th>사유</th><th>날짜</th></tr>';
+                        data.forEach(function(reward) {
+                            // division 값에 따라 표시할 내용을 결정
+                            const divisionLabel = reward.division === 'R' ? '포상' : (reward.division === 'P' ? '징계' : reward.division);
+                            content += '<tr><td>' + divisionLabel + '</td><td>' + reward.rname + '</td><td>' + reward.reason + '</td><td>' + reward.rdate + '</td></tr>';
+                        });
+                        content += '</table>';
+                    } else {
+                        content = '<p>포상/징계 정보가 없습니다.</p>';
+                    }
+                } else if (tabType === 'eval') {
+                  if (Array.isArray(data)) {
+                    content += '<table class="info-table"><tr><th>평가명</th><th>기준점수1</th><th>기준점수2</th><th>기준점수3</th><th>종합등급</th><th>피드백</th><th>평가자</th><th>평가일</th></tr>';
+                    data.forEach(function(eval) {
+                      content += '<tr><td>' + eval.eval_name + '</td><td>' + eval.score1 + '</td><td>' + eval.score2 + '</td><td>' + eval.score3 + '</td><td>' + eval.total + '</td><td>' + eval.feedback + '</td><td>' + eval.valuator + '</td><td>' + eval.eval_date + '</td></tr>';
+                    });
+                    content += '</table>';
+                  } else {
+                    content = '<p>인사 평가 정보가 없습니다.</p>';
+                  }
+                }
+
+                $(".tab-content").html(content);
+              },
+              error: function(xhr, status, error) {
+                console.error("AJAX Error: " + error);
+              }
+            });
+          });
+        });
+      </script>
     <!--   Core JS Files   -->
     <script src="${pageContext.request.contextPath }/resources/assets/js/core/jquery-3.7.1.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/assets/js/core/popper.min.js"></script>

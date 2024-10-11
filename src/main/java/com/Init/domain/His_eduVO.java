@@ -6,8 +6,9 @@ import lombok.Data;
 
 @Data
 public class His_eduVO {
-	private String eid;
-    private String id;
+	private String emp_id;
+	private String ename;  
+	private String teacher;  
     private Date edate;
     private Date end_edate;
     private String estatus;

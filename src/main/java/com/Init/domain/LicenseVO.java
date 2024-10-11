@@ -5,12 +5,10 @@ import java.sql.Timestamp;
 import lombok.Data;
 
 @Data
-public class LicenseVO {
-	private String li_id;
-    private String li_name;
-    private String li_issu;
-    
-    private String id;
+public class LicenseVO {  
+    private String li_id;
     private Date li_date;
+    private String li_issu;
+    private String li_name;
     
 }

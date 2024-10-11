@@ -75,31 +75,7 @@ body{
 
 .login-wrapper {
     text-align: center;
-}
-
-.sns-login {
-    width: 400px;
-    height: 350px;
-    padding: 40px;
-    box-sizing: border-box;
-    position: absolute;
-    text-align: center;
-  	margin-left: -200px;
-  	margin-top: -200px;
-  	left: 50%;
-  	top: 70%;
-}
-
-.sns-login a {
-    display: inline-block;
-    margin: 0 10px;
-    text-decoration: none;
-}
-
-.sns-login img {
-    width: 40px;
-    height: 40px;
-}  
+} 
 
 </style>
 
@@ -185,13 +161,4 @@ body{
          	  		   
                 <a href="">비밀번호를 잊으셨나요?</a>
 	</div>	
-	
-	<!-- SNS 로그인 섹션 -->
-<!-- 	<div class="sns-login"> -->
-<!--         <p>또는 SNS로 로그인</p> -->
-<!--         <a href="#"><img src="naver-icon.png" alt="Naver"></a> -->
-<!--         <a href="#"><img src="google-icon.png" alt="Google"></a> -->
-<!--         <a href="#"><img src="kakao-icon.png" alt="Kakao"></a> -->
-<!--     </div> -->
-<!-- </body> -->
-<!-- </html> -->
+

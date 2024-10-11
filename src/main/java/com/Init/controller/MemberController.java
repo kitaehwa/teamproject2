@@ -145,35 +145,35 @@ public class MemberController {
 	// 회원정보 탭 - 비동기
 	// 계좌 정보 조회
     @ResponseBody
-    @GetMapping("/tab/account")
+    @GetMapping("account")
     public AccountVO getAccount(@RequestParam("emp_id") String emp_id) {
         return mService.getAccount(emp_id);
     }
 
     // 자격증 정보 조회
     @ResponseBody
-    @GetMapping("/tab/license")
+    @GetMapping("license")
     public List<LicenseVO> getLicense(@RequestParam("emp_id") String emp_id) {
         return mService.getLicense(emp_id);
     }
 
     // 교육이력 정보 조회
     @ResponseBody
-    @GetMapping("/tab/his_edu")
+    @GetMapping("his_edu")
     public List<His_eduVO> getHis_edu(@RequestParam("emp_id") String emp_id) {
         return mService.getHis_edu(emp_id);
     }
 
     // 포상/징계 정보 조회
     @ResponseBody
-    @GetMapping("/tab/reward")
+    @GetMapping("reward")
     public List<RewardVO> getReward(@RequestParam("emp_id") String emp_id) {
         return mService.getReward(emp_id);
     }
 
     // 인사평가 정보 조회
     @ResponseBody
-    @GetMapping("/tab/eval")
+    @GetMapping("eval")
     public List<EvalVO> getEval(@RequestParam("emp_id") String emp_id) {
         return mService.getEval(emp_id);
     }
