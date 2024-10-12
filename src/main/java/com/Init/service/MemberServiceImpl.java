@@ -1,11 +1,16 @@
 package com.Init.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.Init.domain.AccountVO;
 import com.Init.domain.EvalVO;
@@ -87,6 +92,32 @@ public class MemberServiceImpl implements MemberService{
 		
 		return mdao.getEval(emp_id);
 	}
+	// 모달창 계좌정보 수정
+	@Override
+	public void updateAccountInfo(MemberVO memberVO) throws Exception {
+		
+		mdao.updateAccount(memberVO);
+	}
 	
+	// 프로필사진 업로드
+	private final String UPLOAD_DIR = "C:\\Users\\kimth\\Downloads\\profile";
+	
+	@Override
+	public String uploadProfilePicture(MultipartFile file, String emp_id) throws IOException {
+		// 파일 저장
+        String fileName = emp_id + "_profile.jpg";
+        Path path = Paths.get(UPLOAD_DIR + fileName);
+        Files.write(path, file.getBytes());
+
+        return "/uploads/" + fileName; // 저장된 파일 URL 반환
+	}
+	
+	// 프로필사진 삭제
+	@Override
+	public void deleteProfilePicture(String emp_id) throws IOException {
+		String fileName = emp_id + "_profile.jpg";
+        Path path = Paths.get(UPLOAD_DIR + fileName);
+        Files.deleteIfExists(path);  // 파일 삭제
+	}
 	
 }

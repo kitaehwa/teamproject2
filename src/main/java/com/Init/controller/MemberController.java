@@ -1,6 +1,8 @@
 package com.Init.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
@@ -8,15 +10,18 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.Init.domain.AccountVO;
 import com.Init.domain.EvalVO;
@@ -67,14 +72,14 @@ public class MemberController {
 		
 	// 로그인 처리 - 처리(POST)
 	@RequestMapping(value="/login", method = RequestMethod.POST)
-		public String loginMemberPOST(MemberVO vo, HttpSession session) {
+		public String loginMemberPOST(MemberVO vo, HttpSession session, Model model) {
 		logger.debug("/member/login(post) -> loginMemberPOST() 실행");
 		logger.debug("vo : "+vo);
 		
 		MemberVO resultVO = mService.memberLoginCheck(vo);
 		
 			if(resultVO == null) {
-			// 로그인 실패! 로그인 페이지로 이동
+			// 로그인 실패! 로그인 페이지로 이동			
 			return "redirect:/member/login";
 			}
 			// 사용자의 아이디정보를 세션 영역에 저장
@@ -177,11 +182,57 @@ public class MemberController {
     public List<EvalVO> getEval(@RequestParam("emp_id") String emp_id) {
         return mService.getEval(emp_id);
     }
+    
+    // 모달창 계좌정보 수정
+    @PostMapping("/member/account/update")
+    public ResponseEntity<Map<String, Object>> updateAccount(@RequestBody MemberVO memberVO) {
+        Map<String, Object> response = new HashMap<>();      
+        try {
+            // memberVO의 값을 업데이트하는 서비스 호출
+            mService.updateAccountInfo(memberVO);
+            response.put("success", true);
+        } catch (Exception e) {
+            response.put("success", false);
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok(response);
+    }
+    
+    // 프로필 사진 업로드 처리
+    @PostMapping("/uploadProfilePicture")
+    public ResponseEntity<Map<String, Object>> uploadProfilePicture(@RequestParam("profilePic") MultipartFile file,
+                                                                    @RequestParam("emp_id") String emp_id) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            // 파일 저장 처리 로직 (예: 로컬 저장소, S3 등)
+            String uploadedFileUrl = mService.uploadProfilePicture(file, emp_id);
+            
+            response.put("success", true);
+            response.put("newProfilePicUrl", uploadedFileUrl);  // 새 프로필 이미지 URL 응답
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", e.getMessage());
+        }
+        return ResponseEntity.ok(response);
+    }
 
-	
+    // 프로필 사진 삭제 처리
+    @PostMapping("/deleteProfilePicture")
+    public ResponseEntity<Map<String, Object>> deleteProfilePicture(@RequestParam("emp_id") String emp_id) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            mService.deleteProfilePicture(emp_id);
+            response.put("success", true);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", e.getMessage());
+        }
+        return ResponseEntity.ok(response);
+    }
+    
 	
 	// 템플릿 적용 확인
-	// http://localhost:8088/member/main
+	// http://localhost:8088/member/login
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
 	public void mainPage() {
 		logger.debug(" /main -> mainPage() 실행");

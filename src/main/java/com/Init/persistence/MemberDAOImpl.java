@@ -8,7 +8,10 @@ import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.Init.domain.AccountVO;
 import com.Init.domain.EvalVO;
@@ -113,9 +116,30 @@ public class MemberDAOImpl implements MemberDAO{
 		
 		return sqlSession.selectList(NAMESPACE+".getEval",emp_id);
 	}
+
+	// 모달창 계좌정보 수정
+	@Override
+	public void updateAccount(MemberVO memberVO) throws Exception {
+		
+		sqlSession.update(NAMESPACE + ".updateAccount", memberVO);
+	}
 	
+	// 프로필 사진 파일이름 저장
+	@Autowired
+    private JdbcTemplate jdbcTemplate;
 	
+	@Transactional
+	@Override
+	public void saveProfilePicture(String emp_id, String fileUrl) {
+		String sql = "UPDATE employee SET emp_profile = ? WHERE emp_id = ?";
+        jdbcTemplate.update(sql, fileUrl, emp_id);
+	}
 	
-	
+	@Transactional
+	@Override
+	public void deleteProfilePicture(String emp_id) {
+		String sql = "UPDATE employee SET emp_profile = NULL WHERE emp_id = ?";
+        jdbcTemplate.update(sql, emp_id);
+	}
 	
 }

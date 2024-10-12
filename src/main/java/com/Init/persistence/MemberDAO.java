@@ -39,5 +39,14 @@ public interface MemberDAO {
 
     // 인사평가 정보 가져오기
     List<EvalVO> getEval(String emp_id);
+    
+    // 모달창 계좌정보 수정
+    void updateAccount(MemberVO memberVO) throws Exception;
+    
+    // 프로필 이미지 URL 저장
+    void saveProfilePicture(String empId, String fileUrl);
+
+    // 프로필 이미지 삭제
+    void deleteProfilePicture(String empId);
 	
 }

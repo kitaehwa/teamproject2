@@ -1,6 +1,9 @@
 package com.Init.service;
 
+import java.io.IOException;
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.Init.domain.AccountVO;
 import com.Init.domain.EvalVO;
@@ -36,5 +39,14 @@ public interface MemberService {
 
     // 인사평가 정보 가져오기
     List<EvalVO> getEval(String emp_id);
+    
+    // 모달 계좌정보 업데이트
+    void updateAccountInfo(MemberVO memberVO) throws Exception;
+    
+    // 프로필 사진 업로드
+    String uploadProfilePicture(MultipartFile file, String emp_id) throws IOException;
+
+    // 프로필 사진 삭제
+    void deleteProfilePicture(String emp_id) throws IOException;
 	
 }

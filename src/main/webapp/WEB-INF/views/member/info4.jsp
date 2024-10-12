@@ -154,11 +154,9 @@
             <!-- 사진 및 기본 정보 -->
               <table class="info-table" style="width: 70%;">
                 <tr>
-				  <td rowspan="3">
-				    <div id="profilePicPreview">
-				    <img id="profilePicPreviewImg" src="${memberVO.emp_profile}" alt="증명사진 미리보기" style="max-width: 150px;" />
-				    </div>
-				  </td>
+                  <td colspan="2" rowspan="3" style="width: 10%;">
+                    <img src="${memberVO.emp_profile}" alt="증명사진" />
+                  </td>
                   <th>사원번호</th>
                   <td>${memberVO.emp_id}</td>              
                   <th>이름</th>
@@ -183,18 +181,14 @@
                   <td>${memberVO.emp_position} / ${memberVO.emp_job}</td>                
                 </tr>
                 <tr>
-                  <td><form id="profileUploadForm" enctype="multipart/form-data" method="POST" action="/member/uploadProfilePicture">
-				      <input type="file" id="profilePic" name="profilePic" accept="image/*" />
-				  </form></td>
+               	  <td>등록</td>
+                  <td>삭제</td>                         
                   <th>근무형태</th>
                   <td>${memberVO.emp_work_type}</td>
                   <th>근무지</th>
                   <td>${memberVO.emp_bnum}</td>               
                   <th>입사일자</th>
                   <td>${memberVO.emp_start_date}</td>
-                </tr>
-                <tr>
-                <td><button type="submit">등록</button><button type="button" id="deleteProfilePic">삭제</button></td>
                 </tr>                                                    
              </table>     	
             </div>
@@ -242,53 +236,6 @@
 	}
 	
       $(document).ready(function() {
-    		// 파일 업로드 처리
-    	    $('#profileUploadForm').on('submit', function (e) {
-    	        e.preventDefault(); // 폼의 기본 제출 동작 방지
-
-    	        var formData = new FormData(this); // 폼 데이터 준비
-
-    	        $.ajax({
-    	            url: '/member/uploadProfilePicture', // 서버에서 처리할 URL
-    	            type: 'POST',
-    	            data: formData,
-    	            contentType: false, // 파일 전송을 위한 설정
-    	            processData: false, // 쿼리 스트링으로 처리하지 않음
-    	            success: function (response) {
-    	                if (response.success) {
-    	                    // 업로드가 성공하면 사진을 새로 갱신
-    	                    $('#profilePicPreviewImg').attr('src', response.newProfilePicUrl);
-    	                    alert('증명사진이 업데이트되었습니다.');
-    	                } else {
-    	                    alert('사진 업로드에 실패했습니다.');
-    	                }
-    	            },
-    	            error: function (xhr, status, error) {
-    	                console.error('사진 업로드 오류:', error);
-    	            }
-    	        });
-    	    });
-
-    	    // 삭제 버튼 클릭 시 처리
-    	    $('#deleteProfilePic').click(function () {
-    	        $.ajax({
-    	            url: '/member/deleteProfilePicture', // 서버에서 처리할 URL
-    	            type: 'POST',
-    	            data: { emp_id: '${memberVO.emp_id}' }, // 사원 ID 전달
-    	            success: function (response) {
-    	                if (response.success) {
-    	                    // 삭제가 성공하면 이미지 삭제
-    	                    $('#profilePicPreviewImg').attr('src', '/resources/images/default-profile.png'); // 기본 이미지로 변경
-    	                    alert('증명사진이 삭제되었습니다.');
-    	                } else {
-    	                    alert('사진 삭제에 실패했습니다.');
-    	                }
-    	            },
-    	            error: function (xhr, status, error) {
-    	                console.error('사진 삭제 오류:', error);
-    	            }
-    	        });
-    	    });  
         // 탭 클릭 시 active 클래스를 적용하고 AJAX 요청을 처리하는 로직
         $(".tabs a").click(function(e) {
           e.preventDefault();
@@ -382,63 +329,62 @@
           });
         });
       $(document).ready(function() {
-    	    // 계좌 탭 클릭 시 모달 띄우기
-    	    $(document).on('click', '#openAccountModal', function(e) {
-    	      e.preventDefault();
-    	      
-    	      // 기존 계좌 정보를 AJAX로 불러와서 모달에 채운다.
-    	      $.ajax({
-    	        url: '/member/account',
-    	        type: 'GET',
-    	        data: { emp_id: '${memberVO.emp_id}' },
-    	        success: function(data) {
-    	          // AJAX 요청으로 받은 데이터로 모달의 input 값들을 채운다.
-    	          $('#accountName').val(data.emp_account_name);
-    	          $('#accountNumber').val(data.emp_account_num);
-    	          $('#bankName').val(data.emp_bank_name);
-    	          
-    	          // 모달 띄우기
-    	          $('#accountModal').modal('show');
-    	        },
-    	        error: function(xhr, status, error) {
-    	          console.error("AJAX Error: " + error);
+    	  // 계좌 탭 클릭 시 모달 띄우기
+		  	$(document).on('click', '#openAccountModal', function(e) {
+		    e.preventDefault();
+		    
+		    // 기존 계좌 정보를 AJAX로 불러와서 모달에 채운다.
+		    $.ajax({
+		        url: '/member/account',
+		        type: 'GET',
+		        data: { emp_id: '${memberVO.emp_id}' },
+		        success: function(data) {
+		            // AJAX 요청으로 받은 데이터로 모달의 input 값들을 채운다.
+		            $('#accountName').val(data.emp_account_name);
+		            $('#accountNumber').val(data.emp_account_num);
+		            $('#bankName').val(data.emp_bank_name);
+		            
+		            // 모달 띄우기
+		            $('#accountModal').modal('show');
+		        },
+		        error: function(xhr, status, error) {
+		            console.error("AJAX Error: " + error);
+		        }
+		    });
+		});
+    	
+    	  // 계좌 수정 폼 제출 시 처리
+    	  $('#accountForm').submit(function(e) {
+    	    e.preventDefault();
+    	
+    	    // 수정된 계좌 정보 가져오기
+    	    var accountData = {
+    	      emp_id: '${memberVO.emp_id}',
+    	      emp_account_name: $('#accountName').val(),
+    	      emp_account_num: $('#accountNumber').val(),
+    	      emp_bank_name: $('#bankName').val()
+    	    };
+    	
+    	    // AJAX 요청으로 수정된 계좌 정보 서버로 보내기
+    	    $.ajax({
+    	      url: '/member/account/update',
+    	      type: 'POST',
+    	      data: accountData,
+    	      success: function(response) {
+    	        // 서버 응답 처리
+    	        if (response.success) {
+    	          alert('계좌 정보가 수정되었습니다.');
+    	          $('#accountModal').modal('hide');
+    	        } else {
+    	          alert('계좌 수정에 실패했습니다.');
     	        }
-    	      });
-    	    });
-
-    	    // 저장 버튼 클릭 시 계좌 수정 폼 제출 및 AJAX 요청
-    	    $('#saveAccountBtn').click(function(e) {
-    	      e.preventDefault(); // 폼 제출 기본 동작 방지
-
-    	      // 수정된 계좌 정보 가져오기
-    	      var accountData = {
-    	        emp_id: '${memberVO.emp_id}',
-    	        emp_account_name: $('#accountName').val(),
-    	        emp_account_num: $('#accountNumber').val(),
-    	        emp_bank_name: $('#bankName').val()
-    	      };
-
-    	      // AJAX 요청으로 수정된 계좌 정보 서버로 보내기
-    	      $.ajax({
-    	        url: '/member/account/update',
-    	        type: 'POST',
-    	        data: accountData,
-    	        success: function(response) {
-    	          console.log(response);
-    	          // 서버 응답 처리
-    	          if (response.success) {
-    	            alert('계좌 정보가 수정되었습니다.');
-    	            $('#accountModal').modal('hide'); // 모달 닫기
-    	          } else {
-    	            alert('계좌 수정에 실패했습니다.');
-    	          }
-    	        },
-    	        error: function(xhr, status, error) {
-    	          console.error("AJAX Error: " + error);
-    	        }
-    	      });
+    	      },
+    	      error: function(xhr, status, error) {
+    	        console.error("AJAX Error: " + error);
+    	      }
     	    });
     	  });
+    	});
       </script>
     <!--   Core JS Files   -->
     <script src="${pageContext.request.contextPath }/resources/assets/js/core/jquery-3.7.1.min.js"></script>
