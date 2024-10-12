@@ -231,6 +231,29 @@
       <!-- main-panel -->
     </div>
     <!-- main-wrapper -->
+    <script>
+	$(document).ready(function() {
+	    $('#updateForm').submit(function(e) {
+	        e.preventDefault();
+	        $.ajax({
+	            url: $(this).attr('action'),
+	            type: 'POST',
+	            data: $(this).serialize(),
+	            success: function(response) {
+	                if(response.success) {
+	                    alert('정보가 성공적으로 수정되었습니다.');
+	                    window.location.href = '${pageContext.request.contextPath}/member/info';
+	                } else {
+	                    alert('정보 수정에 실패했습니다: ' + response.message);
+	                }
+	            },
+	            error: function() {
+	                alert('서버와의 통신 중 오류가 발생했습니다.');
+	            }
+	        });
+	    });
+	});
+	</script>
     
     <!--   Core JS Files   -->
     <script src="${pageContext.request.contextPath }/resources/assets/js/core/jquery-3.7.1.min.js"></script>

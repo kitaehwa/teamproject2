@@ -219,219 +219,177 @@
     <!-- main-wrapper -->
     
 	<script>
-	function formatDate(timestamp) {
-		console.log("타임스탬프:", timestamp);
- 	    if (!timestamp || isNaN(timestamp)) {
- 	        return '--'; // 유효하지 않은 경우 '--' 출력
- 	    }
-	  
-	    const date = new Date(timestamp); // 밀리초 단위 타임스탬프를 Date 객체로 변환
-	    const year = date.getFullYear(); // 연도
-	    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 월 (0부터 시작하기 때문에 +1)
-	    const day = date.getDate().toString().padStart(2, '0'); // 일
-	  
-	    return `${year}-${month}-${day}`; // 'yyyy-MM-dd' 형식으로 반환
-	}
-	
-      $(document).ready(function() {
-    		// 파일 업로드 처리
-    	    $('#profileUploadForm').on('submit', function (e) {
-    	        e.preventDefault(); // 폼의 기본 제출 동작 방지
+	$(document).ready(function() {
+	    function formatDate(timestamp) {
+	        if (!timestamp || isNaN(timestamp)) {
+	            return '--';
+	        }
+	        const date = new Date(timestamp);
+	        return date.toISOString().split('T')[0];
+	    }
 
-    	        var formData = new FormData(this); // 폼 데이터 준비
+	    function loadTabContent(tabType) {
+	        $.ajax({
+	            url: '${pageContext.request.contextPath}/member/' + tabType,
+	            type: 'GET',
+	            data: { emp_id: '${memberVO.emp_id}' },
+	            success: function(data) {
+	                let content = '';
+	                switch (tabType) {
+	                    case 'account':
+	                        content = generateAccountContent(data);
+	                        break;
+	                    case 'license':
+	                        content = generateTableContent(data, ['li_name', 'li_issu', 'li_date'], ['자격증명', '발급기관', '취득일']);
+	                        break;
+	                    case 'his_edu':
+	                        content = generateTableContent(data, ['ename', 'teacher', 'estatus', 'end_edate'], ['교육명', '강사명', '수료현황', '수료일']);
+	                        break;
+	                    case 'reward':
+	                        content = generateTableContent(data, ['division', 'rname', 'reason', 'rdate'], ['유형', '이름', '사유', '날짜']);
+	                        break;
+	                    case 'eval':
+	                        content = generateTableContent(data, ['eval_name', 'score1', 'score2', 'score3', 'total', 'feedback', 'valuator', 'eval_date'], 
+	                                                      ['평가명', '기준점수1', '기준점수2', '기준점수3', '종합등급', '피드백', '평가자', '평가일']);
+	                        break;
+	                }
+	                $(".tab-content").html(content);
+	            },
+	            error: function(xhr, status, error) {
+	                console.error("AJAX Error: " + error);
+	            }
+	        });
+	    }
 
-    	        $.ajax({
-    	            url: '/member/uploadProfilePicture', // 서버에서 처리할 URL
-    	            type: 'POST',
-    	            data: formData,
-    	            contentType: false, // 파일 전송을 위한 설정
-    	            processData: false, // 쿼리 스트링으로 처리하지 않음
-    	            success: function (response) {
-    	                if (response.success) {
-    	                    // 업로드가 성공하면 사진을 새로 갱신
-    	                    $('#profilePicPreviewImg').attr('src', response.newProfilePicUrl);
-    	                    alert('증명사진이 업데이트되었습니다.');
-    	                } else {
-    	                    alert('사진 업로드에 실패했습니다.');
-    	                }
-    	            },
-    	            error: function (xhr, status, error) {
-    	                console.error('사진 업로드 오류:', error);
-    	            }
-    	        });
-    	    });
+	    function generateAccountContent(data) {
+	        let content = '<table class="info-table"><tr>' +
+	                      '<th>예금주</th><td>' + data.emp_account_name + '</td>' +
+	                      '<th>계좌번호</th><td>' + data.emp_account_num + '</td>' +
+	                      '<th>은행명</th><td>' + data.emp_bank_name + '</td></tr></table>';
+	        content += '<button type="button" class="btn-modal" id="openAccountModal">계좌 수정</button>';
+	        return content;
+	    }
 
-    	    // 삭제 버튼 클릭 시 처리
-    	    $('#deleteProfilePic').click(function () {
-    	        $.ajax({
-    	            url: '/member/deleteProfilePicture', // 서버에서 처리할 URL
-    	            type: 'POST',
-    	            data: { emp_id: '${memberVO.emp_id}' }, // 사원 ID 전달
-    	            success: function (response) {
-    	                if (response.success) {
-    	                    // 삭제가 성공하면 이미지 삭제
-    	                    $('#profilePicPreviewImg').attr('src', '/resources/images/default-profile.png'); // 기본 이미지로 변경
-    	                    alert('증명사진이 삭제되었습니다.');
-    	                } else {
-    	                    alert('사진 삭제에 실패했습니다.');
-    	                }
-    	            },
-    	            error: function (xhr, status, error) {
-    	                console.error('사진 삭제 오류:', error);
-    	            }
-    	        });
-    	    });  
-        // 탭 클릭 시 active 클래스를 적용하고 AJAX 요청을 처리하는 로직
-        $(".tabs a").click(function(e) {
-          e.preventDefault();
-          $(".tabs a").removeClass("active");
-          $(this).addClass("active");
+	    function generateTableContent(data, fields, headers) {
+	        if (!Array.isArray(data) || data.length === 0) {
+	            return '<p>정보가 없습니다.</p>';
+	        }
+	        let content = '<table class="info-table"><tr>';
+	        headers.forEach(header => content += '<th>' + header + '</th>');
+	        content += '</tr>';
+	        data.forEach(function(item) {
+	            content += '<tr>';
+	            fields.forEach(field => {
+	                let value = field === 'division' ? (item[field] === 'R' ? '포상' : (item[field] === 'P' ? '징계' : item[field])) :
+	                            (field.includes('date') ? formatDate(item[field]) : item[field]);
+	                content += '<td>' + value + '</td>';
+	            });
+	            content += '</tr>';
+	        });
+	        content += '</table>';
+	        return content;
+	    }
 
-          const tabType = $(this).attr('class').split(' ')[0];
-          let url = '';
+	    $(".tabs a").click(function(e) {
+	        e.preventDefault();
+	        $(".tabs a").removeClass("active");
+	        $(this).addClass("active");
+	        loadTabContent($(this).attr('class').split(' ')[0]);
+	    });
 
-          switch (tabType) {
-            case 'account':
-              url = '/member/account';
-              break;
-            case 'license':
-              url = '/member/license';
-              break;
-            case 'his_edu':
-              url = '/member/his_edu';
-              break;
-            case 'reward':
-              url = '/member/reward';
-              break;
-            case 'eval':
-              url = '/member/eval';
-              break;
-          }
+	    $('#profileUploadForm').on('submit', function (e) {
+	        e.preventDefault();
+	        var formData = new FormData(this);
+	        $.ajax({
+	            url: '${pageContext.request.contextPath}/member/uploadProfilePicture',
+	            type: 'POST',
+	            data: formData,
+	            contentType: false,
+	            processData: false,
+	            success: function (response) {
+	                if (response.success) {
+	                    $('#profilePicPreviewImg').attr('src', response.newProfilePicUrl);
+	                    alert('증명사진이 업데이트되었습니다.');
+	                } else {
+	                    alert('사진 업로드에 실패했습니다.');
+	                }
+	            },
+	            error: function (xhr, status, error) {
+	                console.error('사진 업로드 오류:', error);
+	            }
+	        });
+	    });
 
-          // AJAX 요청
-          $.ajax({
-              url: url,
-              type: 'GET',
-              data: { emp_id: '${memberVO.emp_id}'},
-              success: function(data) {
-            	  console.log(data); // 데이터 구조를 확인
-            	  let content = '';
+	    $('#deleteProfilePic').click(function () {
+	        $.ajax({
+	            url: '${pageContext.request.contextPath}/member/deleteProfilePicture',
+	            type: 'POST',
+	            data: { emp_id: '${memberVO.emp_id}' },
+	            success: function (response) {
+	                if (response.success) {
+	                    $('#profilePicPreviewImg').attr('src', '${pageContext.request.contextPath}/resources/images/default-profile.png');
+	                    alert('증명사진이 삭제되었습니다.');
+	                } else {
+	                    alert('사진 삭제에 실패했습니다.');
+	                }
+	            },
+	            error: function (xhr, status, error) {
+	                console.error('사진 삭제 오류:', error);
+	            }
+	        });
+	    });
 
-            	  if (tabType === 'account') {
-            	    content = '<table class="info-table"><tr><th>예금주</th><td>' + data.emp_account_name + '</td>' +
-            	              '<th>계좌번호</th><td>' + data.emp_account_num + '</td>' +
-            	              '<th>은행명</th><td>' + data.emp_bank_name + '</td></tr></table>';
-            	    content += '<button type="button" class="btn-modal" id="openAccountModal">계좌 수정</button>';
-            	  } else if (tabType === 'license') {
-            	    if (Array.isArray(data)) {
-            	      content += '<table class="info-table"><tr><th>자격증명</th><th>발급기관</th><th>취득일</th></tr>';
-            	      data.forEach(function(license) {
-            	        content += '<tr><td>' + license.li_name + '</td><td>' + license.li_issu + '</td><td>' + formatDate(license.li_date) + '</td></tr>';
-            	      });
-            	      content += '</table>';
-            	    } else {
-            	      content = '<p>자격증 정보가 없습니다.</p>';
-            	    }
-            	  } else if (tabType === 'his_edu') {
-            	    if (Array.isArray(data)) {
-            	      content += '<table class="info-table"><tr><th>교육명</th><th>강사명</th><th>수료현황</th><th>수료일</th></tr>';
-            	      data.forEach(function(his_edu) {
-            	        content += '<tr><td>' + his_edu.ename + '</td><td>' + his_edu.teacher + '</td><td>' + his_edu.estatus + '</td><td>' + formatDate(his_edu.end_edate) + '</td></tr>';
-            	      });
-            	      content += '</table>';
-            	    } else {
-            	      content = '<p>교육 이력이 없습니다.</p>';
-            	    }
-            	  } else if (tabType === 'reward') {
-            	    if (Array.isArray(data)) {
-            	      content += '<table class="info-table"><tr><th>유형</th><th>이름</th><th>사유</th><th>날짜</th></tr>';
-            	      data.forEach(function(reward) {
-            	        const divisionLabel = reward.division === 'R' ? '포상' : (reward.division === 'P' ? '징계' : reward.division);
-            	        content += '<tr><td>' + divisionLabel + '</td><td>' + reward.rname + '</td><td>' + reward.reason + '</td><td>' + formatDate(reward.rdate) + '</td></tr>';
-            	      });
-            	      content += '</table>';
-            	    } else {
-            	      content = '<p>포상/징계 정보가 없습니다.</p>';
-            	    }
-            	  } else if (tabType === 'eval') {
-            	    if (Array.isArray(data)) {
-            	      content += '<table class="info-table"><tr><th>평가명</th><th>기준점수1</th><th>기준점수2</th><th>기준점수3</th><th>종합등급</th><th>피드백</th><th>평가자</th><th>평가일</th></tr>';
-            	      data.forEach(function(eval) {
-            	        content += '<tr><td>' + eval.eval_name + '</td><td>' + eval.score1 + '</td><td>' + eval.score2 + '</td><td>' + eval.score3 + '</td><td>' + eval.total + '</td><td>' + eval.feedback + '</td><td>' + eval.valuator + '</td><td>' + formatDate(eval.eval_date) + '</td></tr>';
-            	      });
-            	      content += '</table>';
-            	    } else {
-            	      content = '<p>인사 평가 정보가 없습니다.</p>';
-            	    }
-            	  }
+	    $(document).on('click', '#openAccountModal', function(e) {
+	        e.preventDefault();
+	        $.ajax({
+	            url: '${pageContext.request.contextPath}/member/account',
+	            type: 'GET',
+	            data: { emp_id: '${memberVO.emp_id}' },
+	            success: function(data) {
+	                $('#accountName').val(data.emp_account_name);
+	                $('#accountNumber').val(data.emp_account_num);
+	                $('#bankName').val(data.emp_bank_name);
+	                $('#accountModal').modal('show');
+	            },
+	            error: function(xhr, status, error) {
+	                console.error("AJAX Error: " + error);
+	            }
+	        });
+	    });
 
-            	  $(".tab-content").html(content);
-            	},
-              error: function(xhr, status, error) {
-                console.error("AJAX Error: " + error);
-              }
-            });
-          });
-        });
-      $(document).ready(function() {
-    	    // 계좌 탭 클릭 시 모달 띄우기
-    	    $(document).on('click', '#openAccountModal', function(e) {
-    	      e.preventDefault();
-    	      
-    	      // 기존 계좌 정보를 AJAX로 불러와서 모달에 채운다.
-    	      $.ajax({
-    	        url: '/member/account',
-    	        type: 'GET',
-    	        data: { emp_id: '${memberVO.emp_id}' },
-    	        success: function(data) {
-    	          // AJAX 요청으로 받은 데이터로 모달의 input 값들을 채운다.
-    	          $('#accountName').val(data.emp_account_name);
-    	          $('#accountNumber').val(data.emp_account_num);
-    	          $('#bankName').val(data.emp_bank_name);
-    	          
-    	          // 모달 띄우기
-    	          $('#accountModal').modal('show');
-    	        },
-    	        error: function(xhr, status, error) {
-    	          console.error("AJAX Error: " + error);
-    	        }
-    	      });
-    	    });
+	    $('#saveAccountBtn').click(function(e) {
+	        e.preventDefault();
+	        var accountData = {
+	            emp_id: '${memberVO.emp_id}',
+	            emp_account_name: $('#accountName').val(),
+	            emp_account_num: $('#accountNumber').val(),
+	            emp_bank_name: $('#bankName').val()
+	        };
+	        $.ajax({
+	            url: '${pageContext.request.contextPath}/member/account/update',
+	            type: 'POST',
+	            data: JSON.stringify(accountData),
+	            contentType: 'application/json',
+	            success: function(response) {
+	                if (response.success) {
+	                    alert('계좌 정보가 수정되었습니다.');
+	                    $('#accountModal').modal('hide');
+	                    loadTabContent('account');
+	                } else {
+	                    alert('계좌 수정에 실패했습니다.');
+	                }
+	            },
+	            error: function(xhr, status, error) {
+	                console.error("AJAX Error: " + error);
+	            }
+	        });
+	    });
 
-    	    // 저장 버튼 클릭 시 계좌 수정 폼 제출 및 AJAX 요청
-    	    $('#saveAccountBtn').click(function(e) {
-    	      e.preventDefault(); // 폼 제출 기본 동작 방지
-
-    	      // 수정된 계좌 정보 가져오기
-    	      var accountData = {
-    	        emp_id: '${memberVO.emp_id}',
-    	        emp_account_name: $('#accountName').val(),
-    	        emp_account_num: $('#accountNumber').val(),
-    	        emp_bank_name: $('#bankName').val()
-    	      };
-
-    	      // AJAX 요청으로 수정된 계좌 정보 서버로 보내기
-    	      $.ajax({
-    	        url: '/member/account/update',
-    	        type: 'POST',
-    	        data: accountData,
-    	        success: function(response) {
-    	          console.log(response);
-    	          // 서버 응답 처리
-    	          if (response.success) {
-    	            alert('계좌 정보가 수정되었습니다.');
-    	            $('#accountModal').modal('hide'); // 모달 닫기
-    	          } else {
-    	            alert('계좌 수정에 실패했습니다.');
-    	          }
-    	        },
-    	        error: function(xhr, status, error) {
-    	          console.error("AJAX Error: " + error);
-    	        }
-    	      });
-    	    });
-    	  });
-      </script>
+	    // 초기 탭 로드
+	    loadTabContent('account');
+	});
+	</script>
+    
     <!--   Core JS Files   -->
     <script src="${pageContext.request.contextPath }/resources/assets/js/core/jquery-3.7.1.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/assets/js/core/popper.min.js"></script>

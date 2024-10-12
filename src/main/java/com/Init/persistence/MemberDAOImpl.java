@@ -29,18 +29,10 @@ import com.Init.domain.RewardVO;
 @Repository
 public class MemberDAOImpl implements MemberDAO{
 	
-	@Inject
-	private SqlSession sqlSession; 
-	
-	private final DataSource dataSource;  // HikariCP DataSource
-	
-	private static final String NAMESPACE = "com.Init.mapper.MemberMapper";
-	
-	@Inject
-    public MemberDAOImpl(SqlSession sqlSession, DataSource dataSource) {
-        this.sqlSession = sqlSession;
-        this.dataSource = dataSource; // DataSource 주입
-    }
+	@Autowired
+    private SqlSession sqlSession;
+
+    private static final String NAMESPACE = "com.Init.mapper.MemberMapper";
 	
 	@Override
 	public void insertMember(MemberVO vo) {
@@ -128,41 +120,27 @@ public class MemberDAOImpl implements MemberDAO{
 		
 		return sqlSession.selectList(NAMESPACE+".getEval",emp_id);
 	}
-
-	// 모달창 계좌정보 수정
-	@Override
-	public void updateAccount(MemberVO memberVO) throws Exception {
-		
-		sqlSession.update(NAMESPACE + ".updateAccount", memberVO);
-	}
 	
 	@Override
-    public void saveProfilePicture(String emp_id, String fileUrl) {
-        try (Connection connection = dataSource.getConnection()) {
-            String sql = "UPDATE employee SET emp_profile = ? WHERE emp_id = ?";
-            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-                pstmt.setString(1, fileUrl);
-                pstmt.setString(2, emp_id);
-                pstmt.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("프로필 사진 저장 중 오류 발생", e);
-        }
+    public void updateProfilePicture(String emp_id, Object object) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("emp_id", emp_id);
+        params.put("fileUrl", object);
+        sqlSession.update(NAMESPACE + ".saveProfilePicture", params);
     }
 
     @Override
     public void deleteProfilePicture(String emp_id) {
-        try (Connection connection = dataSource.getConnection()) {
-            String sql = "UPDATE employee SET emp_profile = NULL WHERE emp_id = ?";
-            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-                pstmt.setString(1, emp_id);
-                pstmt.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("프로필 사진 삭제 중 오류 발생", e);
-        }
+        sqlSession.update(NAMESPACE + ".deleteProfilePicture", emp_id);
     }
-	
 
-	
-}
+    @Override
+    public String getProfilePicturePath(String emp_id) {
+        return sqlSession.selectOne(NAMESPACE + ".getProfilePicturePath", emp_id);
+    }
+
+    @Override
+    public void updateAccount(MemberVO memberVO) throws Exception {
+        sqlSession.update(NAMESPACE + ".updateAccount", memberVO);
+    }
+}    
