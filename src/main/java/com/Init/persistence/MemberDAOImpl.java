@@ -1,10 +1,14 @@
 package com.Init.persistence;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -28,7 +32,15 @@ public class MemberDAOImpl implements MemberDAO{
 	@Inject
 	private SqlSession sqlSession; 
 	
+	private final DataSource dataSource;  // HikariCP DataSource
+	
 	private static final String NAMESPACE = "com.Init.mapper.MemberMapper";
+	
+	@Inject
+    public MemberDAOImpl(SqlSession sqlSession, DataSource dataSource) {
+        this.sqlSession = sqlSession;
+        this.dataSource = dataSource; // DataSource 주입
+    }
 	
 	@Override
 	public void insertMember(MemberVO vo) {
@@ -124,22 +136,33 @@ public class MemberDAOImpl implements MemberDAO{
 		sqlSession.update(NAMESPACE + ".updateAccount", memberVO);
 	}
 	
-	// 프로필 사진 파일이름 저장
-	@Autowired
-    private JdbcTemplate jdbcTemplate;
-	
-	@Transactional
 	@Override
-	public void saveProfilePicture(String emp_id, String fileUrl) {
-		String sql = "UPDATE employee SET emp_profile = ? WHERE emp_id = ?";
-        jdbcTemplate.update(sql, fileUrl, emp_id);
-	}
+    public void saveProfilePicture(String emp_id, String fileUrl) {
+        try (Connection connection = dataSource.getConnection()) {
+            String sql = "UPDATE employee SET emp_profile = ? WHERE emp_id = ?";
+            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+                pstmt.setString(1, fileUrl);
+                pstmt.setString(2, emp_id);
+                pstmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("프로필 사진 저장 중 오류 발생", e);
+        }
+    }
+
+    @Override
+    public void deleteProfilePicture(String emp_id) {
+        try (Connection connection = dataSource.getConnection()) {
+            String sql = "UPDATE employee SET emp_profile = NULL WHERE emp_id = ?";
+            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+                pstmt.setString(1, emp_id);
+                pstmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("프로필 사진 삭제 중 오류 발생", e);
+        }
+    }
 	
-	@Transactional
-	@Override
-	public void deleteProfilePicture(String emp_id) {
-		String sql = "UPDATE employee SET emp_profile = NULL WHERE emp_id = ?";
-        jdbcTemplate.update(sql, emp_id);
-	}
+
 	
 }

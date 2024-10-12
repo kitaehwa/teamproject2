@@ -96,6 +96,27 @@
         float: left;
         margin-left: 5px; 
       }
+      
+      #insertProfilePic {
+        padding: 5px 10px;  
+        border: none;
+        border-radius: 4px;
+        background-color: #0055FF;
+        color: white;
+        cursor: pointer;
+        margin-top: 10px; 
+      }
+      
+      #deleteProfilePic {
+        padding: 5px 10px;  
+        border: none;
+        border-radius: 4px;
+        background-color: #f44336;
+        color: white;
+        cursor: pointer;
+        margin-top: 10px; 
+        margin-left: 5px; 
+      }
 
       .info-actions button.delete {
         background-color: #f44336;
@@ -148,9 +169,11 @@
               <form action="/member/update" method="POST">
                 <table class="info-table" style="width: 70%;">
                   <tr>
-                    <td colspan="2" rowspan="3" style="width: 10%;">
-                      <img src="${memberVO.emp_profile}" alt="증명사진" />
-                    </td>
+                    <td rowspan="4">
+				    <div id="profilePicPreview">
+				    <img id="profilePicPreviewImg" src="${memberVO.emp_profile}" alt="미리보기" style="max-width: 150px;" />
+				    </div>
+				  	</td>
                     <th>사원번호</th>
                  	<td><input type="text" name="id" value="${memberVO.emp_id}" readonly/></td>
                     <th>이름</th>
@@ -175,8 +198,6 @@
                     <td><input type="text" name="job_id" value="${memberVO.emp_job}" readonly/></td>                   
                   </tr>
                   <tr>
-                    <td>등록</td> 
-                    <td>삭제</td> 
                     <th>근무형태</th>
                     <td><input type="text" name="work_type" value="${memberVO.emp_work_type}" readonly/></td>                   
                     <th>근무지</th>
@@ -185,6 +206,12 @@
                     <td><input type="text" name="start_date" value="${memberVO.emp_start_date}" readonly/></td>
                   </tr>
                   </table>     	
+                  <tr>
+                  <td><form id="profileUploadForm" enctype="multipart/form-data" method="POST" action="/member/uploadProfilePicture">
+				      <input type="file" id="profilePic" name="profilePic" accept="image/*" />
+				      <button type="submit" id="insertProfilePic">등록</button><button type="button" id="deleteProfilePic">삭제</button>
+					  </form></td>
+                  </tr>
                   </div> 
                   
                 <!-- 버튼 영역 -->              

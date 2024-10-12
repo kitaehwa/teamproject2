@@ -154,11 +154,9 @@
             <!-- 사진 및 기본 정보 -->
               <table class="info-table" style="width: 70%;">
                 <tr>
-				  <td rowspan="3">
-				    <div id="profilePicPreview">
-				    <img id="profilePicPreviewImg" src="${memberVO.emp_profile}" alt="증명사진 미리보기" style="max-width: 150px;" />
-				    </div>
-				  </td>
+                  <td colspan="2" rowspan="4" style="width: 10%;">
+                    <img src="${memberVO.emp_profile}" alt="증명사진" />
+                  </td>
                   <th>사원번호</th>
                   <td>${memberVO.emp_id}</td>              
                   <th>이름</th>
@@ -183,18 +181,12 @@
                   <td>${memberVO.emp_position} / ${memberVO.emp_job}</td>                
                 </tr>
                 <tr>
-                  <td><form id="profileUploadForm" enctype="multipart/form-data" method="POST" action="/member/uploadProfilePicture">
-				      <input type="file" id="profilePic" name="profilePic" accept="image/*" />
-				  </form></td>
                   <th>근무형태</th>
                   <td>${memberVO.emp_work_type}</td>
                   <th>근무지</th>
                   <td>${memberVO.emp_bnum}</td>               
                   <th>입사일자</th>
                   <td>${memberVO.emp_start_date}</td>
-                </tr>
-                <tr>
-                <td><button type="submit">등록</button><button type="button" id="deleteProfilePic">삭제</button></td>
                 </tr>                                                    
              </table>     	
             </div>
