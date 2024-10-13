@@ -166,51 +166,47 @@
  <h1 class="page-title">내정보</h1>
             <div class="info-container">
               <!-- 사진 및 기본 정보 입력 -->
-              <form action="/member/update" method="POST">
+              <form action="/member/update" method="post">
                 <table class="info-table" style="width: 70%;">
                   <tr>
-                    <td rowspan="4">
-				    <div id="profilePicPreview">
-				    <img id="profilePicPreviewImg" src="${memberVO.emp_profile}" alt="미리보기" style="max-width: 150px;" />
+                    <td rowspan="4" style="width: 8%";>
+				  
 				    </div>
 				  	</td>
                     <th>사원번호</th>
-                 	<td><input type="text" name="id" value="${memberVO.emp_id}" readonly/></td>
+                 	<td><input type="text" name="emp_id" value="${memberVO.emp_id}" readonly/></td>
                     <th>이름</th>
-                  	<td><input type="text" name="name" value="${memberVO.emp_name}" readonly/></td>
+                  	<td><input type="text" name="emp_name" value="${memberVO.emp_name}" readonly/></td>
                     <th>성별</th>
-                  	<td><input type="text" name="gender" value="${memberVO.emp_gender}" readonly/></td>
+                  	<td><input type="text" name="emp_gender" value="${memberVO.emp_gender}" readonly/></td>
                   </tr>
                   <tr>
                     <th>생년월일</th>
-               		<td><input type="text" name="birth" value="${memberVO.emp_birth}" readonly/></td>
+               		<td><input type="text" name="emp_birth" value="${memberVO.emp_birth}" readonly/></td>
                     <th>주소</th>
-                    <td><input type="text" name="addr" value="${memberVO.emp_addr}" /></td>
+                    <td><input type="text" name="emp_addr" value="${memberVO.emp_addr}" /></td>
                     <th>연락처</th>
-                    <td><input type="text" name="tel" value="${memberVO.emp_tel}" /></td>                  
+                    <td><input type="text" name="emp_tel" value="${memberVO.emp_tel}" /></td>                  
                   </tr>
                   <tr>
                   	<th>이메일</th>
-                    <td><input type="email" name="email" value="${memberVO.emp_email}" /></td>
+                    <td><input type="email" name="emp_email" value="${memberVO.emp_email}" /></td>
                     <th>부서</th>
-                 	<td><input type="text" name="dnum" value="${memberVO.emp_dnum}" readonly/></td>
+                 	<td><input type="text" name="emp_dnum" value="${memberVO.emp_dnum}" readonly/></td>
                     <th>직급/직책</th>
-                    <td><input type="text" name="job_id" value="${memberVO.emp_job}" readonly/></td>                   
+                    <td><input type="text" name="emp_job_id" value="${memberVO.emp_job}" readonly/></td>                   
                   </tr>
                   <tr>
                     <th>근무형태</th>
-                    <td><input type="text" name="work_type" value="${memberVO.emp_work_type}" readonly/></td>                   
+                    <td><input type="text" name="emp_work_type" value="${memberVO.emp_work_type}" readonly/></td>                   
                     <th>근무지</th>
-                    <td><input type="text" name="bnum" value="${memberVO.emp_bnum}" readonly/></td>                   
+                    <td><input type="text" name="emp_bnum" value="${memberVO.emp_bnum}" readonly/></td>                   
                   	<th>입사일자</th>
-                    <td><input type="text" name="start_date" value="${memberVO.emp_start_date}" readonly/></td>
+                    <td><input type="text" name="emp_start_date" value="${memberVO.emp_start_date}" readonly/></td>
                   </tr>
                   </table>     	
                   <tr>
-                  <td><form id="profileUploadForm" enctype="multipart/form-data" method="POST" action="/member/uploadProfilePicture">
-				      <input type="file" id="profilePic" name="profilePic" accept="image/*" />
-				      <button type="submit" id="insertProfilePic">등록</button><button type="button" id="deleteProfilePic">삭제</button>
-					  </form></td>
+                 
                   </tr>
                   </div> 
                   

@@ -154,7 +154,7 @@
             <!-- 사진 및 기본 정보 -->
               <table class="info-table" style="width: 70%;">
                 <tr>
-                  <td colspan="2" rowspan="4" style="width: 10%;">
+                  <td colspan="2" rowspan="4" style="width: 8%;">
                     <img src="${memberVO.emp_profile}" alt="증명사진" />
                   </td>
                   <th>사원번호</th>

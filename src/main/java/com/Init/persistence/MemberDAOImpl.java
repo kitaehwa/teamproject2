@@ -12,6 +12,8 @@ import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -23,11 +25,14 @@ import com.Init.domain.His_eduVO;
 import com.Init.domain.LicenseVO;
 import com.Init.domain.MemberVO;
 import com.Init.domain.RewardVO;
+import com.Init.service.MemberServiceImpl;
 
 
 
 @Repository
 public class MemberDAOImpl implements MemberDAO{
+	
+	private static final Logger logger = LoggerFactory.getLogger(MemberDAOImpl.class);
 	
 	@Autowired
     private SqlSession sqlSession;

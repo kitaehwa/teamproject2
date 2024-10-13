@@ -1,5 +1,7 @@
 package com.Init.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,11 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.Init.domain.*;
 import com.Init.service.MemberService;
 
 import javax.servlet.http.HttpSession;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +27,8 @@ public class MemberController {
 
     @Autowired
     private MemberService mService;
+    
+    private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
     @GetMapping("/join")
     public String joinMemberGet() {
@@ -63,18 +69,34 @@ public class MemberController {
         return "member/info";
     }
 
-    @GetMapping("/update")
-    public String updateMemberGET(HttpSession session, Model model) {
-        String emp_id = (String) session.getAttribute("emp_id");
-        model.addAttribute("memberVO", mService.memberInfo(emp_id));
-        return "member/update";
-    }
-
-    @PostMapping("/update")
-    public String updateMemberPOST(@ModelAttribute MemberVO vo) {
-        mService.memberUpdate(vo);
-        return "redirect:/member/info";
-    }
+    // 회원정보 수정 - 입력GET
+ 	@RequestMapping(value = "/update",method = RequestMethod.GET)
+ 	public String updateMemberGET(HttpSession session, Model model) {
+ 	logger.debug("/member/update -> updateMemberGET() 실행");				
+ 	logger.debug("기존의 회원정보를 DB에서 가져오기");
+ 	
+ 	String emp_id = (String) session.getAttribute("emp_id");
+ 				
+ 	model.addAttribute(mService.memberInfo(emp_id));				
+ 	logger.debug("연결된 뷰페이지 출력(/views/member/update.jsp)");
+ 				
+ 	return "/member/update";
+ 	}
+ 			
+ 	// 회원정보 수정 - 처리POST
+ 	@RequestMapping(value="/update",method = RequestMethod.POST)
+ 	public String updateMemberPOST(MemberVO vo) {
+ 	logger.debug("/member/update -> updateMemberPOST() 실행");
+ 	logger.debug("전달받은 정보(파라메터)를 저장");
+ 	logger.debug(" vo : "+vo);	
+ 		
+ 	int result = mService.memberUpdate(vo);				
+ 	if(result == 0) {	
+ 	return "redirect:/member/update";
+ 	}
+ 	// 수정 성공
+ 	return "redirect:/member/info";
+ 	}
 
     @GetMapping("/account")
     @ResponseBody
@@ -149,6 +171,7 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+    
     @GetMapping("/main")
     public String mainPage() {
         return "member/main";

@@ -49,13 +49,15 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    @Transactional
-    public int memberUpdate(MemberVO uvo) {
-        logger.debug("회원 정보 수정 서비스 실행: {}", uvo);
-        int result = mdao.updateMember(uvo);
-        mdao.insertHisMember(uvo);
-        return result;
-    }
+	public int memberUpdate(MemberVO uvo) {
+		logger.debug("memberUpdate(MemberVO uvo) 실행");
+		// 회원정보 수정
+		int result = mdao.updateMember(uvo);
+		// 회원정보 수정 이력
+		mdao.insertHisMember(uvo);
+		
+		return result;
+	}
 
     @Override
     public AccountVO getAccount(String emp_id) {
