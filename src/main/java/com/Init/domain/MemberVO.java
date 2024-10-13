@@ -37,37 +37,13 @@ public class MemberVO {
 	private String emp_level;
 	private Timestamp update_date;	
 	
-	 // 게터와 세터
-    public String getEmp_id() {
-        return emp_id;
-    }
+	// 기본 생성자
+    public MemberVO() {}
 
-    public void setEmp_id(String emp_id) {
+    // 프로필 사진 업데이트를 위한 생성자
+    public MemberVO(String emp_id, String emp_profile) {
         this.emp_id = emp_id;
+        this.emp_profile = emp_profile;
     }
 
-    public String getEmp_account_name() {
-        return emp_account_name;
-    }
-
-    public void setEmp_account_name(String emp_account_name) {
-        this.emp_account_name = emp_account_name;
-    }
-
-    public String getEmp_account_num() {
-        return emp_account_num;
-    }
-
-    public void setEmp_account_num(String emp_account_num) {
-        this.emp_account_num = emp_account_num;
-    }
-
-    public String getEmp_bank_name() {
-        return emp_bank_name;
-    }
-
-    public void setEmp_bank_name(String emp_bank_name) {
-        this.emp_bank_name = emp_bank_name;
-    }
-	
 }

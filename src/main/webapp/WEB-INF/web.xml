@@ -30,7 +30,6 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	
-	
 	<!-- 한글처리 인코딩 필터 -->
 	<filter>
 		<filter-name>setUTF8</filter-name>	
@@ -48,5 +47,6 @@
 	
 	<!-- 한글처리 인코딩 필터 -->
 	
+		
 
 </web-app>

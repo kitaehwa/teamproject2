@@ -44,9 +44,6 @@ public interface MemberService {
     void updateAccountInfo(MemberVO memberVO) throws Exception;
     
     // 프로필 사진 업로드
-    String uploadProfilePicture(MultipartFile file, String emp_id) throws IOException;
-
-    // 프로필 사진 삭제
-    void deleteProfilePicture(String emp_id) throws IOException;
+    void updateProfilePicture(String emp_id, String emp_profile);
 	
 }

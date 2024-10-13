@@ -8,20 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Service
 public class MemberServiceImpl implements MemberService {
 
-	@Value("${upload.path}")
-    private String uploadPath;
-	
     private static final Logger logger = LoggerFactory.getLogger(MemberServiceImpl.class);
 
     @Autowired
@@ -84,27 +80,10 @@ public class MemberServiceImpl implements MemberService {
         return mdao.getEval(emp_id);
     }
     
-    @Override
-    public String uploadProfilePicture(MultipartFile file, String emp_id) throws IOException {
-        String fileName = emp_id + "_profile.jpg";
-        Path path = Paths.get(uploadPath, fileName);
-        Files.write(path, file.getBytes());
-
-        String fileUrl = "/uploads/" + fileName;
-        mdao.updateProfilePicture(emp_id, fileUrl);
-
-        return fileUrl;
+	@Override
+    public void updateProfilePicture(String emp_id, String emp_profile) {
+        mdao.updateProfilePicture(emp_id, emp_profile);
     }
-
-    @Override
-    public void deleteProfilePicture(String emp_id) throws IOException {
-        String fileName = emp_id + "_profile.jpg";
-        Path path = Paths.get(uploadPath, fileName);
-        Files.deleteIfExists(path);
-
-        mdao.updateProfilePicture(emp_id, null);
-    }
-
     
     @Override
     public void updateAccountInfo(MemberVO memberVO) throws Exception {

@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
     
 <!-- JSTL-core 라이브러리 추가 -->
-<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,12 +15,12 @@
     />
     <link
       rel="icon"
-      href="${pageContext.request.contextPath }/resources/assets/img/kaiadmin/favicon.ico"
+      href="${pageContext.request.contextPath}/resources/assets/img/kaiadmin/favicon.ico"
       type="image/x-icon"
     />
 
     <!-- Fonts and icons -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/webfont/webfont.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
       WebFont.load({
         google: { families: ["Public Sans:300,400,500,600,700"] },
@@ -31,7 +31,7 @@
             "Font Awesome 5 Brands",
             "simple-line-icons",
           ],
-          urls: ["${pageContext.request.contextPath }/resources/assets/css/fonts.min.css"],
+          urls: ["${pageContext.request.contextPath}/resources/assets/css/fonts.min.css"],
         },
         active: function () {
           sessionStorage.fonts = true;
@@ -40,21 +40,20 @@
     </script>
 
     <!-- CSS Files -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/plugins.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/kaiadmin.min.css" />
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/demo.css" />
-  <!------------------------------------------------------------------------------------------------------------------>
- <style>
-   
-  	  .page-title {
-	   font-size: 24px;
-	   font-weight: bold;
-	   margin-bottom: 20px;
-	 }
-	 
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/demo.css" />
+    
+    <style>
+      .page-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+      
       .info-table {
         width: 100%;
         border-collapse: collapse;
@@ -97,27 +96,6 @@
         margin-left: 5px; 
       }
       
-      #insertProfilePic {
-        padding: 5px 10px;  
-        border: none;
-        border-radius: 4px;
-        background-color: #0055FF;
-        color: white;
-        cursor: pointer;
-        margin-top: 10px; 
-      }
-      
-      #deleteProfilePic {
-        padding: 5px 10px;  
-        border: none;
-        border-radius: 4px;
-        background-color: #f44336;
-        color: white;
-        cursor: pointer;
-        margin-top: 10px; 
-        margin-left: 5px; 
-      }
-
       .info-actions button.delete {
         background-color: #f44336;
       }
@@ -145,12 +123,27 @@
       }
       
       input[readonly] {
-	    background-color: #f0f0f0; /* 원하는 색상으로 변경 */
-	    color: #333; /* 텍스트 색상도 조절 가능 */
-	  }
+        background-color: #f0f0f0;
+        color: #333;
+      }
+
+      .profile-pic-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .profile-pic-container img {
+        margin-bottom: 10px;
+        max-width: 150px;
+        height: auto;
+      }
+
+      #uploadProfilePic {
+        margin-top: 10px;
+      }
     </style>
- <!------------------------------------------------------------------------------------------------------------------>
- 
   </head>
   <body>
     <div class="wrapper">
@@ -162,37 +155,38 @@
         </div>
         <div class="container">
           <div class="page-inner">
-<!------------------------------------------------------------------------------------------------------------------>      
- <h1 class="page-title">내정보</h1>
+            <h1 class="page-title">내정보</h1>
             <div class="info-container">
               <!-- 사진 및 기본 정보 입력 -->
-              <form action="/member/update" method="post">
+              <form method="post" action="/member/update" id="updateForm" enctype="multipart/form-data">
                 <table class="info-table" style="width: 70%;">
                   <tr>
-                    <td rowspan="4" style="width: 8%";>
-				  
-				    </div>
-				  	</td>
+                    <td rowspan="4" style="width: 8%;">
+                      <div class="profile-pic-container">
+                        <img id="profilePicPreview" src="${memberVO.emp_profile != null ? memberVO.emp_profile : '/resources/assets/img/profile.png'}" alt="증명사진" style="max-width: 150px; height: auto;"/>
+                        <input type="file" name="emp_profile" id="profilePicInput" style="display: none;" accept="image/*">
+                      </div>
+                    </td>
                     <th>사원번호</th>
-                 	<td><input type="text" name="emp_id" value="${memberVO.emp_id}" readonly/></td>
+                    <td><input type="text" name="emp_id" value="${memberVO.emp_id}" readonly/></td>
                     <th>이름</th>
-                  	<td><input type="text" name="emp_name" value="${memberVO.emp_name}" readonly/></td>
+                    <td><input type="text" name="emp_name" value="${memberVO.emp_name}" readonly/></td>
                     <th>성별</th>
-                  	<td><input type="text" name="emp_gender" value="${memberVO.emp_gender}" readonly/></td>
+                    <td><input type="text" name="emp_gender" value="${memberVO.emp_gender}" readonly/></td>
                   </tr>
                   <tr>
                     <th>생년월일</th>
-               		<td><input type="text" name="emp_birth" value="${memberVO.emp_birth}" readonly/></td>
+                    <td><input type="text" name="emp_birth" value="${memberVO.emp_birth}" readonly/></td>
                     <th>주소</th>
                     <td><input type="text" name="emp_addr" value="${memberVO.emp_addr}" /></td>
                     <th>연락처</th>
                     <td><input type="text" name="emp_tel" value="${memberVO.emp_tel}" /></td>                  
                   </tr>
                   <tr>
-                  	<th>이메일</th>
+                    <th>이메일</th>
                     <td><input type="email" name="emp_email" value="${memberVO.emp_email}" /></td>
                     <th>부서</th>
-                 	<td><input type="text" name="emp_dnum" value="${memberVO.emp_dnum}" readonly/></td>
+                    <td><input type="text" name="emp_dnum" value="${memberVO.emp_dnum}" readonly/></td>
                     <th>직급/직책</th>
                     <td><input type="text" name="emp_job_id" value="${memberVO.emp_job}" readonly/></td>                   
                   </tr>
@@ -201,119 +195,146 @@
                     <td><input type="text" name="emp_work_type" value="${memberVO.emp_work_type}" readonly/></td>                   
                     <th>근무지</th>
                     <td><input type="text" name="emp_bnum" value="${memberVO.emp_bnum}" readonly/></td>                   
-                  	<th>입사일자</th>
+                    <th>입사일자</th>
                     <td><input type="text" name="emp_start_date" value="${memberVO.emp_start_date}" readonly/></td>
                   </tr>
-                  </table>     	
-                  <tr>
-                 
-                  </tr>
-                  </div> 
-                  
+                </table>
+                <button type="button" id="uploadProfilePic" class="btn btn-primary btn-sm mt-2">증명사진 등록/변경</button>
+                
                 <!-- 버튼 영역 -->              
                 <div class="info-actions">               
                   <button type="submit">저장</button>
                   <button type="button" class="delete" onclick="location.href='/member/info'">취소</button>
                 </div>
-                        
-                                        
-<!------------------------------------------------------------------------------------------------------------------>
+              </form>
+            </div> 
           </div>
           <!-- page-inner -->
         </div>
-		<!-- container -->
+        <!-- container -->
         <%@ include file="/resources/assets/inc/footer.jsp" %>
       </div>
       <!-- main-panel -->
     </div>
     <!-- main-wrapper -->
-    <script>
-	$(document).ready(function() {
-	    $('#updateForm').submit(function(e) {
-	        e.preventDefault();
-	        $.ajax({
-	            url: $(this).attr('action'),
-	            type: 'POST',
-	            data: $(this).serialize(),
-	            success: function(response) {
-	                if(response.success) {
-	                    alert('정보가 성공적으로 수정되었습니다.');
-	                    window.location.href = '${pageContext.request.contextPath}/member/info';
-	                } else {
-	                    alert('정보 수정에 실패했습니다: ' + response.message);
-	                }
-	            },
-	            error: function() {
-	                alert('서버와의 통신 중 오류가 발생했습니다.');
-	            }
-	        });
-	    });
-	});
-	</script>
     
     <!--   Core JS Files   -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/core/jquery-3.7.1.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/assets/js/core/popper.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/assets/js/core/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/core/popper.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/core/bootstrap.min.js"></script>
 
     <!-- jQuery Scrollbar -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 
     <!-- Chart JS -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/chart.js/chart.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/plugin/chart.js/chart.min.js"></script>
 
     <!-- jQuery Sparkline -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
 
     <!-- Chart Circle -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/chart-circle/circles.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/plugin/chart-circle/circles.min.js"></script>
 
     <!-- Datatables -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/datatables/datatables.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/plugin/datatables/datatables.min.js"></script>
 
     <!-- Bootstrap Notify -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
 
     <!-- jQuery Vector Maps -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/jsvectormap/world.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/plugin/jsvectormap/world.js"></script>
 
     <!-- Sweet Alert -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
 
     <!-- Kaiadmin JS -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/kaiadmin.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/kaiadmin.min.js"></script>
 
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/setting-demo.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/assets/js/demo.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/setting-demo.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/demo.js"></script>
+    
     <script>
-      $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
-        type: "line",
-        height: "70",
-        width: "100%",
-        lineWidth: "2",
-        lineColor: "#177dff",
-        fillColor: "rgba(23, 125, 255, 0.14)",
-      });
+    $(document).ready(function() {
+        $('#uploadProfilePic').click(function() {
+            $('#profilePicInput').click();
+        });
 
-      $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
-        type: "line",
-        height: "70",
-        width: "100%",
-        lineWidth: "2",
-        lineColor: "#f3545d",
-        fillColor: "rgba(243, 84, 93, .14)",
-      });
+        $('#profilePicInput').change(function() {
+            var file = this.files[0];
+            var formData = new FormData();
+            formData.append('emp_profile', file);
+            formData.append('emp_id', $('input[name="emp_id"]').val());
 
-      $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
-        type: "line",
-        height: "70",
-        width: "100%",
-        lineWidth: "2",
-        lineColor: "#ffa534",
-        fillColor: "rgba(255, 165, 52, .14)",
-      });
+            $.ajax({
+                url: '${pageContext.request.contextPath}/member/uploadProfilePicture',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    var result = JSON.parse(response);
+                    if (result.success) {
+                        $('#profilePicPreview').attr('src', result.newProfilePicUrl);
+                        alert('증명사진이 성공적으로 업로드되었습니다.');
+                    } else {
+                        alert('사진 업로드에 실패했습니다: ' + result.message);
+                    }
+                },
+                error: function() {
+                    alert('서버와의 통신 중 오류가 발생했습니다.');
+                }
+            });
+        });
+
+        $('#updateForm').submit(function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function(response) {
+                    if(response.success) {
+                        alert('정보가 성공적으로 수정되었습니다.');
+                        window.location.href = '${pageContext.request.contextPath}/member/info';
+                    } else {
+                        alert('정보 수정에 실패했습니다: ' + response.message);
+                    }
+                },
+                error: function() {
+                    alert('서버와의 통신 중 오류가 발생했습니다.');
+                }
+            });
+        });
+    });
+
+    $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
+      type: "line",
+      height: "70",
+      width: "100%",
+      lineWidth: "2",
+      lineColor: "#177dff",
+      fillColor: "rgba(23, 125, 255, 0.14)",
+    });
+
+    $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
+      type: "line",
+      height: "70",
+      width: "100%",
+      lineWidth: "2",
+      lineColor: "#f3545d",
+      fillColor: "rgba(243, 84, 93, .14)",
+    });
+
+    $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
+      type: "line",
+      height: "70",
+      width: "100%",
+      lineWidth: "2",
+      lineColor: "#ffa534",
+      fillColor: "rgba(255, 165, 52, .14)",
+    });
     </script>
   </body>
 </html>

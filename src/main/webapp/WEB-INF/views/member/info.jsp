@@ -155,7 +155,7 @@
               <table class="info-table" style="width: 70%;">
                 <tr>
                   <td colspan="2" rowspan="4" style="width: 8%;">
-                    <img src="${memberVO.emp_profile}" alt="증명사진" />
+                    <img src="${memberVO.emp_profile != null ? memberVO.emp_profile : '/resources/assets/img/profile.png'}" alt="증명사진" style="max-width: 150px; height: auto;"/>
                   </td>
                   <th>사원번호</th>
                   <td>${memberVO.emp_id}</td>              
@@ -295,48 +295,6 @@
 	        $(".tabs a").removeClass("active");
 	        $(this).addClass("active");
 	        loadTabContent($(this).attr('class').split(' ')[0]);
-	    });
-
-	    $('#profileUploadForm').on('submit', function (e) {
-	        e.preventDefault();
-	        var formData = new FormData(this);
-	        $.ajax({
-	            url: '${pageContext.request.contextPath}/member/uploadProfilePicture',
-	            type: 'POST',
-	            data: formData,
-	            contentType: false,
-	            processData: false,
-	            success: function (response) {
-	                if (response.success) {
-	                    $('#profilePicPreviewImg').attr('src', response.newProfilePicUrl);
-	                    alert('증명사진이 업데이트되었습니다.');
-	                } else {
-	                    alert('사진 업로드에 실패했습니다.');
-	                }
-	            },
-	            error: function (xhr, status, error) {
-	                console.error('사진 업로드 오류:', error);
-	            }
-	        });
-	    });
-
-	    $('#deleteProfilePic').click(function () {
-	        $.ajax({
-	            url: '${pageContext.request.contextPath}/member/deleteProfilePicture',
-	            type: 'POST',
-	            data: { emp_id: '${memberVO.emp_id}' },
-	            success: function (response) {
-	                if (response.success) {
-	                    $('#profilePicPreviewImg').attr('src', '${pageContext.request.contextPath}/resources/images/default-profile.png');
-	                    alert('증명사진이 삭제되었습니다.');
-	                } else {
-	                    alert('사진 삭제에 실패했습니다.');
-	                }
-	            },
-	            error: function (xhr, status, error) {
-	                console.error('사진 삭제 오류:', error);
-	            }
-	        });
 	    });
 
 	    $(document).on('click', '#openAccountModal', function(e) {

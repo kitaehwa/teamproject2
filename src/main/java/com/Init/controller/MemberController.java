@@ -8,25 +8,32 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.Init.domain.*;
 import com.Init.service.MemberService;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 //http://localhost:8088/member/login
+
 @Controller
 @RequestMapping("/member")
-public class MemberController {
+public class MemberController implements ServletContextAware {
 
     @Autowired
     private MemberService mService;
+    
+    private ServletContext servletContext;
     
     private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
@@ -128,32 +135,37 @@ public class MemberController {
         return mService.getEval(emp_id);
     }
     
-    @PostMapping("/uploadProfilePicture")
-    public ResponseEntity<Map<String, Object>> uploadProfilePicture(@RequestParam("profilePic") MultipartFile file,
-                                                                    @RequestParam("emp_id") String emp_id) {
-        Map<String, Object> response = new HashMap<>();
-        try {
-            String uploadedFileUrl = mService.uploadProfilePicture(file, emp_id);
-            response.put("success", true);
-            response.put("newProfilePicUrl", uploadedFileUrl);
-        } catch (Exception e) {
-            response.put("success", false);
-            response.put("error", e.getMessage());
-        }
-        return ResponseEntity.ok(response);
+    @Override
+    public void setServletContext(ServletContext servletContext) {
+        this.servletContext = servletContext;
     }
-
-    @PostMapping("/deleteProfilePicture")
-    public ResponseEntity<Map<String, Object>> deleteProfilePicture(@RequestParam("emp_id") String emp_id) {
-        Map<String, Object> response = new HashMap<>();
-        try {
-            mService.deleteProfilePicture(emp_id);
-            response.put("success", true);
-        } catch (Exception e) {
-            response.put("success", false);
-            response.put("error", e.getMessage());
+    
+    @PostMapping("/uploadProfilePicture")
+    @ResponseBody
+    public String uploadProfilePicture(@RequestParam("emp_profile") MultipartFile file,
+                                       @RequestParam("emp_id") String emp_id) {
+        if (file.isEmpty()) {
+            return "{\"success\": false, \"message\": \"파일이 비어있습니다.\"}";
         }
-        return ResponseEntity.ok(response);
+
+        try {
+            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            String uploadDir = servletContext.getRealPath("/uploads/profiles");
+            File uploadPath = new File(uploadDir);
+            if (!uploadPath.exists()) {
+                uploadPath.mkdirs();
+            }
+            File dest = new File(uploadPath + File.separator + fileName);
+            file.transferTo(dest);
+            
+            String emp_profile = "/uploads/profiles/" + fileName; // 웹에서 접근 가능한 URL
+            mService.updateProfilePicture(emp_id, emp_profile);
+            
+            return "{\"success\": true, \"newProfilePicUrl\": \"" + emp_profile + "\"}";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "{\"success\": false, \"message\": \"파일 업로드 중 오류가 발생했습니다.\"}";
+        }
     }
 
     @PostMapping("/account/update")
@@ -176,5 +188,6 @@ public class MemberController {
     public String mainPage() {
         return "member/main";
     }
+    
 }
 //http://localhost:8088/member/login

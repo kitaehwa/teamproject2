@@ -44,12 +44,6 @@ public interface MemberDAO {
     void updateAccount(MemberVO memberVO) throws Exception;
     
     // 프로필 이미지 URL 저장
-    public void updateProfilePicture(String emp_id, Object object);
-    
-
-    // 프로필 이미지 삭제
-    void deleteProfilePicture(String empId);
-
-	String getProfilePicturePath(String emp_id);
+    void updateProfilePicture(String emp_id, String emp_profile);
 
 }

@@ -1,23 +1,14 @@
 package com.Init.persistence;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.sql.DataSource;
-
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.Init.domain.AccountVO;
 import com.Init.domain.EvalVO;
@@ -25,7 +16,6 @@ import com.Init.domain.His_eduVO;
 import com.Init.domain.LicenseVO;
 import com.Init.domain.MemberVO;
 import com.Init.domain.RewardVO;
-import com.Init.service.MemberServiceImpl;
 
 
 
@@ -127,22 +117,9 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 	
 	@Override
-    public void updateProfilePicture(String emp_id, Object object) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("emp_id", emp_id);
-        params.put("fileUrl", object);
-        sqlSession.update(NAMESPACE + ".saveProfilePicture", params);
-    }
-
-    @Override
-    public void deleteProfilePicture(String emp_id) {
-        sqlSession.update(NAMESPACE + ".deleteProfilePicture", emp_id);
-    }
-
-    @Override
-    public String getProfilePicturePath(String emp_id) {
-        return sqlSession.selectOne(NAMESPACE + ".getProfilePicturePath", emp_id);
-    }
+	public void updateProfilePicture(String emp_id, String emp_profile) {
+	    sqlSession.update("Member.updateProfilePicture", new MemberVO(emp_id, emp_profile));
+	}
 
     @Override
     public void updateAccount(MemberVO memberVO) throws Exception {
