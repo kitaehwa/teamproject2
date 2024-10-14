@@ -144,4 +144,21 @@ public class MemberDAOImpl implements MemberDAO{
     public MemberVO getMemberDetail(String emp_id) {
         return sqlSession.selectOne(NAMESPACE + ".getMemberDetail", emp_id);
     }
+    
+    // 조직도
+    @Override
+    public List<MemberVO> getAllMembers() {
+        return sqlSession.selectList(NAMESPACE + ".getAllMembers");
+    }
+    
+    @Override
+    public List<MemberVO> getTeamMembers(String emp_dnum) {
+        return sqlSession.selectList(NAMESPACE + ".getTeamMembers", emp_dnum);
+    }
+    
+    @Override
+    public List<String> getBranchList() {
+        return sqlSession.selectList(NAMESPACE + ".getBranchList");
+    }
+    
 }    

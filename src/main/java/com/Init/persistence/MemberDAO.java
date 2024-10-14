@@ -50,5 +50,9 @@ public interface MemberDAO {
     List<MemberVO> getPaginatedMembers(int offset, int pageSize);
     int getTotalMembersCount();
     MemberVO getMemberDetail(String emp_id);
-
+    
+    // 조직도
+    List<MemberVO> getAllMembers();
+    List<MemberVO> getTeamMembers(String emp_dnum);
+    List<String> getBranchList();
 }

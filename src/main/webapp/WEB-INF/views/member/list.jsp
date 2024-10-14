@@ -36,7 +36,10 @@
         },
       });
     </script>
-
+	
+	 <!-- OrgChart.js 라이브러리 추가 -->
+	<script src="https://balkan.app/js/OrgChart.js"></script>
+	
     <!-- CSS Files -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/plugins.min.css" />
@@ -123,6 +126,23 @@
 	        width: 30%;
 	    }
 	    
+	    .button-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 20px;
+        padding-right: 15px;
+   		}
+	    
+	    #showOrgChart {
+        margin-left: auto;
+   		}
+   		
+   		@media (max-width: 768px) {
+	    .button-container {
+	        padding-right: 10px; /* 작은 화면에서는 여백을 줄임 */
+	    }
+	}
+	    
   </style>
     
   
@@ -139,7 +159,13 @@
           <div class="page-inner">
 <!------------------------------------------------------------------------------------------------------------------>
 
-<h1>사원 목록</h1>
+    	<h1>사원 목록</h1>
+        <!-- 조직도 버튼 추가 -->
+        <div class="button-container">
+            <button id="showOrgChart" class="btn btn-primary">조직도 보기</button>
+        </div>
+    	
+    	<!-- 사원 목록 테이블 -->
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -162,6 +188,32 @@
                 </c:forEach>
             </tbody>
         </table>
+        
+        <!-- 조직도 모달 -->
+	    <div class="modal fade" id="orgChartModal" tabindex="-1" role="dialog" aria-hidden="true">
+	    <div class="modal-dialog modal-lg" role="document">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h5 class="modal-title">조직도</h5>
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                    <span aria-hidden="true">&times;</span>
+	                </button>
+	            </div>
+	            <div class="modal-body">
+	                <div class="form-group">
+	                    <label for="branchSelect">지부 선택:</label>
+	                    <select id="branchSelect" class="form-control">
+	                        <!-- 옵션들은 JavaScript로 동적으로 추가될 것입니다 -->
+	                    </select>
+	                </div>
+	                <div id="orgChart" style="height: 600px;"></div>
+			    </div>
+			  </div>
+		 </div>
+		 </div>
+		<!-- 조직도 모달 -->
+		
+	    </div>
         
         <div class="pagination">
 		    <ul>
@@ -341,6 +393,110 @@
     	        }
     	    });
     	}
+      	
+      // 조직도 관련 스크립트
+		$(document).ready(function() {
+		    loadBranchList();
+		
+		    $('#showOrgChart').click(function() {
+		        $('#orgChartModal').modal('show');
+		        var selectedBranch = $('#branchSelect').val();
+		        if (selectedBranch) {
+		            loadOrgChart(selectedBranch);
+		        }
+		    });
+		
+		    $('#branchSelect').change(function() {
+		        var selectedBranch = $(this).val();
+		        loadOrgChart(selectedBranch);
+		    });
+		});
+		
+		function loadBranchList() {
+		    $.ajax({
+		        url: '${pageContext.request.contextPath}/member/branchList',
+		        type: 'GET',
+		        success: function(branches) {
+		            var select = $('#branchSelect');
+		            select.empty(); // 기존 옵션 제거
+		            $.each(branches, function(i, branch) {
+		                select.append($('<option></option>').val(branch).text(branch));
+		            });
+		            // 첫 번째 지부 선택 및 조직도 로드
+		            if (branches.length > 0) {
+		                loadOrgChart(branches[0]);
+		            }
+		        },
+		        error: function() {
+		            alert('지부 목록을 불러오는데 실패했습니다.');
+		        }
+		    });
+		}
+		
+		function loadOrgChart(branchName) {
+		    $.ajax({
+		        url: '${pageContext.request.contextPath}/member/orgChart',
+		        type: 'GET',
+		        data: { emp_bnum: branchName },
+		        success: function(data) {
+		            drawOrgChart(data);
+		        },
+		        error: function() {
+		            alert('조직도 데이터를 불러오는데 실패했습니다.');
+		        }
+		    });
+		}
+		
+		function drawOrgChart(data) {
+		    var chart = new OrgChart(document.getElementById("orgChart"), {
+		        template: "ula",
+		        enableDragDrop: true,
+		        nodeBinding: {
+		            field_0: "name",
+		            field_1: "title"
+		        },
+		        nodes: data,
+		        nodeMenu: {
+		            details: { text: "상세 정보" },
+		            edit: { text: "편집" },
+		            add: { text: "추가" },
+		            remove: { text: "삭제" }
+		        }
+		    });
+		
+		    chart.on('click', function (sender, args) {
+		        if (args.node.id !== 'ceo' && !args.node.id.includes('부')) {
+		            showTeamMembers(args.node.pid, args.node.id);
+		        }
+		    });
+		}
+		
+		function showTeamMembers(deptId, managerId) {
+		    $.ajax({
+		        url: '${pageContext.request.contextPath}/member/teamMembers',
+		        type: 'GET',
+		        data: { emp_dnum: deptId },
+		        success: function(members) {
+		            var memberList = members.map(function(member) {
+		                return member.emp_name + ' (' + member.emp_position + ')';
+		            }).join('<br>');
+		            
+		            swal({
+		                title: deptId + " 팀원 목록",
+		                content: {
+		                    element: "div",
+		                    attributes: {
+		                        innerHTML: memberList
+		                    }
+		                }
+		            });
+		        },
+		        error: function() {
+		            alert('팀원 목록을 불러오는데 실패했습니다.');
+		        }
+		    });
+		}
+
       
     </script>
   </body>

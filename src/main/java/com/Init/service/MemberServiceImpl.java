@@ -13,7 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -106,4 +110,72 @@ public class MemberServiceImpl implements MemberService {
     public MemberVO getMemberDetail(String emp_id) {
         return mdao.getMemberDetail(emp_id);
     }
+    
+    // 조직도
+    @Override
+    public List<Map<String, Object>> getOrgChartData(String emp_bnum) {
+        List<MemberVO> members = mdao.getAllMembers();
+        List<Map<String, Object>> orgChartData = new ArrayList<>();
+        
+        // 지정된 지부의 사원만 필터링
+        members = members.stream()
+            .filter(m -> emp_bnum.equals(m.getEmp_bnum()))
+            .collect(Collectors.toList());
+        
+        // 본부장 노드 추가 (최상위 계층)
+        MemberVO headManager = members.stream()
+            .filter(m -> "본부장".equals(m.getEmp_position()))
+            .findFirst()
+            .orElse(null);
+
+        if (headManager != null) {
+            Map<String, Object> headManagerNode = new HashMap<>();
+            headManagerNode.put("id", headManager.getEmp_id());
+            headManagerNode.put("name", headManager.getEmp_name());
+            headManagerNode.put("title", headManager.getEmp_position());
+            headManagerNode.put("pid", null);
+            orgChartData.add(headManagerNode);
+        }
+
+        // 부서 노드와 부서장 노드 추가
+        String[] departments = {"인사부", "개발부", "영업부", "마케팅부", "재무부"};
+        for (String dept : departments) {
+            Map<String, Object> deptNode = new HashMap<>();
+            deptNode.put("id", dept);
+            deptNode.put("name", dept);
+            deptNode.put("title", dept);
+            deptNode.put("pid", headManager != null ? headManager.getEmp_id() : null);
+            orgChartData.add(deptNode);
+
+            // 해당 부서의 부서장 찾기
+            MemberVO deptManager = members.stream()
+                .filter(m -> m.getEmp_dnum().equals(dept) && "부서장".equals(m.getEmp_position()))
+                .findFirst()
+                .orElse(null);
+
+            if (deptManager != null) {
+                Map<String, Object> managerNode = new HashMap<>();
+                managerNode.put("id", deptManager.getEmp_id());
+                managerNode.put("name", deptManager.getEmp_name());
+                managerNode.put("title", deptManager.getEmp_position());
+                managerNode.put("pid", dept);
+                orgChartData.add(managerNode);
+            }
+        }
+
+        return orgChartData;
+    }
+    
+    @Override
+    public List<MemberVO> getTeamMembers(String emp_dnum) {
+        return mdao.getTeamMembers(emp_dnum);
+    }
+    
+    @Override
+    public List<String> getBranchList() {
+        return mdao.getBranchList();
+    }
+    
+    
+    
 }

@@ -209,5 +209,25 @@ public class MemberController implements ServletContextAware {
         logger.info("Member detail requested for emp_id: {}, Result: {}", emp_id, member);
         return member;
     }
+    
+    // 조직도
+    @GetMapping("/teamMembers")
+    @ResponseBody
+    public List<MemberVO> getTeamMembers(@RequestParam String emp_dnum) {
+        return mService.getTeamMembers(emp_dnum);
+    }
+    
+    @GetMapping("/orgChart")
+    @ResponseBody
+    public List<Map<String, Object>> getOrgChart(@RequestParam(defaultValue = "부산지부") String emp_bnum) {
+        return mService.getOrgChartData(emp_bnum);
+    }
+
+    @GetMapping("/branchList")
+    @ResponseBody
+    public List<String> getBranchList() {
+        return mService.getBranchList();
+    }
+    
 }
 //http://localhost:8088/member/login

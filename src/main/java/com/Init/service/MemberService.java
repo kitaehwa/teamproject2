@@ -2,6 +2,7 @@ package com.Init.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -50,5 +51,11 @@ public interface MemberService {
     List<MemberVO> getPaginatedMembers(int page, int pageSize);
     int getTotalMembersCount();
     MemberVO getMemberDetail(String emp_id);
+    
+    // 조직도
+    List<MemberVO> getTeamMembers(String emp_dnum);
+    List<Map<String, Object>> getOrgChartData(String emp_bnum);
+    List<String> getBranchList();
+    
     
 }

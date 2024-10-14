@@ -126,5 +126,21 @@
     <select id="getMemberDetail" resultType="MemberVO" parameterType="String">
         SELECT * FROM employee WHERE emp_id = #{emp_id}
     </select>
+    
+    <!-- 조직도 -->
+    <select id="getAllMembers" resultType="MemberVO">
+        SELECT * FROM employee ORDER BY emp_dnum, emp_position
+    </select>
+    
+    <select id="getTeamMembers" resultType="MemberVO">
+    SELECT * FROM employee 
+    WHERE emp_dnum = #{dmp_dnum} AND emp_position != '부서장'
+    ORDER BY emp_position
+	</select>
+	
+	<select id="getBranchList" resultType="String">
+    SELECT DISTINCT emp_bnum FROM employee ORDER BY emp_bnum
+	</select>
+    
 	
 </mapper>
