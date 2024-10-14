@@ -211,10 +211,19 @@ public class MemberController implements ServletContextAware {
     }
     
     // 조직도
+    
     @GetMapping("/teamMembers")
     @ResponseBody
-    public List<MemberVO> getTeamMembers(@RequestParam String emp_dnum) {
-        return mService.getTeamMembers(emp_dnum);
+    public ResponseEntity<List<MemberVO>> getTeamMembers(@RequestParam String emp_dnum) {
+        logger.info("Fetching team members for department: {}", emp_dnum);
+        try {
+            List<MemberVO> members = mService.getTeamMembers(emp_dnum);
+            logger.info("Found {} team members for department: {}", members.size(), emp_dnum);
+            return ResponseEntity.ok(members);
+        } catch (Exception e) {
+            logger.error("Error fetching team members for department: " + emp_dnum, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
     
     @GetMapping("/orgChart")

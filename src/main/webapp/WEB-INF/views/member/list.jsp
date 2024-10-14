@@ -395,8 +395,8 @@
     	}
       	
       // 조직도 관련 스크립트
-		$(document).ready(function() {
-		    loadBranchList();
+	  $(document).ready(function() {
+		   loadBranchList();
 		
 		    $('#showOrgChart').click(function() {
 		        $('#orgChartModal').modal('show');
@@ -422,9 +422,9 @@
 		            $.each(branches, function(i, branch) {
 		                select.append($('<option></option>').val(branch).text(branch));
 		            });
-		            if (branches.length > 0) {
-		                loadOrgChart(branches[0]);
-		            }
+		            // 부산지부를 기본값으로 설정
+		            select.val('부산지부');
+		            loadOrgChart('부산지부');
 		        },
 		        error: function() {
 		            alert('지부 목록을 불러오는데 실패했습니다.');
@@ -455,41 +455,44 @@
 		            field_1: "title"
 		        },
 		        nodes: data,
-		        nodeMenu: {
-		            details: { text: "팀원 목록", onClick: showTeamMembers }
+		        nodeMouseClick: OrgChart.action.none,
+		    });
+
+		    chart.on('click', function(sender, args) {
+		        if (args.node.data.title === "부서장") {
+		            showTeamMembers(args.node.data.id, args.node.data);
 		        }
 		    });
 		}
-		
-		function showTeamMembers(nodeId, node) {
-		    if (node.title === "부서장") {
-		        $.ajax({
-		            url: '${pageContext.request.contextPath}/member/teamMembers',
-		            type: 'GET',
-		            data: { emp_dnum: node.pid },
-		            success: function(members) {
-		                var table = '<table class="table"><thead><tr><th>이름</th><th>직책</th></tr></thead><tbody>';
-		                $.each(members, function(i, member) {
-		                    table += '<tr><td>' + member.emp_name + '</td><td>' + member.emp_job + '</td></tr>';
-		                });
-		                table += '</tbody></table>';
-		                
-		                swal({
-		                    title: node.pid + " 팀원 목록",
-		                    content: {
-		                        element: "div",
-		                        attributes: {
-		                            innerHTML: table
-		                        }
-		                    },
-		                    width: '600px'
-		                });
-		            },
-		            error: function() {
-		                alert('팀원 목록을 불러오는데 실패했습니다.');
-		            }
-		        });
-		    }
+
+		function showTeamMembers(nodeId, nodeData) {
+		    $.ajax({
+		        url: '${pageContext.request.contextPath}/member/teamMembers',
+		        type: 'GET',
+		        data: { emp_dnum: nodeData.pid },
+		        success: function(members) {
+		            var table = '<table class="table"><thead><tr><th>이름</th><th>직책</th></tr></thead><tbody>';
+		            $.each(members, function(i, member) {
+		                table += '<tr><td>' + member.emp_name + '</td><td>' + member.emp_job + '</td></tr>';
+		            });
+		            table += '</tbody></table>';
+		            
+		            swal({
+		                title: nodeData.pid + " 팀원 목록",
+		                content: {
+		                    element: "div",
+		                    attributes: {
+		                        innerHTML: table
+		                    }
+		                },
+		                width: '600px'
+		            });
+		        },
+		        error: function(xhr, status, error) {
+		            console.error("Error fetching team members:", error);
+		            alert('팀원 목록을 불러오는데 실패했습니다.');
+		        }
+		    });
 		}
 
       
