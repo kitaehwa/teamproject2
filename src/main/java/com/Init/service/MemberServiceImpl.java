@@ -124,7 +124,7 @@ public class MemberServiceImpl implements MemberService {
         
         // 본부장 노드 추가 (최상위 계층)
         MemberVO headManager = members.stream()
-            .filter(m -> "본부장".equals(m.getEmp_position()))
+            .filter(m -> "본부장".equals(m.getEmp_job()))
             .findFirst()
             .orElse(null);
 
@@ -132,7 +132,7 @@ public class MemberServiceImpl implements MemberService {
             Map<String, Object> headManagerNode = new HashMap<>();
             headManagerNode.put("id", headManager.getEmp_id());
             headManagerNode.put("name", headManager.getEmp_name());
-            headManagerNode.put("title", headManager.getEmp_position());
+            headManagerNode.put("title", headManager.getEmp_job());
             headManagerNode.put("pid", null);
             orgChartData.add(headManagerNode);
         }
@@ -149,7 +149,7 @@ public class MemberServiceImpl implements MemberService {
 
             // 해당 부서의 부서장 찾기
             MemberVO deptManager = members.stream()
-                .filter(m -> m.getEmp_dnum().equals(dept) && "부서장".equals(m.getEmp_position()))
+                .filter(m -> m.getEmp_dnum().equals(dept) && "부서장".equals(m.getEmp_job()))
                 .findFirst()
                 .orElse(null);
 
@@ -157,7 +157,7 @@ public class MemberServiceImpl implements MemberService {
                 Map<String, Object> managerNode = new HashMap<>();
                 managerNode.put("id", deptManager.getEmp_id());
                 managerNode.put("name", deptManager.getEmp_name());
-                managerNode.put("title", deptManager.getEmp_position());
+                managerNode.put("title", deptManager.getEmp_job());
                 managerNode.put("pid", dept);
                 orgChartData.add(managerNode);
             }

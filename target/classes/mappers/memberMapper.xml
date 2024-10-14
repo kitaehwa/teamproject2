@@ -132,10 +132,10 @@
         SELECT * FROM employee ORDER BY emp_dnum, emp_position
     </select>
     
-    <select id="getTeamMembers" resultType="MemberVO">
-    SELECT * FROM employee 
-    WHERE emp_dnum = #{dmp_dnum} AND emp_position != '부서장'
-    ORDER BY emp_position
+	<select id="getTeamMembers" resultType="MemberVO">
+	SELECT * FROM employee 
+	WHERE emp_dnum = #{emp_dnum} AND emp_job != '부서장'
+	ORDER BY emp_position
 	</select>
 	
 	<select id="getBranchList" resultType="String">
