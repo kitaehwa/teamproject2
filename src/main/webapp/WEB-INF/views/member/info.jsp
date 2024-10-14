@@ -89,7 +89,7 @@
 
       .info-actions button {
         padding: 8px 15px;
-        margin-left: 67%;
+        margin-left: 65%;
         border: none;
         border-radius: 4px;
         background-color: #0055FF;
@@ -99,7 +99,7 @@
       
       .btn-modal {
         padding: 8px 15px;
-        margin-left: 94%;
+        margin-left: 91%;
         margin-top: 1%;
         border: none;
         border-radius: 4px;
@@ -134,6 +134,15 @@
         background-color: white;
         font-weight: bold;
       }
+      
+      .profile-pic-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+        width: 110px;
+      }
+      
     </style>
  <!------------------------------------------------------------------------------------------------------------------>
  
@@ -155,8 +164,10 @@
               <table class="info-table" style="width: 70%;">
                 <tr>
                   <td colspan="2" rowspan="4" style="width: 8%;">
+                  <div class="profile-pic-container">
                     <img src="${memberVO.emp_profile != null ? memberVO.emp_profile : '/resources/assets/img/profile.png'}" alt="증명사진" style="max-width: 150px; height: auto;"/>
                   </td>
+                  </div>
                   <th>사원번호</th>
                   <td>${memberVO.emp_id}</td>              
                   <th>이름</th>
@@ -342,7 +353,7 @@
 	            }
 	        });
 	    });
-
+		
 	    // 초기 탭 로드
 	    loadTabContent('account');
 	});

@@ -125,4 +125,23 @@ public class MemberDAOImpl implements MemberDAO{
     public void updateAccount(MemberVO memberVO) throws Exception {
         sqlSession.update(NAMESPACE + ".updateAccount", memberVO);
     }
+    
+    // 회원 목록 조회
+    @Override
+    public List<MemberVO> getPaginatedMembers(int offset, int pageSize) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("offset", offset);
+        params.put("pageSize", pageSize);
+        return sqlSession.selectList(NAMESPACE + ".getPaginatedMembers", params);
+    }
+
+    @Override
+    public int getTotalMembersCount() {
+        return sqlSession.selectOne(NAMESPACE + ".getTotalMembersCount");
+    }
+
+    @Override
+    public MemberVO getMemberDetail(String emp_id) {
+        return sqlSession.selectOne(NAMESPACE + ".getMemberDetail", emp_id);
+    }
 }    

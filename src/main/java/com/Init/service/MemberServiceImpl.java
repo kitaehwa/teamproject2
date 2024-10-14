@@ -89,4 +89,21 @@ public class MemberServiceImpl implements MemberService {
     public void updateAccountInfo(MemberVO memberVO) throws Exception {
         mdao.updateAccount(memberVO);
     }
+    
+    // 회원 목록 조회
+    @Override
+    public List<MemberVO> getPaginatedMembers(int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return mdao.getPaginatedMembers(offset, pageSize);
+    }
+
+    @Override
+    public int getTotalMembersCount() {
+        return mdao.getTotalMembersCount();
+    }
+
+    @Override
+    public MemberVO getMemberDetail(String emp_id) {
+        return mdao.getMemberDetail(emp_id);
+    }
 }

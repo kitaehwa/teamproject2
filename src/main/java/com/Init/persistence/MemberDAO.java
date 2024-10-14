@@ -45,5 +45,10 @@ public interface MemberDAO {
     
     // 프로필 이미지 URL 저장
     void updateProfilePicture(String emp_id, String emp_profile);
+    
+    // 회원 목록 조회
+    List<MemberVO> getPaginatedMembers(int offset, int pageSize);
+    int getTotalMembersCount();
+    MemberVO getMemberDetail(String emp_id);
 
 }

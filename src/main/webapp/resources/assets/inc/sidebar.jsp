@@ -44,7 +44,7 @@
                 <div class="collapse" id="dashboard">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="../demo1/index.html">
+                      <a href="/member/list">
                         <span class="sub-item">사원목록</span>
                       </a>
                     </li>
@@ -71,8 +71,8 @@
                       </a>
                     </li>
                     <li>
-                      <a href="components/buttons.html">
-                        <span class="sub-item">자격증/상훈</span>
+                      <a href="/member/list">
+                        <span class="sub-item">사원목록</span>
                       </a>
                     </li>
                     <li>

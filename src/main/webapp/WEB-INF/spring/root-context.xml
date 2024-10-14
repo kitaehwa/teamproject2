@@ -35,9 +35,7 @@
 			          value="classpath:/mybatis-config.xml"/>
 			<property name="mapperLocations"
 			          value="classpath:/mappers/**/*Mapper.xml" />
-	
 	</bean>
-	
 	
 	<!-- SqlSession (SqlSessionTemplate) : (자동)connection 생성(+연결정보), SQL쿼리 실행,
 		 Mybatis 접근 + 자원해제(자동) -->

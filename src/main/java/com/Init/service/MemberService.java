@@ -45,5 +45,10 @@ public interface MemberService {
     
     // 프로필 사진 업로드
     void updateProfilePicture(String emp_id, String emp_profile);
-	
+    
+    // 회원목록 조회
+    List<MemberVO> getPaginatedMembers(int page, int pageSize);
+    int getTotalMembersCount();
+    MemberVO getMemberDetail(String emp_id);
+    
 }

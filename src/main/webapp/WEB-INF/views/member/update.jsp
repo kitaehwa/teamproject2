@@ -132,6 +132,7 @@
         flex-direction: column;
         align-items: center;
         margin-bottom: 20px;
+        width: 110px;
       }
 
       .profile-pic-container img {
@@ -143,6 +144,14 @@
       #uploadProfilePic {
         margin-top: 10px;
       }
+      
+      .profile-pic-container input[type="file"] {
+	    margin-top: 10px;
+	    display: block;
+	    width: 80%; /* 원하는 너비로 설정 */
+	    text-align: center; /* 파일 선택 버튼의 텍스트 가운데 정렬 */
+	  }
+      
     </style>
   </head>
   <body>
@@ -162,10 +171,12 @@
                 <table class="info-table" style="width: 70%;">
                   <tr>
                     <td rowspan="4" style="width: 8%;">
-                      <div class="profile-pic-container">
-                        <img id="profilePicPreview" src="${memberVO.emp_profile != null ? memberVO.emp_profile : '/resources/assets/img/profile.png'}" alt="증명사진" style="max-width: 150px; height: auto;"/>
-                        <input type="file" name="emp_profile" id="profilePicInput" style="display: none;" accept="image/*">
-                      </div>
+                    <div class="profile-pic-container">
+					    <img id="profilePicPreview" src="${memberVO.emp_profile != null ? memberVO.emp_profile : '/resources/assets/img/profile.png'}" alt="증명사진" style="max-width: 150px; height: auto;"/>
+						<input type="file" name="emp_profile" id="profilePicInput" accept="image/*">
+					</div>
+                    
+                    
                     </td>
                     <th>사원번호</th>
                     <td><input type="text" name="emp_id" value="${memberVO.emp_id}" readonly/></td>
@@ -199,7 +210,7 @@
                     <td><input type="text" name="emp_start_date" value="${memberVO.emp_start_date}" readonly/></td>
                   </tr>
                 </table>
-                <button type="button" id="uploadProfilePic" class="btn btn-primary btn-sm mt-2">증명사진 등록/변경</button>
+                <button type="button" id="uploadProfilePic" class="btn btn-primary btn-sm mt-2">프로필 사진 등록</button>
                 
                 <!-- 버튼 영역 -->              
                 <div class="info-actions">               
@@ -257,14 +268,27 @@
     
     <script>
     $(document).ready(function() {
-        $('#uploadProfilePic').click(function() {
-            $('#profilePicInput').click();
+        let selectedFile = null;
+
+        $('#profilePicInput').change(function(e) {
+            selectedFile = e.target.files[0];
+            if (selectedFile) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#profilePicPreview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(selectedFile);
+            }
         });
 
-        $('#profilePicInput').change(function() {
-            var file = this.files[0];
-            var formData = new FormData();
-            formData.append('emp_profile', file);
+        $('#uploadProfilePic').click(function() {
+            if (!selectedFile) {
+                alert('먼저 파일을 선택해주세요.');
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append('emp_profile', selectedFile);
             formData.append('emp_id', $('input[name="emp_id"]').val());
 
             $.ajax({
@@ -274,10 +298,10 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    var result = JSON.parse(response);
+                    let result = JSON.parse(response);
                     if (result.success) {
-                        $('#profilePicPreview').attr('src', result.newProfilePicUrl);
                         alert('증명사진이 성공적으로 업로드되었습니다.');
+                        // 업로드 성공 후 필요한 추가 작업
                     } else {
                         alert('사진 업로드에 실패했습니다: ' + result.message);
                     }
@@ -287,6 +311,7 @@
                 }
             });
         });
+    });
 
         $('#updateForm').submit(function(e) {
             e.preventDefault();
@@ -307,7 +332,7 @@
                 }
             });
         });
-    });
+    
 
     $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
       type: "line",

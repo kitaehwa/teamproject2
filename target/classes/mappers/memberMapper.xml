@@ -111,5 +111,20 @@
             emp_bank_name = #{emp_bank_name}
         WHERE emp_id = #{emp_id}
     </update>
+    
+    <!-- 회원 정보 조회  -->
+    <select id="getPaginatedMembers" parameterType="map" resultType="MemberVO">
+        SELECT * FROM employee
+        ORDER BY emp_id
+        LIMIT #{offset}, #{pageSize}
+    </select>
+    
+    <select id="getTotalMembersCount" resultType="int">
+        SELECT COUNT(*) FROM employee
+    </select>
+
+    <select id="getMemberDetail" resultType="MemberVO" parameterType="String">
+        SELECT * FROM employee WHERE emp_id = #{emp_id}
+    </select>
 	
 </mapper>

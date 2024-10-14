@@ -36,7 +36,12 @@ public class MemberController implements ServletContextAware {
     private ServletContext servletContext;
     
     private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
-
+    
+    @GetMapping("/main")
+    public String mainPage() {
+        return "member/main";
+    }
+    
     @GetMapping("/join")
     public String joinMemberGet() {
         return "member/join";
@@ -150,7 +155,7 @@ public class MemberController implements ServletContextAware {
 
         try {
             String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-            String uploadDir = servletContext.getRealPath("/uploads/profiles");
+            String uploadDir = servletContext.getRealPath("/profiles");
             File uploadPath = new File(uploadDir);
             if (!uploadPath.exists()) {
                 uploadPath.mkdirs();
@@ -158,7 +163,7 @@ public class MemberController implements ServletContextAware {
             File dest = new File(uploadPath + File.separator + fileName);
             file.transferTo(dest);
             
-            String emp_profile = "/uploads/profiles/" + fileName; // 웹에서 접근 가능한 URL
+            String emp_profile = "/profiles/" + fileName; // 웹에서 접근 가능한 URL
             mService.updateProfilePicture(emp_id, emp_profile);
             
             return "{\"success\": true, \"newProfilePicUrl\": \"" + emp_profile + "\"}";
@@ -184,10 +189,25 @@ public class MemberController implements ServletContextAware {
         }
     }
     
-    @GetMapping("/main")
-    public String mainPage() {
-        return "member/main";
+    @GetMapping("/list")
+    public String listMembers(@RequestParam(defaultValue = "1") int page, Model model) {
+        int pageSize = 10;
+        List<MemberVO> members = mService.getPaginatedMembers(page, pageSize);
+        int totalMembers = mService.getTotalMembersCount();
+        int totalPages = (int) Math.ceil((double) totalMembers / pageSize);
+
+        model.addAttribute("members", members);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        return "member/list";
     }
-    
+
+    @GetMapping("/detail/{emp_id}")
+    @ResponseBody
+    public MemberVO getMemberDetail(@PathVariable String emp_id) {
+        MemberVO member = mService.getMemberDetail(emp_id);
+        logger.info("Member detail requested for emp_id: {}, Result: {}", emp_id, member);
+        return member;
+    }
 }
 //http://localhost:8088/member/login
