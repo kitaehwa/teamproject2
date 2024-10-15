@@ -11,8 +11,6 @@
 	<!-- 프로젝트 관련 서블릿(웹) 정보를 포함하는 파일 -->
 	
 	
-	
-	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 
@@ -32,6 +30,5 @@
         <beans:property name="maxUploadSize" value="10485760" /> <!-- 10MB -->
         <beans:property name="maxInMemorySize" value="1048576" /> <!-- 1MB -->
     </beans:bean>	
-	
 	
 </beans:beans>

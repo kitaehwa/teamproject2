@@ -38,14 +38,24 @@
                   aria-expanded="false"
                 >
                   <i class="fas fa-home"></i>
-                  <p>조직도</p>
+                  <p>인사관리</p>
                   <span class="caret"></span>
                 </a>
                 <div class="collapse" id="dashboard">
                   <ul class="nav nav-collapse">
                     <li>
+                      <a href="/member/info">
+                        <span class="sub-item">내정보</span>
+                      </a>
+                    </li>
+                    <li>
                       <a href="/member/list">
                         <span class="sub-item">사원목록</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/member/org/chart">
+                        <span class="sub-item">조직도</span>
                       </a>
                     </li>
                   </ul>
@@ -60,24 +70,24 @@
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#base">
                   <i class="fas fa-layer-group"></i>
-                  <p>인사정보</p>
+                  <p>Contents</p>
                   <span class="caret"></span>
                 </a>
                 <div class="collapse" id="base">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="/member/info">
-                        <span class="sub-item">내정보</span>
+                      <a href="components/panels.html">
+                        <span class="sub-item">Panels</span>
                       </a>
                     </li>
                     <li>
-                      <a href="/member/list">
-                        <span class="sub-item">사원목록</span>
+                      <a href="components/panels.html">
+                        <span class="sub-item">Panels</span>
                       </a>
                     </li>
                     <li>
-                      <a href="components/gridsystem.html">
-                        <span class="sub-item">인사평가</span>
+                      <a href="components/panels.html">
+                        <span class="sub-item">Panels</span>
                       </a>
                     </li>
                     <li>

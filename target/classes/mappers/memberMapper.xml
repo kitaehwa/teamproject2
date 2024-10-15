@@ -141,6 +141,15 @@
 	    WHERE emp_dnum = #{emp_dnum}
 	    ORDER BY emp_position
 	</select>
+	
+	<!-- 조직도 페이지  -->
+	<select id="getAllMemPage" resultType="MemberVO">
+        SELECT * FROM employee ORDER BY emp_bnum, emp_dnum, emp_position
+    </select>
+
+    <select id="getTeamMemPage" parameterType="string" resultType="MemberVO">
+        SELECT * FROM employee WHERE emp_dnum = #{deptId} AND emp_job != '부서장' ORDER BY emp_position
+    </select>
     
 	
 </mapper>

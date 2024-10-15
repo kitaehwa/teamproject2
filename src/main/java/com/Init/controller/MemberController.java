@@ -210,8 +210,7 @@ public class MemberController implements ServletContextAware {
         return member;
     }
     
-    // 조직도
-    
+    // 회원목록 내 조직도
     @GetMapping("/teamMembers")
     @ResponseBody
     public ResponseEntity<List<MemberVO>> getTeamMembers(@RequestParam String emp_dnum) {
@@ -229,7 +228,8 @@ public class MemberController implements ServletContextAware {
     @GetMapping("/orgChart")
     @ResponseBody
     public List<Map<String, Object>> getOrgChart(@RequestParam(defaultValue = "부산지부") String emp_bnum) {
-        return mService.getOrgChartData(emp_bnum);
+    	logger.info("Fetching org chart for branch: {}", emp_bnum);
+    	return mService.getOrgChartData(emp_bnum);
     }
 
     @GetMapping("/branchList")
