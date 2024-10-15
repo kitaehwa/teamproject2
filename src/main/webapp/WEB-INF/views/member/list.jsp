@@ -241,6 +241,11 @@
 	    <div class="modal-dialog" role="document">
 	        <div class="modal-content">
 	            <div class="modal-header">
+		            <h5 class="modal-title">회원 상세 정보</h5>
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                    <span aria-hidden="true">&times;</span>
+	                </button>
+            	</div>
 	            <div class="modal-body" id="modalBody">
 	                <div class="row">
 	                    <div class="col-md-4 d-flex align-items-center justify-content-center">
@@ -410,6 +415,22 @@
 		        var selectedBranch = $(this).val();
 		        loadOrgChart(selectedBranch);
 		    });
+		    
+		    $('#orgChartModal .close').click(function() {
+		        $('#orgChartModal').modal('hide');
+		    });
+		    
+		    $('.close').on('click', function() {
+		        $('#detailModal').modal('hide');
+		    });
+
+		    // 모달 외부 클릭으로 닫기
+		    $('#orgChartModal').click(function(event) {
+		        if (event.target == this) {
+		            $(this).modal('hide');
+		        }
+		    });
+		    
 		});
 		
 		function loadBranchList() {
