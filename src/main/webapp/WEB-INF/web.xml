@@ -47,5 +47,27 @@
 	
 	<!-- 한글처리 인코딩 필터 -->
 	
+	<!-- imageServeServlet -->
+	   서블릿 정의
+	   <servlet>
+	       <servlet-name>pic</servlet-name>
+	       서블릿 클래스 설정 (Tomcat의 기본 서블릿)
+	       <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
+	       <init-param>
+	           초기화 파라미터 설정 (리스트 표시 여부)
+	           <param-name>listings</param-name>
+	           <param-value>false</param-value> true로 설정하면 디렉토리 목록을 표시
+	       </init-param>
+	   </servlet>
+	   
+	   서블릿 매핑 정의
+	   <servlet-mapping>
+	       <servlet-name>pic</servlet-name>
+	       URL 패턴 설정 (이 패턴에 해당하는 요청은 위의 서블릿으로 처리)
+	       <url-pattern>/profiles/*</url-pattern> 
+	         /profiles/ 경로 아래의 모든 요청을 처리
+	   </servlet-mapping>
+	   imageServeServlet
+		
 
 </web-app>
