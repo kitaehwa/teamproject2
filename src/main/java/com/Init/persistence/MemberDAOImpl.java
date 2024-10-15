@@ -118,7 +118,7 @@ public class MemberDAOImpl implements MemberDAO{
 	
 	@Override
 	public void updateProfilePicture(String emp_id, String emp_profile) {
-	    sqlSession.update("Member.updateProfilePicture", new MemberVO(emp_id, emp_profile));
+	    sqlSession.update(NAMESPACE+".updateProfilePicture", new MemberVO(emp_id, emp_profile));
 	}
 
     @Override

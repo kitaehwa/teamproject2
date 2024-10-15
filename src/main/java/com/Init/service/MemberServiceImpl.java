@@ -143,7 +143,6 @@ public class MemberServiceImpl implements MemberService {
             Map<String, Object> deptNode = new HashMap<>();
             deptNode.put("id", dept);
             deptNode.put("name", dept);
-            deptNode.put("title", dept);
             deptNode.put("pid", headManager != null ? headManager.getEmp_id() : null);
             orgChartData.add(deptNode);
 

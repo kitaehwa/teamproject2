@@ -97,7 +97,7 @@
     </select>
     
     <!-- 프로필 사진 업데이트 -->
-    <update id="updateProfilePicture">
+    <update id="updateProfilePicture" parameterType="MemberVO">
         UPDATE employee
         SET emp_profile = #{emp_profile}
         WHERE emp_id = #{emp_id}
