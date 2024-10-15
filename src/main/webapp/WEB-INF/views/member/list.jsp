@@ -372,7 +372,7 @@
     	        success: function(data) {
     	            if (data) {
     	                // 서버에서 받은 데이터를 모달에 출력
-    	                $('#emp_photo').attr('src', data.emp_photo || '${pageContext.request.contextPath}/resources/default-profile.jpg'); // 사진이 없을 경우 기본 이미지 설정
+    	                $('#emp_profile').attr('src', data.emp_photo || '${pageContext.request.contextPath}/resources/default-profile.jpg'); // 사진이 없을 경우 기본 이미지 설정
     	                $('#emp_id').text(data.emp_id);
     	                $('#emp_name').text(data.emp_name);
     	                $('#emp_position').text(data.emp_position);
@@ -447,6 +447,7 @@
 		}
 		
 		function drawOrgChart(data) {
+		    console.log("Drawing org chart with data:", data);
 		    var chart = new OrgChart(document.getElementById("orgChart"), {
 		        template: "ula",
 		        enableDragDrop: true,
@@ -454,45 +455,86 @@
 		            field_0: "name",
 		            field_1: "title"
 		        },
-		        nodes: data,
+		        nodes: data.map(node => ({
+		            id: node.id,
+		            pid: node.pid,
+		            name: node.name,
+		            title: node.title,
+		            emp_job: node.emp_job,
+		            emp_dnum: node.emp_dnum
+		        })),
 		        nodeMouseClick: OrgChart.action.none,
 		    });
 
 		    chart.on('click', function(sender, args) {
-		        if (args.node.data.title === "부서장") {
-		            showTeamMembers(args.node.data.id, args.node.data);
+		        var node = chart.get(args.node.id);
+		        console.log("Node clicked:", node);
+		        
+		        if (node && (node.emp_job === "부서장" || node.title === "부서장")) {
+		            console.log("부서장 노드 클릭됨:", node.id);
+		            var departmentId = node.emp_dnum || node.pid;
+		            showTeamMembers(node.id, departmentId);
+		        } else {
+		            console.log("클릭된 노드는 부서장이 아닙니다.");
 		        }
 		    });
 		}
 
-		function showTeamMembers(nodeId, nodeData) {
+		function showTeamMembers(nodeId, departmentId) {
+		    console.log("Fetching team members for:", nodeId, departmentId);
+		    if (!departmentId) {
+		        console.error("유효하지 않은 부서 ID:", departmentId);
+		        return;
+		    }
+
 		    $.ajax({
 		        url: '${pageContext.request.contextPath}/member/teamMembers',
 		        type: 'GET',
-		        data: { emp_dnum: nodeData.pid },
+		        data: { emp_dnum: departmentId },
 		        success: function(members) {
-		            var table = '<table class="table"><thead><tr><th>이름</th><th>직책</th></tr></thead><tbody>';
-		            $.each(members, function(i, member) {
-		                table += '<tr><td>' + member.emp_name + '</td><td>' + member.emp_job + '</td></tr>';
-		            });
-		            table += '</tbody></table>';
-		            
-		            swal({
-		                title: nodeData.pid + " 팀원 목록",
-		                content: {
-		                    element: "div",
-		                    attributes: {
-		                        innerHTML: table
-		                    }
-		                },
-		                width: '600px'
-		            });
+		            console.log("Received team members:", members);
+		            if (members && members.length > 0) {
+		                var table = '<table class="table"><thead><tr><th>이름</th><th>직책</th></tr></thead><tbody>';
+		                members.forEach(function(member) {
+		                    table += '<tr><td>' + 
+		                        (member.emp_name ? escapeHtml(member.emp_name) : 'N/A') + 
+		                        '</td><td>' + 
+		                        (member.emp_job ? escapeHtml(member.emp_job) : 'N/A') + 
+		                        '</td></tr>';
+		                });
+		                table += '</tbody></table>';
+		                
+		                swal({
+		                    title: escapeHtml(departmentId) + " 팀원 목록",
+		                    content: {
+		                        element: "div",
+		                        attributes: {
+		                            innerHTML: table
+		                        }
+		                    },
+		                    width: '600px'
+		                });
+		            } else {
+		                console.log("No team members found");
+		                swal("알림", "팀원 정보를 찾을 수 없습니다.", "info");
+		            }
 		        },
 		        error: function(xhr, status, error) {
-		            console.error("Error fetching team members:", error);
-		            alert('팀원 목록을 불러오는데 실패했습니다.');
+		            console.error("팀원 정보 가져오기 오류:", error);
+		            console.log("XHR:", xhr);
+		            console.log("Status:", status);
+		            swal("오류", "팀원 목록을 불러오는데 실패했습니다.", "error");
 		        }
 		    });
+		}
+
+		function escapeHtml(unsafe) {
+		    return unsafe
+		         .replace(/&/g, "&amp;")
+		         .replace(/</g, "&lt;")
+		         .replace(/>/g, "&gt;")
+		         .replace(/"/g, "&quot;")
+		         .replace(/'/g, "&#039;");
 		}
 
       
