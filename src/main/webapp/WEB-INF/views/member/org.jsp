@@ -178,14 +178,18 @@
         fillColor: "rgba(255, 165, 52, .14)",
       });
       
-      document.addEventListener('DOMContentLoaded', function() {
+      $(document).ready(function() {
     	    $.get("/member/org/data", function(data) {
     	        console.log("Received data:", data);
     	        $('#chart-container').empty();
     	        if ($.fn.orgchart) {
     	            var oc = $('#chart-container').orgchart({
     	                'data' : data,
-    	                'nodeContent': 'name'
+    	                'nodeContent': 'name',
+    	                'createNode': function($node, data) {
+    	                    $node.find('.title').text(data.title);
+    	                    $node.find('.content').text(data.name);
+    	                }
     	            });
     	        } else {
     	            console.error("OrgChart plugin not loaded");

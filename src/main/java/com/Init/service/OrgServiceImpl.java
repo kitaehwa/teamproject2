@@ -22,12 +22,12 @@ public class OrgServiceImpl implements OrgService {
     @Override
     public Map<String, Object> getFullOrgChartData() {
         List<MemberVO> allMembers = orgDAO.getAllMemPage();
-        
+        Map<String, Object> orgChart = new HashMap<>();
+
         // CEO 노드 생성
-        Map<String, Object> ceoNode = new HashMap<>();
-        ceoNode.put("name", "CEO");
-        ceoNode.put("title", "CEO");
-        ceoNode.put("children", new ArrayList<>());
+        orgChart.put("name", "CEO");
+        orgChart.put("title", "CEO");
+        orgChart.put("children", new ArrayList<>());
 
         // 본부별로 그룹화
         Map<String, List<MemberVO>> branchGroups = allMembers.stream()
@@ -35,33 +35,28 @@ public class OrgServiceImpl implements OrgService {
 
         for (Map.Entry<String, List<MemberVO>> entry : branchGroups.entrySet()) {
             Map<String, Object> branchNode = createBranchNode(entry.getKey(), entry.getValue());
-            ((List<Map<String, Object>>) ceoNode.get("children")).add(branchNode);
+            ((List<Map<String, Object>>) orgChart.get("children")).add(branchNode);
         }
 
-        return ceoNode;
+        return orgChart;
     }
 
     private Map<String, Object> createBranchNode(String branchName, List<MemberVO> branchMembers) {
         Map<String, Object> branchNode = new HashMap<>();
-        branchNode.put("name", branchName);
-        branchNode.put("title", "본부");
-        branchNode.put("children", new ArrayList<>());
-
+        
         // 본부장 찾기
         MemberVO branchManager = branchMembers.stream()
             .filter(m -> "본부장".equals(m.getEmp_job()))
             .findFirst()
             .orElse(null);
 
-        if (branchManager != null) {
-            Map<String, Object> managerNode = new HashMap<>();
-            managerNode.put("name", branchManager.getEmp_name());
-            managerNode.put("title", branchManager.getEmp_job());
-            ((List<Map<String, Object>>) branchNode.get("children")).add(managerNode);
-        }
+        branchNode.put("name", branchManager != null ? branchManager.getEmp_name() : "미정");
+        branchNode.put("title", branchName);
+        branchNode.put("children", new ArrayList<>());
 
         // 부서별로 그룹화
         Map<String, List<MemberVO>> deptGroups = branchMembers.stream()
+            .filter(m -> !"본부장".equals(m.getEmp_job()))
             .collect(Collectors.groupingBy(MemberVO::getEmp_dnum));
 
         for (Map.Entry<String, List<MemberVO>> entry : deptGroups.entrySet()) {
@@ -74,23 +69,28 @@ public class OrgServiceImpl implements OrgService {
 
     private Map<String, Object> createDepartmentNode(String deptName, List<MemberVO> deptMembers) {
         Map<String, Object> deptNode = new HashMap<>();
-        deptNode.put("name", deptName);
-        deptNode.put("title", "부서");
-        deptNode.put("children", new ArrayList<>());
-
+        
         // 부서장 찾기
         MemberVO deptManager = deptMembers.stream()
             .filter(m -> "부서장".equals(m.getEmp_job()))
             .findFirst()
             .orElse(null);
 
-        if (deptManager != null) {
-            Map<String, Object> managerNode = new HashMap<>();
-            managerNode.put("name", deptManager.getEmp_name());
-            managerNode.put("title", deptManager.getEmp_job());
-            managerNode.put("id", deptManager.getEmp_id());  // 팀원 조회를 위한 ID
-            ((List<Map<String, Object>>) deptNode.get("children")).add(managerNode);
+        deptNode.put("name", deptManager != null ? deptManager.getEmp_name() : "미정");
+        deptNode.put("title", deptName);
+        deptNode.put("children", new ArrayList<>());
+
+        // 여기서 팀원들을 추가할 수 있습니다. 필요하다면 아래 주석을 해제하세요.
+        /*
+        for (MemberVO member : deptMembers) {
+            if (!"부서장".equals(member.getEmp_job())) {
+                Map<String, Object> memberNode = new HashMap<>();
+                memberNode.put("name", member.getEmp_name());
+                memberNode.put("title", member.getEmp_position());
+                ((List<Map<String, Object>>) deptNode.get("children")).add(memberNode);
+            }
         }
+        */
 
         return deptNode;
     }
