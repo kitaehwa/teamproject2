@@ -23,7 +23,7 @@ public class OrgServiceImpl implements OrgService {
     public Map<String, Object> getFullOrgChartData() {
         List<MemberVO> allMembers = orgDAO.getAllMemPage();
         Map<String, Object> orgChart = new HashMap<>();
-
+        
         // CEO 노드 생성
         orgChart.put("name", "CEO");
         orgChart.put("title", "CEO");

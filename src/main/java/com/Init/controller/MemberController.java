@@ -96,18 +96,30 @@ public class MemberController implements ServletContextAware {
  	}
  			
  	// 회원정보 수정 - 처리POST
- 	@RequestMapping(value="/update",method = RequestMethod.POST)
- 	public String updateMemberPOST(MemberVO vo) {
- 	logger.debug("/member/update -> updateMemberPOST() 실행");
- 	logger.debug("전달받은 정보(파라메터)를 저장");
- 	logger.debug(" vo : "+vo);	
- 		
- 	int result = mService.memberUpdate(vo);				
- 	if(result == 0) {	
- 	return "redirect:/member/update";
- 	}
- 	// 수정 성공
- 	return "redirect:/member/info";
+ 	@RequestMapping(value="/update", method = RequestMethod.POST)
+ 	@ResponseBody
+ 	public ResponseEntity<Map<String, Object>> updateMemberPOST(@ModelAttribute MemberVO vo) {
+ 	    logger.debug("/member/update -> updateMemberPOST() 실행");
+ 	    logger.debug("전달받은 정보(파라메터)를 저장");
+ 	    logger.debug(" vo : "+vo);	
+ 			
+ 	    Map<String, Object> response = new HashMap<>();
+ 	    try {
+ 	        int result = mService.memberUpdate(vo);				
+ 	        if(result == 0) {	
+ 	            response.put("success", false);
+ 	            response.put("message", "회원 정보 업데이트 실패");
+ 	            return ResponseEntity.ok(response);
+ 	        }
+ 	        // 수정 성공
+ 	        response.put("success", true);
+ 	        response.put("message", "회원 정보가 성공적으로 업데이트되었습니다.");
+ 	        return ResponseEntity.ok(response);
+ 	    } catch (Exception e) {
+ 	        response.put("success", false);
+ 	        response.put("message", "서버 오류: " + e.getMessage());
+ 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+ 	    }
  	}
 
     @GetMapping("/account")

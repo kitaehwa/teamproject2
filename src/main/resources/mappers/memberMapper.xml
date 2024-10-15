@@ -76,9 +76,9 @@
 
     <!-- 교육이력 정보 조회 -->
     <select id="getHis_edu" parameterType="String" resultType="His_eduVO">
-		SELECT his_edu.emp_id, his_edu.edate, his_edu.end_edate, his_edu.estatus, his_edu.approval, new_edu.ename, new_edu.teacher
-		FROM his_edu JOIN new_edu 
-        ON his_edu.eid = new_edu.eid
+		SELECT his_edu.emp_id, his_edu.edate, his_edu.end_edate, his_edu.estatus, his_edu.approval, edu_list.edu_name, edu_list.edu_teacher
+		FROM his_edu JOIN edu_list 
+        ON his_edu.edu_id = edu_list.edu_id
 		WHERE his_edu.emp_id = #{emp_id}
     </select>
 

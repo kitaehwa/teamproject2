@@ -199,7 +199,8 @@
                     <th>부서</th>
                     <td><input type="text" name="emp_dnum" value="${memberVO.emp_dnum}" readonly/></td>
                     <th>직급/직책</th>
-                    <td><input type="text" name="emp_job_id" value="${memberVO.emp_job}" readonly/></td>                   
+                    <td><input type="text" name="emp_job_id" value="${memberVO.emp_position} / ${memberVO.emp_job}" readonly /></td>                   
+                    
                   </tr>
                   <tr>
                     <th>근무형태</th>
@@ -210,6 +211,14 @@
                     <td><input type="text" name="emp_start_date" value="${memberVO.emp_start_date}" readonly/></td>
                   </tr>
                 </table>
+                
+                  <input type="hidden" name="emp_account_num" value="${memberVO.emp_account_num}" />
+				  <input type="hidden" name="emp_bank_name" value="${memberVO.emp_bank_name}" />
+				  <input type="hidden" name="emp_account_name" value="${memberVO.emp_account_name}" />
+				  <input type="hidden" name="emp_position" value="${memberVO.emp_position}" />
+				  <input type="hidden" name="emp_status" value="${memberVO.emp_status}" />
+				  <input type="hidden" name="emp_job" value="${memberVO.emp_job}" />	                
+                
                 <button type="button" id="uploadProfilePic" class="btn btn-primary btn-sm mt-2">프로필 사진 등록</button>
                 
                 <!-- 버튼 영역 -->              

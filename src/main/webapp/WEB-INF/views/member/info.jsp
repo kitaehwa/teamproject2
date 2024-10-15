@@ -165,7 +165,7 @@
                 <tr>
                   <td colspan="2" rowspan="4" style="width: 8%;">
                   <div class="profile-pic-container">
-                    <img src="${memberVO.emp_profile != null ? memberVO.emp_profile : '/resources/assets/img/profile.png'}" alt="증명사진" style="max-width: 150px; height: auto;"/>
+                    <img src="${memberVO.emp_profile }" alt="증명사진" style="max-width: 150px; height: auto;"/>
                   </td>
                   </div>
                   <th>사원번호</th>
@@ -254,7 +254,7 @@
 	                        content = generateTableContent(data, ['li_name', 'li_issu', 'li_date'], ['자격증명', '발급기관', '취득일']);
 	                        break;
 	                    case 'his_edu':
-	                        content = generateTableContent(data, ['ename', 'teacher', 'estatus', 'end_edate'], ['교육명', '강사명', '수료현황', '수료일']);
+	                        content = generateTableContent(data, ['edu_name', 'edu_teacher', 'estatus', 'end_edate'], ['교육명', '강사명', '수료현황', '수료일']);
 	                        break;
 	                    case 'reward':
 	                        content = generateTableContent(data, ['division', 'rname', 'reason', 'rdate'], ['유형', '이름', '사유', '날짜']);

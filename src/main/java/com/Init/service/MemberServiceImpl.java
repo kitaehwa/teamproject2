@@ -51,6 +51,14 @@ public class MemberServiceImpl implements MemberService {
     @Override
 	public int memberUpdate(MemberVO uvo) {
 		logger.debug("memberUpdate(MemberVO uvo) 실행");
+		
+		// 모든 필드가 null이 아닌지 확인
+	    if (uvo.getEmp_position() == null || uvo.getEmp_status() == null || uvo.getEmp_job() == null ||
+	        uvo.getEmp_account_num() == null || uvo.getEmp_bank_name() == null || uvo.getEmp_account_name() == null) {
+	        logger.error("일부 필드가 null입니다. 업데이트할 수 없습니다.");
+	        return 0;
+	    }
+		
 		// 회원정보 수정
 		int result = mdao.updateMember(uvo);
 		// 회원정보 수정 이력

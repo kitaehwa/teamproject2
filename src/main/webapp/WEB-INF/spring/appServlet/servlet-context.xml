@@ -30,5 +30,7 @@
         <beans:property name="maxUploadSize" value="10485760" /> <!-- 10MB -->
         <beans:property name="maxInMemorySize" value="1048576" /> <!-- 1MB -->
     </beans:bean>	
+    
+    <resources mapping="/uploads/**" location="file:///C:/workspace_sts6_teamproject/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Init/uploads/" />
 	
 </beans:beans>
