@@ -322,5 +322,6 @@ public class MemberController implements ServletContextAware {
         return "member/list"; 
     }
     
+    
 }
 //http://localhost:8088/member/login

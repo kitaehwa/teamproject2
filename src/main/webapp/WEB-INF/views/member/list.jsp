@@ -137,18 +137,25 @@
         margin-left: auto;
    		}
    		
-   		@media (max-width: 768px) {
-	    .button-container {
-	        padding-right: 10px; /* 작은 화면에서는 여백을 줄임 */
-	    }
-	    
 	    #filterForm {
             margin-bottom: 20px;
+            max-width: 20%; 
+            display: flex;
+	        flex-wrap: wrap;
+	        justify-content: space-between;
+	        align-items: center;
+        }
+        
+        #filterForm select,
+        #filterForm button {
+        	width: auto;
+            margin-right: 1%;
         }
         
         #filterForm select {
-            margin-right: 10px;
-        }
+	        flex: 1 1 10%; 
+	        margin-bottom: 10px; 
+    	}
 	    
   </style>
     
@@ -167,12 +174,7 @@
 <!------------------------------------------------------------------------------------------------------------------>
 
     	<h1>사원 목록</h1>
-        <!-- 조직도 버튼 추가 -->
-        <div class="button-container">
-            <button id="showOrgChart" class="btn btn-primary">조직도 보기</button>
-        </div>
-        
-         <!-- 필터 폼 추가 -->
+        <!-- 필터 폼 추가 -->
                 <form id="filterForm" class="form-inline">
                     <select name="filterType" id="filterType" class="form-control">
                         <option value="">필터 선택</option>
@@ -187,7 +189,13 @@
                     <button type="button" id="applyFilter" class="btn btn-primary">필터 적용</button>
                     <button type="button" id="resetFilter" class="btn btn-secondary">초기화</button>
                 </form>
-    	
+                
+        <!-- 조직도 버튼 추가 -->
+        <div class="button-container">
+            <button id="showOrgChart" class="btn btn-primary">조직도 보기</button>
+        </div>
+        
+        
     	<!-- 사원 목록 테이블 -->
         <table class="table table-striped">
             <thead>
@@ -212,6 +220,28 @@
             </tbody>
         </table>
         
+        <!-- 페이징  -->
+        <div class="pagination">
+		    <ul>
+		        <!-- 이전 페이지로 가는 링크 (첫 페이지에서는 비활성화) -->
+		        <li class="${currentPage == 1 ? 'disabled' : ''}">
+		            <a href="?page=${currentPage - 1}" aria-label="Previous">&laquo; 이전</a>
+		        </li>
+		
+		        <!-- 페이지 숫자 링크 -->
+		        <c:forEach var="i" begin="1" end="${totalPages}">
+		            <li class="${currentPage == i ? 'active' : ''}">
+		                <a href="?page=${i}">${i}</a>
+		            </li>
+		        </c:forEach>
+		
+		        <!-- 다음 페이지로 가는 링크 (마지막 페이지에서는 비활성화) -->
+		        <li class="${currentPage == totalPages ? 'disabled' : ''}">
+		            <a href="?page=${currentPage + 1}" aria-label="Next">다음 &raquo;</a>
+		        </li>
+		    </ul>
+		</div>
+        
         <!-- 조직도 모달 -->
 	    <div class="modal fade" id="orgChartModal" tabindex="-1" role="dialog" aria-hidden="true">
 	    <div class="modal-dialog modal-lg" role="document">
@@ -234,31 +264,7 @@
 			  </div>
 		 </div>
 		 </div>
-		<!-- 조직도 모달 -->
-		
-	    </div>
-        
-        <div class="pagination">
-		    <ul>
-		        <!-- 이전 페이지로 가는 링크 (첫 페이지에서는 비활성화) -->
-		        <li class="${currentPage == 1 ? 'disabled' : ''}">
-		            <a href="?page=${currentPage - 1}" aria-label="Previous">&laquo; 이전</a>
-		        </li>
-		
-		        <!-- 페이지 숫자 링크 -->
-		        <c:forEach var="i" begin="1" end="${totalPages}">
-		            <li class="${currentPage == i ? 'active' : ''}">
-		                <a href="?page=${i}">${i}</a>
-		            </li>
-		        </c:forEach>
-		
-		        <!-- 다음 페이지로 가는 링크 (마지막 페이지에서는 비활성화) -->
-		        <li class="${currentPage == totalPages ? 'disabled' : ''}">
-		            <a href="?page=${currentPage + 1}" aria-label="Next">다음 &raquo;</a>
-		        </li>
-		    </ul>
-		</div>
-        
+	
         <!-- Modal -->
 	    <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-hidden="true">
 	    <div class="modal-dialog" role="document">
@@ -474,12 +480,7 @@
             resetFilter();
         });
         
-        // 페이지네이션 클릭 이벤트 위임
-        $(document).on('click', '.pagination a', function(e) {
-            e.preventDefault();
-            var page = $(this).attr('href').split('page=')[1];
-            loadMembers(page);
-	        });
+
 	    });
 
         // 필터 값 옵션 업데이트 함수
@@ -658,7 +659,7 @@
 
         // 페이지 로드 함수
         function loadMembers(page) {
-            $.ajax({
+        	$.ajax({
                 url: '${pageContext.request.contextPath}/member/list',
                 type: 'GET',
                 data: { page: page },

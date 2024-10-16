@@ -66,4 +66,5 @@ public interface MemberDAO {
     List<String> getFilterOptions(String filterType);
     List<MemberVO> getFilteredMembers(String filterType, String filterValue, int offset, int pageSize);
     int getFilteredMembersCount(String filterType, String filterValue);
+    
 }
