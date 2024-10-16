@@ -72,6 +72,20 @@
         .orgchart .node .title {
             font-size: 15px;
         }
+        
+        .orgchart {
+		    text-align: center;
+		    justify-content: center;
+		}
+		
+		.orgchart .node {
+		    margin: 0 auto; /* 노드를 중앙으로 */
+		}
+		
+		.orgchart .nodes .node {
+		    margin-bottom: 20px;
+		}
+		
     </style>
     
   </head>
