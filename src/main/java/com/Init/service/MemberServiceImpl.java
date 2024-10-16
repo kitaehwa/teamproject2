@@ -73,8 +73,34 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<LicenseVO> getLicense(String emp_id) {
-        return mdao.getLicense(emp_id);
+    public List<LicenseVO> getEmpLicense(String emp_id) {
+        return mdao.getEmpLicense(emp_id);
+    }
+    
+    // 자격증 추가
+    @Override
+    public List<Map<String, Object>> getAllLicenses() {
+        return mdao.getLicenseList();
+    }
+
+    @Override
+    public void removeLicense(String licenseId, String emp_id) {
+        mdao.deleteLicense(licenseId, emp_id);
+    }
+    
+    @Override
+    public boolean registerLicense(LicenseVO licenseVO) {
+        // 이미 존재하는 자격증인지 확인
+        List<LicenseVO> existingLicenses = mdao.getEmpLicense(licenseVO.getEmp_id());
+        for (LicenseVO license : existingLicenses) {
+            if (license.getLi_id().equals(licenseVO.getLi_id())) {
+                // 이미 동일한 자격증이 존재함
+                return false;
+            }
+        }
+        // 중복이 아니면 자격증 추가
+        mdao.addLicense(licenseVO);
+        return true;
     }
 
     @Override
@@ -189,6 +215,8 @@ public class MemberServiceImpl implements MemberService {
     public List<String> getBranchList() {
         return mdao.getBranchList();
     }
+    
+    
     
     
     

@@ -142,6 +142,25 @@
         margin-bottom: 20px;
         width: 110px;
       }
+     
+      #addLicenseBtn {
+      	padding: 8px 15px;
+        margin-top: 1%;
+        margin-left: 90%;
+        border: none;
+        border-radius: 4px;
+        background-color: #0055FF;
+        color: white;
+        cursor: pointer;
+      }
+      
+      .delete-license{
+        border: none;
+        border-radius: 4px;
+        background-color: #f44336;
+        color: white;
+        cursor: pointer;
+      }
       
     </style>
  <!------------------------------------------------------------------------------------------------------------------>
@@ -251,7 +270,7 @@
 	                        content = generateAccountContent(data);
 	                        break;
 	                    case 'license':
-	                        content = generateTableContent(data, ['li_name', 'li_issu', 'li_date'], ['자격증명', '발급기관', '취득일']);
+	                        content = generateLicenseContent(data);
 	                        break;
 	                    case 'his_edu':
 	                        content = generateTableContent(data, ['edu_name', 'edu_teacher', 'estatus', 'end_edate'], ['교육명', '강사명', '수료현황', '수료일']);
@@ -353,7 +372,118 @@
 	            }
 	        });
 	    });
+	    
+	    // 자격증 추가
+		function generateLicenseContent(data) {
+        let content = '<table class="info-table"><tr><th>자격증명</th><th>발급처</th><th>취득일</th><th>작업</th></tr>';
+        if (Array.isArray(data) && data.length > 0) {
+            data.forEach(function(item) {
+                content += '<tr><td>' + item.li_name + '</td><td>' + item.li_issu + '</td><td>' + formatDate(item.li_date) + '</td>';
+                content += '<td><button class="delete-license" data-id="' + item.li_id + '">삭제</button></td></tr>';
+            });
+        } else {
+            content += '<tr><td colspan="4">등록된 자격증이 없습니다.</td></tr>';
+        }
+        content += '</table>';
+        content += '<button id="addLicenseBtn">자격증 추가</button>';
+        return content;
+   		}
+
+		$(document).on('click', '#addLicenseBtn', function() {
+	        console.log("Add License button clicked");
+	        $.ajax({
+	            url: '${pageContext.request.contextPath}/member/licenseList',
+	            type: 'GET',
+	            dataType: 'json',
+	            success: function(data) {
+	                console.log("License list received:", data);
+	                showAddLicenseModal(data);
+	            },
+	            error: function(xhr, status, error) {
+	                console.error("AJAX Error: " + error);
+	                alert("자격증 목록을 불러오는데 실패했습니다.");
+	            }
+	        });
+	    });
+
+		function showAddLicenseModal(licenseList) {
+	        console.log("Showing add license modal with data:", licenseList);
+	        let selectElement = $('#licenseSelect');
+	        selectElement.empty().append('<option value="">자격증을 선택하세요</option>');
+	        
+	        if (Array.isArray(licenseList) && licenseList.length > 0) {
+	            licenseList.forEach(function(license) {
+	                selectElement.append($('<option>', {
+	                    value: license.li_id,
+	                    text: license.li_name + ' (' + license.li_issu + ')'
+	                }));
+	            });
+	            console.log("Options added to select:", selectElement.find('option').length);
+	        } else {
+	            console.warn("License list is empty or not an array");
+	            selectElement.append('<option value="">자격증 목록을 불러올 수 없습니다</option>');
+	        }
+
+	        $('#licenseDate').val('');
+	        $('#licenseModal').modal('show');
+		    }
+	
+			 $('#licenseModal').on('shown.bs.modal', function () {
+			        console.log("Modal shown, select options:", $('#licenseSelect option').length);
+			    });	
+			
+		 $(document).on('click', '#saveLicenseBtn', function() {
+		     if (!$('#addLicenseForm')[0].checkValidity()) {
+		         $('#addLicenseForm')[0].reportValidity();
+		         return;
+		     }
 		
+		     let licenseData = {
+		         li_id: $('#licenseSelect').val(),
+		         li_date: $('#licenseDate').val()
+		     };
+		     $.ajax({
+		         url: '${pageContext.request.contextPath}/member/addLicense',
+		         type: 'POST',
+		         contentType: 'application/json',
+		         data: JSON.stringify(licenseData),
+		         success: function(response) {
+		             if (response.success) {
+		                 alert(response.message);
+		                 $('#licenseModal').modal('hide');
+		                 loadTabContent('license');
+		             } else {
+		                 alert(response.message);
+		             }
+		         },
+		         error: function(xhr, status, error) {
+		             console.error("AJAX Error: " + error);
+		             alert("자격증 추가 중 오류가 발생했습니다.");
+		         }
+		     });
+		 });
+
+	    $(document).on('click', '.delete-license', function() {
+	        let licenseId = $(this).data('id');
+	        if (confirm('정말로 이 자격증을 삭제하시겠습니까?')) {
+	            $.ajax({
+	                url: '${pageContext.request.contextPath}/member/deleteLicense/' + licenseId,
+	                type: 'DELETE',
+	                success: function(response) {
+	                    if (response.success) {
+	                        alert('자격증이 삭제되었습니다.');
+	                        loadTabContent('license');
+	                    } else {
+	                        alert('자격증 삭제에 실패했습니다: ' + response.message);
+	                    }
+	                },
+	                error: function(xhr, status, error) {
+	                    console.error("AJAX Error: " + error);
+	                }
+	            });
+	        }
+	    });
+	    
 	    // 초기 탭 로드
 	    loadTabContent('account');
 	});
@@ -453,5 +583,36 @@
 	    </div>
 	  </div>
 	</div>
+	
+	<!-- 자격증 추가 모달 -->
+	<div class="modal fade" id="licenseModal" tabindex="-1" aria-labelledby="licenseModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered">
+	    <div class="modal-content">
+	      <div class="modal-header bg-primary text-white">
+	        <h5 class="modal-title" id="licenseModalLabel">자격증 추가</h5>
+	        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	        <form id="addLicenseForm">
+	          <div class="mb-3">
+	            <label for="licenseSelect" class="form-label">자격증 선택</label>
+	            <select id="licenseSelect" class="form-select" required>
+	              <option value="">자격증을 선택하세요</option>
+	            </select>
+	          </div>
+	          <div class="mb-3">
+	            <label for="licenseDate" class="form-label">취득일</label>
+	            <input type="date" class="form-control" id="licenseDate" required>
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+	        <button type="button" class="btn btn-primary" id="saveLicenseBtn">저장</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
   </body>
 </html>

@@ -30,7 +30,7 @@ public interface MemberService {
     AccountVO getAccount(String emp_id);
 
     // 자격증 정보 가져오기
-    List<LicenseVO> getLicense(String emp_id);
+    List<LicenseVO> getEmpLicense(String emp_id);
 
     // 교육이력 정보 가져오기
     List<His_eduVO> getHis_edu(String emp_id);
@@ -57,5 +57,9 @@ public interface MemberService {
     List<Map<String, Object>> getOrgChartData(String emp_bnum);
     List<String> getBranchList();
     
+    // 자격증 추가
+    List<Map<String, Object>> getAllLicenses();
+    boolean registerLicense(LicenseVO licenseVO);
+    void removeLicense(String licenseId, String emp_id);
     
 }

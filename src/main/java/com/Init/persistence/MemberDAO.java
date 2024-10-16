@@ -1,6 +1,7 @@
 package com.Init.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import com.Init.domain.AccountVO;
 import com.Init.domain.EvalVO;
@@ -29,7 +30,7 @@ public interface MemberDAO {
     AccountVO getAccount(String emp_id);
 
     // 자격증 정보 가져오기
-    List<LicenseVO> getLicense(String emp_id);
+    List<LicenseVO> getEmpLicense(String emp_id);
 
     // 교육이력 정보 가져오기
     List<His_eduVO> getHis_edu(String emp_id);
@@ -55,4 +56,9 @@ public interface MemberDAO {
     List<MemberVO> getAllMembers();
     List<MemberVO> getTeamMembers(String emp_dnum);
     List<String> getBranchList();
+    
+    // 자격증 추가
+    List<Map<String, Object>> getLicenseList();
+    void addLicense(LicenseVO licenseVO);
+    void deleteLicense(String licenseId, String emp_id);
 }

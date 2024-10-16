@@ -67,20 +67,38 @@
     </select>
 
     <!-- 자격증 정보 조회 -->
-    <select id="getLicense" parameterType="String" resultType="LicenseVO">
-        SELECT li_list.li_name, li_list.li_issu, license.li_date 
-		FROM license JOIN li_list 
-		ON license.li_id = li_list.li_id
-		WHERE license.emp_id = #{emp_id}
+    <select id="getEmpLicense" parameterType="String" resultType="LicenseVO">
+        SELECT ll.li_id, ll.li_name, ll.li_issu, l.li_date
+        FROM li_list ll
+        JOIN license l ON ll.li_id = l.li_id
+        WHERE l.emp_id = #{emp_id}
     </select>
+    
+    <!-- 자격증 추가 -->
+    <select id="getLicenseList" resultType="map">
+        SELECT li_id, li_name, li_issu
+        FROM li_list
+    </select>
+
+    <insert id="addLicense" parameterType="LicenseVO">
+        INSERT INTO license (li_id, emp_id, li_date)
+        VALUES (#{li_id}, #{emp_id}, #{li_date})
+    </insert>
+
+    <delete id="deleteLicense" parameterType="map">
+        DELETE FROM license
+        WHERE li_id = #{licenseId} AND emp_id = #{emp_id}
+    </delete>
 
     <!-- 교육이력 정보 조회 -->
     <select id="getHis_edu" parameterType="String" resultType="His_eduVO">
-		SELECT his_edu.emp_id, his_edu.edate, his_edu.end_edate, his_edu.estatus, his_edu.approval, edu_list.edu_name, edu_list.edu_teacher
-		FROM his_edu JOIN edu_list 
+        SELECT his_edu.emp_id, his_edu.edate, his_edu.end_edate, his_edu.estatus, 
+        	   his_edu.approval, edu_list.edu_name, edu_list.edu_teacher
+        FROM his_edu JOIN edu_list 
         ON his_edu.edu_id = edu_list.edu_id
-		WHERE his_edu.emp_id = #{emp_id}
+        WHERE his_edu.emp_id = #{emp_id}
     </select>
+	
 
     <!-- 포상/징계 정보 조회 -->
     <select id="getReward" parameterType="String" resultType="RewardVO">

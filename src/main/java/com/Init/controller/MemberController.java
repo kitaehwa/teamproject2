@@ -130,10 +130,59 @@ public class MemberController implements ServletContextAware {
 
     @GetMapping("/license")
     @ResponseBody
-    public List<LicenseVO> getLicense(@RequestParam("emp_id") String emp_id) {
-        return mService.getLicense(emp_id);
+    public List<LicenseVO> getEmpLicense(@RequestParam("emp_id") String emp_id) {
+        return mService.getEmpLicense(emp_id);
     }
 
+    @GetMapping("/licenseList")
+    @ResponseBody
+    public List<Map<String, Object>> getLicenseList() {
+        List<Map<String, Object>> licenseList = mService.getAllLicenses();
+        System.out.println("License List: " + licenseList);  // 디버깅용 로그
+        return licenseList;
+    }
+
+    @PostMapping("/addLicense")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> addLicense(@RequestBody LicenseVO licenseVO, HttpSession session) {
+        String emp_id = (String) session.getAttribute("emp_id");
+        licenseVO.setEmp_id(emp_id);
+        Map<String, Object> response = new HashMap<>();
+        try {
+            boolean isAdded = mService.registerLicense(licenseVO);
+            if (isAdded) {
+                response.put("success", true);
+                response.put("message", "자격증이 성공적으로 추가되었습니다.");
+            } else {
+                response.put("success", false);
+                response.put("message", "이미 등록된 자격증입니다.");
+            }
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "자격증 추가에 실패했습니다: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @DeleteMapping("/deleteLicense/{licenseId}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> deleteLicense(@PathVariable String licenseId, HttpSession session) {
+        String emp_id = (String) session.getAttribute("emp_id");
+        Map<String, Object> response = new HashMap<>();
+        try {
+            mService.removeLicense(licenseId, emp_id);
+            response.put("success", true);
+            response.put("message", "자격증이 성공적으로 삭제되었습니다.");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "자격증 삭제에 실패했습니다: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    
     @GetMapping("/his_edu")
     @ResponseBody
     public List<His_eduVO> getHis_edu(@RequestParam("emp_id") String emp_id) {

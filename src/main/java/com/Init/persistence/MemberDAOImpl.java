@@ -93,10 +93,29 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 
 	@Override
-	public List<LicenseVO> getLicense(String emp_id) {
+	public List<LicenseVO> getEmpLicense(String emp_id) {
 		
-		return sqlSession.selectList(NAMESPACE+".getLicense",emp_id);
+		return sqlSession.selectList(NAMESPACE+".getEmpLicense",emp_id);
 	}
+	
+	// 자격증 추가
+	@Override
+    public List<Map<String, Object>> getLicenseList() {
+        return sqlSession.selectList(NAMESPACE + ".getLicenseList");
+    }
+
+    @Override
+    public void addLicense(LicenseVO licenseVO) {
+        sqlSession.insert(NAMESPACE + ".addLicense", licenseVO);
+    }
+
+    @Override
+    public void deleteLicense(String licenseId, String emp_id) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("licenseId", licenseId);
+        params.put("emp_id", emp_id);
+        sqlSession.delete(NAMESPACE + ".deleteLicense", params);
+    }
 
 	@Override
 	public List<His_eduVO> getHis_edu(String emp_id) {
