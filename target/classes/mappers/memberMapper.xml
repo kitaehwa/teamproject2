@@ -169,5 +169,45 @@
         SELECT * FROM employee WHERE emp_dnum = #{deptId} AND emp_job != '부서장' ORDER BY emp_position
     </select>
     
+    <select id="getFilterOptions" parameterType="string" resultType="string">
+    SELECT DISTINCT 
+    <choose>
+        <when test="_parameter == 'emp_dnum'">emp_dnum</when>
+        <when test="_parameter == 'emp_bnum'">emp_bnum</when>
+        <when test="_parameter == 'emp_position'">emp_position</when>
+        <when test="_parameter == 'emp_job'">emp_job</when>
+    </choose>
+    FROM employee
+    ORDER BY 
+    <choose>
+        <when test="_parameter == 'emp_dnum'">emp_dnum</when>
+        <when test="_parameter == 'emp_bnum'">emp_bnum</when>
+        <when test="_parameter == 'emp_position'">emp_position</when>
+        <when test="_parameter == 'emp_job'">emp_job</when>
+    </choose>
+	</select>
+
+	<!-- 필터링된 회원 목록 가져오기 -->
+	<select id="getFilteredMembers" parameterType="map" resultType="MemberVO">
+	    SELECT * FROM employee
+	    <where>
+	        <if test="filterType != null and filterValue != null">
+	            ${filterType} = #{filterValue}
+	        </if>
+	    </where>
+	    ORDER BY emp_id
+	    LIMIT #{offset}, #{pageSize}
+	</select>
+	
+	<!-- 필터링된 회원 수 가져오기 -->
+	<select id="getFilteredMembersCount" parameterType="map" resultType="int">
+	    SELECT COUNT(*) FROM employee
+	    <where>
+	        <if test="filterType != null and filterValue != null">
+	            ${filterType} = #{filterValue}
+	        </if>
+	    </where>
+	</select>
+    
 	
 </mapper>

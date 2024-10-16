@@ -180,4 +180,28 @@ public class MemberDAOImpl implements MemberDAO{
         return sqlSession.selectList(NAMESPACE + ".getBranchList");
     }
     
+    // 필터 부분
+    @Override
+    public List<String> getFilterOptions(String filterType) {
+        return sqlSession.selectList(NAMESPACE + ".getFilterOptions", filterType);
+    }
+
+    @Override
+    public List<MemberVO> getFilteredMembers(String filterType, String filterValue, int offset, int pageSize) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("filterType", filterType);
+        params.put("filterValue", filterValue);
+        params.put("offset", offset);
+        params.put("pageSize", pageSize);
+        return sqlSession.selectList(NAMESPACE + ".getFilteredMembers", params);
+    }
+
+    @Override
+    public int getFilteredMembersCount(String filterType, String filterValue) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("filterType", filterType);
+        params.put("filterValue", filterValue);
+        return sqlSession.selectOne(NAMESPACE + ".getFilteredMembersCount", params);
+    }
+    
 }    

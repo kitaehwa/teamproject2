@@ -299,5 +299,28 @@ public class MemberController implements ServletContextAware {
         return mService.getBranchList();
     }
     
+    // 필터 부분
+    @GetMapping("/filterOptions")
+    @ResponseBody
+    public List<String> getFilterOptions(@RequestParam String filterType) {
+        return mService.getFilterOptions(filterType);
+    }
+
+    @GetMapping("/filter")
+    public String filterMembers(@RequestParam String filterType, 
+                                @RequestParam String filterValue,
+                                @RequestParam(defaultValue = "1") int page,
+                                Model model) {
+        int pageSize = 10;
+        List<MemberVO> members = mService.getFilteredMembers(filterType, filterValue, page, pageSize);
+        int totalMembers = mService.getFilteredMembersCount(filterType, filterValue);
+        int totalPages = (int) Math.ceil((double) totalMembers / pageSize);
+
+        model.addAttribute("members", members);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        return "member/list"; 
+    }
+    
 }
 //http://localhost:8088/member/login

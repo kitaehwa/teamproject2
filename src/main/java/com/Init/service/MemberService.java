@@ -62,4 +62,9 @@ public interface MemberService {
     boolean registerLicense(LicenseVO licenseVO);
     void removeLicense(String licenseId, String emp_id);
     
+    // 필터 부분
+    List<String> getFilterOptions(String filterType);
+    List<MemberVO> getFilteredMembers(String filterType, String filterValue, int page, int pageSize);
+    int getFilteredMembersCount(String filterType, String filterValue);
+    
 }

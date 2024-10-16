@@ -141,7 +141,14 @@
 	    .button-container {
 	        padding-right: 10px; /* 작은 화면에서는 여백을 줄임 */
 	    }
-	}
+	    
+	    #filterForm {
+            margin-bottom: 20px;
+        }
+        
+        #filterForm select {
+            margin-right: 10px;
+        }
 	    
   </style>
     
@@ -164,6 +171,22 @@
         <div class="button-container">
             <button id="showOrgChart" class="btn btn-primary">조직도 보기</button>
         </div>
+        
+         <!-- 필터 폼 추가 -->
+                <form id="filterForm" class="form-inline">
+                    <select name="filterType" id="filterType" class="form-control">
+                        <option value="">필터 선택</option>
+                        <option value="emp_dnum">부서</option>
+                        <option value="emp_bnum">근무지</option>
+                        <option value="emp_position">직급</option>
+                        <option value="emp_job">직책</option>
+                    </select>
+                    <select name="filterValue" id="filterValue" class="form-control">
+                        <option value="">선택하세요</option>
+                    </select>
+                    <button type="button" id="applyFilter" class="btn btn-primary">필터 적용</button>
+                    <button type="button" id="resetFilter" class="btn btn-secondary">초기화</button>
+                </form>
     	
     	<!-- 사원 목록 테이블 -->
         <table class="table table-striped">
@@ -432,6 +455,51 @@
 		    });
 		    
 		});
+      
+      	// 필터 관련 스크립트
+      	 $(document).ready(function() {
+        // 필터 타입 변경 시 필터 값 옵션 업데이트
+        $('#filterType').change(function() {
+            var filterType = $(this).val();
+            updateFilterValues(filterType);
+        });
+
+        // 필터 적용 버튼 클릭 이벤트
+        $('#applyFilter').click(function() {
+            applyFilter();
+        });
+
+        // 초기화 버튼 클릭 이벤트
+        $('#resetFilter').click(function() {
+            resetFilter();
+        });
+        
+        // 페이지네이션 클릭 이벤트 위임
+        $(document).on('click', '.pagination a', function(e) {
+            e.preventDefault();
+            var page = $(this).attr('href').split('page=')[1];
+            loadMembers(page);
+	        });
+	    });
+
+        // 필터 값 옵션 업데이트 함수
+        function updateFilterValues(filterType) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/member/filterOptions',
+                type: 'GET',
+                data: { filterType: filterType },
+                success: function(options) {
+                    var $filterValue = $('#filterValue');
+                    $filterValue.empty().append('<option value="">선택하세요</option>');
+                    $.each(options, function(index, option) {
+                        $filterValue.append($('<option></option>').val(option).text(option));
+                    });
+                },
+                error: function() {
+                    alert('필터 옵션을 불러오는데 실패했습니다.');
+                }
+            });
+        }
 		
 		function loadBranchList() {
 		    $.ajax({
@@ -557,6 +625,52 @@
 		         .replace(/"/g, "&quot;")
 		         .replace(/'/g, "&#039;");
 		}
+		
+		// 필터 함수
+		function applyFilter() {
+            var filterType = $('#filterType').val();
+            var filterValue = $('#filterValue').val();
+            
+            $.ajax({
+                url: '${pageContext.request.contextPath}/member/filter',
+                type: 'GET',
+                data: { 
+                    filterType: filterType,
+                    filterValue: filterValue,
+                    page: 1 // 필터 적용 시 첫 페이지로 이동
+                },
+                success: function(response) {
+                    $('#memberTable').html($(response).find('#memberTable').html());
+                    $('.pagination').html($(response).find('.pagination').html());
+                },
+                error: function() {
+                    alert('필터링에 실패했습니다.');
+                }
+            });
+        }
+
+        // 필터 초기화 함수
+        function resetFilter() {
+            $('#filterType').val('');
+            $('#filterValue').empty().append('<option value="">선택하세요</option>');
+            loadMembers(1);
+        }
+
+        // 페이지 로드 함수
+        function loadMembers(page) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/member/list',
+                type: 'GET',
+                data: { page: page },
+                success: function(response) {
+                    $('#memberTable').html($(response).find('#memberTable').html());
+                    $('.pagination').html($(response).find('.pagination').html());
+                },
+                error: function() {
+                    alert('사원 목록을 불러오는데 실패했습니다.');
+                }
+            });
+        }
 
       
     </script>

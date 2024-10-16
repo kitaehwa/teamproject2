@@ -216,6 +216,22 @@ public class MemberServiceImpl implements MemberService {
         return mdao.getBranchList();
     }
     
+    // 필터 부분
+    @Override
+    public List<String> getFilterOptions(String filterType) {
+        return mdao.getFilterOptions(filterType);
+    }
+
+    @Override
+    public List<MemberVO> getFilteredMembers(String filterType, String filterValue, int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return mdao.getFilteredMembers(filterType, filterValue, offset, pageSize);
+    }
+
+    @Override
+    public int getFilteredMembersCount(String filterType, String filterValue) {
+        return mdao.getFilteredMembersCount(filterType, filterValue);
+    }
     
     
     

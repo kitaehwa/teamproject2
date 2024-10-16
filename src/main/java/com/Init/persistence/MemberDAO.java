@@ -61,4 +61,9 @@ public interface MemberDAO {
     List<Map<String, Object>> getLicenseList();
     void addLicense(LicenseVO licenseVO);
     void deleteLicense(String licenseId, String emp_id);
+    
+    // 필터 부분
+    List<String> getFilterOptions(String filterType);
+    List<MemberVO> getFilteredMembers(String filterType, String filterValue, int offset, int pageSize);
+    int getFilteredMembersCount(String filterType, String filterValue);
 }
