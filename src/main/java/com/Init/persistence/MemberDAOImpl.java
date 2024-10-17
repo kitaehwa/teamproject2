@@ -223,4 +223,9 @@ public class MemberDAOImpl implements MemberDAO{
         return sqlSession.selectOne(NAMESPACE + ".getSearchMembersCount", params);
     }
     
+    // 비밀번호 수정
+    @Override
+    public void updatePassword(MemberVO member) {
+        sqlSession.update(NAMESPACE + ".updatePassword", member);
+    }
 }    

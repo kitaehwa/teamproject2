@@ -273,7 +273,7 @@
 	                        content = generateLicenseContent(data);
 	                        break;
 	                    case 'his_edu':
-	                        content = generateTableContent(data, ['edu_name', 'edu_teacher', 'estatus', 'end_edate'], ['교육명', '강사명', '수료현황', '수료일']);
+	                        content = generateTableContent(data, ['edu_name', 'edu_teacher', 'edu_status', 'edu_complete_date'], ['교육명', '강사명', '수료현황', '수료일']);
 	                        break;
 	                    case 'reward':
 	                        content = generateTableContent(data, ['division', 'rname', 'reason', 'rdate'], ['유형', '이름', '사유', '날짜']);

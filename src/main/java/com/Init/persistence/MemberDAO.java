@@ -71,5 +71,7 @@ public interface MemberDAO {
     List<MemberVO> searchMembers(String searchType, String keyword, int offset, int pageSize);
     int getSearchMembersCount(String searchType, String keyword);
     
+    // 비밀번호 수정
+    void updatePassword(MemberVO member);
     
 }

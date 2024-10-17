@@ -245,4 +245,17 @@ public class MemberServiceImpl implements MemberService {
         return mdao.getSearchMembersCount(searchType, keyword);
     }
     
+    // 비밀번호 수정
+    @Override
+    @Transactional
+    public boolean updatePassword(String emp_id, String currentPassword, String newPassword) throws Exception {
+        MemberVO member = mdao.getMember(emp_id);
+        if (member != null && member.getEmp_pw().equals(currentPassword)) {
+            member.setEmp_pw(newPassword);
+            mdao.updatePassword(member);
+            return true;
+        }
+        return false;
+    }
+    
 }

@@ -46,6 +46,11 @@
 	    values (#{emp_id}, #{emp_name}, #{emp_birth}, #{emp_gender}, #{emp_tel}, #{emp_email}, #{emp_addr}, #{emp_dnum}, #{emp_position}, #{emp_job}, #{emp_status}, 
 	    #{emp_bnum}, #{emp_work_type}, #{emp_bank_name}, #{emp_account_num}, #{emp_account_name}, #{emp_start_date}, now())
 	</insert>
+	
+	<!-- 비밀번호 수정 -->
+	<update id="updatePassword">
+        UPDATE employee SET emp_pw = #{emp_pw} WHERE emp_id = #{emp_id}
+    </update>
   	
   	<!-- 회원정보 삭제  -->
   	<delete id="deleteMember">

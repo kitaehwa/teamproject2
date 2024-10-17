@@ -80,11 +80,11 @@
       }
 
       .info-actions {
-        margin-top: 20px;
         text-align: left;
-        margin-left: 64%;                     
+        margin-left: 62%;
+        margin-top: 10px;                     
       }
-
+      
       .info-actions button {
         padding: 8px 15px;  
         border: none;
@@ -220,13 +220,35 @@
 				  <input type="hidden" name="emp_job" value="${memberVO.emp_job}" />	                
                 
                 <button type="button" id="uploadProfilePic" class="btn btn-primary btn-sm mt-2">프로필 사진 등록</button>
-                
                 <!-- 버튼 영역 -->              
                 <div class="info-actions">               
                   <button type="submit">저장</button>
                   <button type="button" class="delete" onclick="location.href='/member/info'">취소</button>
                 </div>
               </form>
+                
+                <!-- 비밀번호 수정 -->
+                <form id="passwordForm" action="" method="get">
+				    <input type="hidden" name="emp_id" value="${memberVO.emp_id}" />
+				    <table class="info-table" style="width: 70%;">
+				        <tr>
+				            <th>현재 비밀번호</th>
+				            <td><input type="password" name="current_password" required /></td>
+				        </tr>
+				        <tr>
+				            <th>새 비밀번호</th>
+				            <td><input type="password" name="new_password" required /></td>
+				        </tr>
+				        <tr>
+				            <th>새 비밀번호 확인</th>
+				            <td><input type="password" name="confirm_password" required /></td>
+				        </tr>
+				    </table>
+				    <div class="info-actions">  
+				    <button type="submit">비밀번호 변경</button>
+				    </div>
+				 </form>
+                
             </div> 
           </div>
           <!-- page-inner -->
@@ -279,6 +301,28 @@
     $(document).ready(function() {
         let selectedFile = null;
 
+        // 비밀번호 수정
+        $('#passwordForm').submit(function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/member/updatePassword',
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                if(response.success) {
+                    alert(response.message);
+                    // 비밀번호 변경 성공 시 추가 작업 (예: 폼 초기화)
+                    $('#passwordForm')[0].reset();
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function() {
+                alert('서버와의 통신 중 오류가 발생했습니다.');
+	            }
+	        });
+	    });
+        
         $('#profilePicInput').change(function(e) {
             selectedFile = e.target.files[0];
             if (selectedFile) {

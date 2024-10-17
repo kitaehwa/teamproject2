@@ -71,4 +71,7 @@ public interface MemberService {
     List<MemberVO> searchMembers(String searchType, String keyword, int page, int pageSize);
     int getSearchMembersCount(String searchType, String keyword);
     
+    // 비밀번호 수정
+    boolean updatePassword(String emp_id, String currentPassword, String newPassword) throws Exception;
+    
 }
