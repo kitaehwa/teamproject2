@@ -322,6 +322,23 @@ public class MemberController implements ServletContextAware {
         return "member/list"; 
     }
     
+    // 검색기능
+    @GetMapping("/search")
+    public String searchMembers(@RequestParam String searchType, 
+                                @RequestParam String keyword,
+                                @RequestParam(defaultValue = "1") int page,
+                                Model model) {
+        int pageSize = 10;
+        List<MemberVO> members = mService.searchMembers(searchType, keyword, page, pageSize);
+        int totalMembers = mService.getSearchMembersCount(searchType, keyword);
+        int totalPages = (int) Math.ceil((double) totalMembers / pageSize);
+
+        model.addAttribute("members", members);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        return "member/list"; 
+    }
+    
     
 }
 //http://localhost:8088/member/login

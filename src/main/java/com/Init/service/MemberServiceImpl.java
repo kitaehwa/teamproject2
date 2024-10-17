@@ -233,6 +233,16 @@ public class MemberServiceImpl implements MemberService {
         return mdao.getFilteredMembersCount(filterType, filterValue);
     }
     
-    
+    // 검색기능
+    @Override
+    public List<MemberVO> searchMembers(String searchType, String keyword, int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return mdao.searchMembers(searchType, keyword, offset, pageSize);
+    }
+
+    @Override
+    public int getSearchMembersCount(String searchType, String keyword) {
+        return mdao.getSearchMembersCount(searchType, keyword);
+    }
     
 }

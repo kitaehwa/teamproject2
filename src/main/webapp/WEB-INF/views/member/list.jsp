@@ -50,112 +50,159 @@
   
   
   <style>
-      	table {
-		    width: 100%;
-		    border-collapse: collapse;
-		    margin-bottom: 10px; /* 테이블 아래 여백 줄이기 */
-		}
+      	   /* 기존 스타일 */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+    }
 		
-		th, td {
-		    border: 1px solid #ddd;
-		    padding: 6px; /* 패딩 줄이기 */
-		    text-align: left;
-		}
+    th, td {
+      border: 1px solid #ddd;
+      padding: 6px;
+      text-align: left;
+    }
 		
-		.btn-info {
-		    padding: 4px 8px; /* 버튼 패딩 줄이기 */
-		    font-size: 12px; /* 버튼 글씨 크기 줄이기 */
-		}
+    .btn-info {
+      padding: 4px 8px;
+      font-size: 12px;
+    }
       
-       .modal-dialog { max-width: 800px; 
-       }
+    .modal-dialog { 
+      max-width: 800px; 
+    }
        
-       .pagination ul {
-	        list-style: none;
-	        display: flex;
-	        justify-content: center;
-	        padding: 0;
-	    }
+    .pagination ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      padding: 0;
+    }
 	    
-	    .pagination ul li {
-	        margin: 0 5px;
-	    }
+    .pagination ul li {
+      margin: 0 5px;
+    }
 	    
-	    .pagination ul li a {
-	        display: block;
-	        padding: 5px 10px;
-	        background-color: #f1f1f1;
-	        border-radius: 3px;
-	        text-decoration: none;
-	        color: #333;
-	    }
+    .pagination ul li a {
+      display: block;
+      padding: 5px 10px;
+      background-color: #f1f1f1;
+      border-radius: 3px;
+      text-decoration: none;
+      color: #333;
+    }
 	    
-	    .pagination ul li.active a {
-	        background-color: #007bff;
-	        color: white;
-	    }
+    .pagination ul li.active a {
+      background-color: #007bff;
+      color: white;
+    }
 	    
-	    .pagination ul li.disabled a {
-	        pointer-events: none;
-	        background-color: #ddd;
-	    }
+    .pagination ul li.disabled a {
+      pointer-events: none;
+      background-color: #ddd;
+    }
 	    
-	    /* 프로필 사진을 둥글게 하고 크기 조정 */
-	    .img-fluid {
-	        max-width: 100%;
-	        height: auto;
-	    }
+    .img-fluid {
+      max-width: 100%;
+      height: auto;
+    }
 	
-	    .rounded-circle {
-	        border-radius: 50%;
-	    }
+    .rounded-circle {
+      border-radius: 50%;
+    }
 	
-	    /* 테이블 스타일 */
-	    .table-bordered th {
-	    	width: 20%; /* 열 너비 줄이기 */
-		}
+    .table-bordered th {
+      width: 20%;
+    }
 	
-	    .table-bordered th,
-	    .table-bordered td {
-	        padding: 10px;
-	        vertical-align: middle;
-	    }
+    .table-bordered th,
+    .table-bordered td {
+      padding: 10px;
+      vertical-align: middle;
+    }
 	
-	    .table-bordered th {
-	        background-color: #f2f2f2;
-	        width: 30%;
-	    }
+    .table-bordered th {
+      background-color: #f2f2f2;
+      width: 30%;
+    }
 	    
-	    .button-container {
-        display: flex;
-        justify-content: flex-end;
-        margin-bottom: 20px;
-        padding-right: 15px;
-   		}
+    .button-container {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+      padding-right: 15px;
+    }
 	    
-	    #showOrgChart {
-        margin-left: auto;
-   		}
+    #showOrgChart {
+      margin-left: auto;
+    }
    		
-	    #filterForm {
-            margin-bottom: 20px;
-            max-width: 20%; 
-            display: flex;
-	        flex-wrap: wrap;
-	        justify-content: space-between;
-	        align-items: center;
-        }
+    #filterForm {
+      margin-bottom: 20px;
+      max-width: 20%; 
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
         
-        #filterForm select,
-        #filterForm button {
-        	width: auto;
-            margin-right: 1%;
-        }
+    #filterForm select,
+    #filterForm button {
+      width: auto;
+      margin-right: 1%;
+    }
         
-        #filterForm select {
-	        flex: 1 1 10%; 
-	        margin-bottom: 10px; 
-    	}
+    #filterForm select {
+      flex: 1 1 10%; 
+      margin-bottom: 10px; 
+    }
+    
+    /* 새로 추가된 스타일 */
+    .controls-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      width: 100%;
+      flex-wrap: nowrap;
+    }
+    
+    #filterForm, #searchForm {
+      display: flex;
+      align-items: center;
+    }
+    
+    #filterForm select, #searchForm select, #searchForm input, .btn {
+      margin-right: 5px;
+      height: 38px;
+    }
+    
+    #filterForm {
+      width: 35%;
+    }
+    
+    #searchForm {
+      width: 50%;
+    }
+    
+    #showOrgChart {
+      width: auto;
+      white-space: nowrap;
+    }
+    
+    .btn {
+      padding: 0.375rem 0.75rem;
+    }
+    
+    #filterType, #filterValue, #searchType {
+      width: auto;
+      flex-grow: 1;
+    }
+    
+    #keyword {
+      width: auto;
+      flex-grow: 2;
+    }
 	    
   </style>
     
@@ -175,29 +222,40 @@
 
     	<h1>사원 목록</h1>
         <!-- 필터 폼 추가 -->
-                <form id="filterForm" class="form-inline">
-                    <select name="filterType" id="filterType" class="form-control">
-                        <option value="">필터 선택</option>
-                        <option value="emp_dnum">부서</option>
-                        <option value="emp_bnum">근무지</option>
-                        <option value="emp_position">직급</option>
-                        <option value="emp_job">직책</option>
-                    </select>
-                    <select name="filterValue" id="filterValue" class="form-control">
-                        <option value="">선택하세요</option>
-                    </select>
-                    <button type="button" id="applyFilter" class="btn btn-primary">필터 적용</button>
-                    <button type="button" id="resetFilter" class="btn btn-secondary">초기화</button>
-                </form>
+            <form id="filterForm" class="form-inline">
+              <select name="filterType" id="filterType" class="form-control">
+                <option value="">필터 선택</option>
+                <option value="emp_dnum">부서</option>
+                <option value="emp_bnum">근무지</option>
+                <option value="emp_position">직급</option>
+                <option value="emp_job">직책</option>
+              </select>
+              <select name="filterValue" id="filterValue" class="form-control">
+                <option value="">선택하세요</option>
+              </select>
+              <button type="button" id="applyFilter" class="btn btn-primary">필터 적용</button>
+            </form>
+                
+         <!-- 검색 폼 추가 -->
+          <form id="searchForm" class="form-inline">
+              <select name="searchType" id="searchType" class="form-control">
+                <option value="emp_id">사원번호</option>
+                <option value="emp_name">사원명</option>
+                <option value="emp_dnum">부서명</option>
+                <option value="emp_position">직급</option>
+                <option value="emp_job">직책</option>
+              </select>
+              <input type="text" name="keyword" id="keyword" class="form-control" placeholder="검색어 입력">
+              <button type="button" id="searchBtn" class="btn btn-primary">검색</button>
+            </form>
                 
         <!-- 조직도 버튼 추가 -->
-        <div class="button-container">
-            <button id="showOrgChart" class="btn btn-primary">조직도 보기</button>
+        <button id="showOrgChart" class="btn btn-primary">조직도 보기</button>
         </div>
         
         
     	<!-- 사원 목록 테이블 -->
-        <table class="table table-striped">
+        <table class="table table-striped" id="memberTable">
             <thead>
                 <tr>
                     <th>사원번호</th>
@@ -427,6 +485,74 @@
     	        }
     	    });
     	}
+      // 검색기능
+      $(document).ready(function() {
+        // 페이지 로드 시 사원 목록 불러오기
+        loadMembers(1);
+
+        // 검색 버튼 클릭 이벤트
+        $('#searchBtn').click(function() {
+          searchMembers(1);
+        });
+
+        // 엔터 키 이벤트
+        $('#keyword').keypress(function(e) {
+          if (e.which == 13) {
+            e.preventDefault();
+            searchMembers(1);
+          }
+        });
+      });
+
+      function loadMembers(page) {
+        $.ajax({
+          url: '${pageContext.request.contextPath}/member/list',
+          type: 'GET',
+          data: { page: page },
+          success: function(response) {
+            updateTable(response);
+          },
+          error: function() {
+            alert('사원 목록을 불러오는데 실패했습니다.');
+          }
+        });
+      }
+
+      function searchMembers(page) {
+        var searchType = $('#searchType').val();
+        var keyword = $('#keyword').val();
+        
+        $.ajax({
+          url: '${pageContext.request.contextPath}/member/search',
+          type: 'GET',
+          data: { 
+            searchType: searchType,
+            keyword: keyword,
+            page: page
+          },
+          success: function(response) {
+            updateTable(response);
+          },
+          error: function() {
+            alert('검색에 실패했습니다.');
+          }
+        });
+      }
+
+      function updateTable(response) {
+        $('#memberTable tbody').empty();
+        var members = $(response).find('#memberTable tbody tr');
+        $('#memberTable tbody').append(members);
+        
+        $('.pagination').html($(response).find('.pagination').html());
+        
+        // 페이지네이션 이벤트 다시 바인딩
+        $('.pagination a').click(function(e) {
+          e.preventDefault();
+          var page = $(this).attr('href').split('page=')[1];
+          searchMembers(page);
+        });
+      }
       	
       // 조직도 관련 스크립트
 	  $(document).ready(function() {

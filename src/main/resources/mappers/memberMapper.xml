@@ -209,4 +209,49 @@
 	    </where>
 	</select>
 	
+	<!-- 검색기능 -->
+	<select id="searchMembers" parameterType="map" resultType="MemberVO">
+        SELECT * FROM employee
+        <where>
+            <if test="searchType == 'emp_id'">
+                emp_id LIKE #{keyword}
+            </if>
+            <if test="searchType == 'emp_name'">
+                emp_name LIKE #{keyword}
+            </if>
+            <if test="searchType == 'emp_dnum'">
+                emp_dnum LIKE #{keyword}
+            </if>
+            <if test="searchType == 'emp_position'">
+                emp_position LIKE #{keyword}
+            </if>
+            <if test="searchType == 'emp_job'">
+                emp_job LIKE #{keyword}
+            </if>
+        </where>
+        ORDER BY emp_id
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="getSearchMembersCount" parameterType="map" resultType="int">
+        SELECT COUNT(*) FROM employee
+        <where>
+            <if test="searchType == 'emp_id'">
+                emp_id LIKE #{keyword}
+            </if>
+            <if test="searchType == 'emp_name'">
+                emp_name LIKE #{keyword}
+            </if>
+            <if test="searchType == 'emp_dnum'">
+                emp_dnum LIKE #{keyword}
+            </if>
+            <if test="searchType == 'emp_position'">
+                emp_position LIKE #{keyword}
+            </if>
+            <if test="searchType == 'emp_job'">
+                emp_job LIKE #{keyword}
+            </if>
+        </where>
+    </select>
+	
 </mapper>

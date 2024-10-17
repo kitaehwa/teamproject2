@@ -204,5 +204,23 @@ public class MemberDAOImpl implements MemberDAO{
         return sqlSession.selectOne(NAMESPACE + ".getFilteredMembersCount", params);
     }
     
+    // 검색기능
+    @Override
+    public List<MemberVO> searchMembers(String searchType, String keyword, int offset, int pageSize) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("searchType", searchType);
+        params.put("keyword", "%" + keyword + "%");
+        params.put("offset", offset);
+        params.put("pageSize", pageSize);
+        return sqlSession.selectList(NAMESPACE + ".searchMembers", params);
+    }
+
+    @Override
+    public int getSearchMembersCount(String searchType, String keyword) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("searchType", searchType);
+        params.put("keyword", "%" + keyword + "%");
+        return sqlSession.selectOne(NAMESPACE + ".getSearchMembersCount", params);
+    }
     
 }    
