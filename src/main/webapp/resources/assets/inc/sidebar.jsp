@@ -58,6 +58,11 @@
                         <span class="sub-item">조직도</span>
                       </a>
                     </li>
+                    <li>
+                      <a href="/member/manager">
+                        <span class="sub-item">사원관리(관리자 페이지)</span>
+                      </a>
+                    </li>
                   </ul>
                 </div>
               </li>

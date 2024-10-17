@@ -15,6 +15,7 @@ import com.Init.domain.*;
 import com.Init.service.MemberService;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import java.io.File;
@@ -300,6 +301,19 @@ public class MemberController implements ServletContextAware {
         return "member/list";
     }
     
+    @GetMapping("/manager")
+    public String listManager(@RequestParam(defaultValue = "1") int page, Model model) {
+    	int pageSize = 10;
+    	List<MemberVO> members = mService.getPaginatedMembers(page, pageSize);
+    	int totalMembers = mService.getTotalMembersCount();
+    	int totalPages = (int) Math.ceil((double) totalMembers / pageSize);
+    	
+    	model.addAttribute("members", members);
+    	model.addAttribute("currentPage", page);
+    	model.addAttribute("totalPages", totalPages);
+    	return "member/manager";
+    }
+    
     @GetMapping("/detail/{emp_id}")
     @ResponseBody
     public MemberVO getMemberDetail(@PathVariable String emp_id) {
@@ -347,6 +361,7 @@ public class MemberController implements ServletContextAware {
     public String filterMembers(@RequestParam String filterType, 
                                 @RequestParam String filterValue,
                                 @RequestParam(defaultValue = "1") int page,
+                                HttpServletRequest request,
                                 Model model) {
         int pageSize = 10;
         List<MemberVO> members = mService.getFilteredMembers(filterType, filterValue, page, pageSize);
@@ -356,8 +371,21 @@ public class MemberController implements ServletContextAware {
         model.addAttribute("members", members);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
-        return "member/list"; 
+        
+        String fullUrl = request.getRequestURL().toString(); 
+        logger.debug(fullUrl);  
+        
+        if (fullUrl.contains("/member/list")) {  
+            return "member/list";  
+        } else {
+            return "member/manager";   
+        } 
     }
+  
+    <form id="filterForm" action="/member/filter" method="get">
+    <input type="hidden" name="pageType" value="list">
+    <!-- 기타 필터 입력 필드 -->
+    </form>
     
     // 검색기능
     @GetMapping("/search")

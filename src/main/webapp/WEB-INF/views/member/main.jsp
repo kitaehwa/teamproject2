@@ -56,25 +56,11 @@
           <div class="page-inner">
 <!------------------------------------------------------------------------------------------------------------------>
 
-	<C:if test="${empty sessionScope.emp_id}">
-	<C:redirect url="/member/login"/>
-	</C:if>
-	
-	${sessionScope.emp_id} <br>
-	<h1> ${emp_id}님 환영합니다. </h1>
-	<input type="button" value="로그아웃"
-		   onclick="location.href='/member/logout';">
-		   
-	<hr>
-	
-	<h2><a href="/member/info"> 회원정보 조회(info) </a></h2>
-	<h2><a href="/member/update"> 회원정보 수정(update)</a></h2>
-	<h2><a href="/member/delete"> 회원정보 삭제(delete)</a></h2>
-	<!-- 관리자 기능(사용자 admin일때 사용가능 -->
-	<C:if test="${!empty emp_level && emp_level.equals('1')}">
-	<h2><a href="/member/list"> 회원정보 목록(list)</a></h2>
-	
-	</C:if>               
+
+            <h1> ${emp_id}님 환영합니다. </h1>
+            <button type="button" onclick="confirmLogout()" class="btn btn-danger">로그아웃</button>
+
+                         
                  
 <!------------------------------------------------------------------------------------------------------------------>
           </div>
@@ -150,6 +136,27 @@
         lineColor: "#ffa534",
         fillColor: "rgba(255, 165, 52, .14)",
       });
+      
+      function confirmLogout() {
+          swal({
+            title: "로그아웃",
+            text: "정말 로그아웃 하시겠습니까?",
+            icon: "warning",
+            buttons: ["아니오", "예"],
+            dangerMode: true,
+          })
+          .then((willLogout) => {
+            if (willLogout) {
+              // 사용자가 "예"를 선택한 경우
+              window.location.href = '/member/login';
+            } else {
+              // 사용자가 "아니오"를 선택한 경우
+              swal("로그아웃이 취소되었습니다.", {
+                icon: "info",
+              });
+            }
+          });
+        }
     </script>
   </body>
 </html>
