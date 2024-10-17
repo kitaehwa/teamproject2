@@ -299,7 +299,7 @@ public class MemberController implements ServletContextAware {
         model.addAttribute("totalPages", totalPages);
         return "member/list";
     }
-
+    
     @GetMapping("/detail/{emp_id}")
     @ResponseBody
     public MemberVO getMemberDetail(@PathVariable String emp_id) {

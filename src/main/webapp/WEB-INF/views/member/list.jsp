@@ -258,7 +258,6 @@
         <div class="container">
           <div class="page-inner">
 <!------------------------------------------------------------------------------------------------------------------>
-
     	<h1>사원 목록</h1>
     	<div style="display:flex;">
         <!-- 필터 폼 추가 -->
@@ -527,26 +526,35 @@
     	        }
     	    });
     	}
-      // 검색기능
-      $(document).ready(function() {
+	    // 전역 변수 추가
+	    var currentState = 'list'; 
+		var currentSearchType = '';
+		var currentKeyword = '';
+		var currentFilterType = '';
+		var currentFilterValue = '';
+      
+        // 검색기능
+        $(document).ready(function() {
         // 페이지 로드 시 사원 목록 불러오기
         loadMembers(1);
 
         // 검색 버튼 클릭 이벤트
         $('#searchBtn').click(function() {
-          searchMembers(1);
-        });
+	    currentSearchType = $('#searchType').val();
+	    currentKeyword = $('#keyword').val();
+	    searchMembers(1);
+		});
 
         // 엔터 키 이벤트
         $('#keyword').keypress(function(e) {
           if (e.which == 13) {
             e.preventDefault();
             searchMembers(1);
-          }
-        });
-      });
+	        }
+	      });
+	    });
 
-      function loadMembers(page) {
+        function loadMembers(page) {
         $.ajax({
           url: '${pageContext.request.contextPath}/member/list',
           type: 'GET',
@@ -556,48 +564,62 @@
           },
           error: function() {
             alert('사원 목록을 불러오는데 실패했습니다.');
-          }
-        });
-      }
+	        }
+	      });
+	    }
 
-      function searchMembers(page) {
-        var searchType = $('#searchType').val();
-        var keyword = $('#keyword').val();
-        
-        $.ajax({
-          url: '${pageContext.request.contextPath}/member/search',
-          type: 'GET',
-          data: { 
-            searchType: searchType,
-            keyword: keyword,
-            page: page
-          },
-          success: function(response) {
-            updateTable(response);
-          },
-          error: function() {
-            alert('검색에 실패했습니다.');
-          }
-        });
-      }
-
-      function updateTable(response) {
-        $('#memberTable tbody').empty();
-        var members = $(response).find('#memberTable tbody tr');
-        $('#memberTable tbody').append(members);
-        
-        $('.pagination').html($(response).find('.pagination').html());
-        
-        // 페이지네이션 이벤트 다시 바인딩
-        $('.pagination a').click(function(e) {
-          e.preventDefault();
-          var page = $(this).attr('href').split('page=')[1];
-          searchMembers(page);
-        });
-      }
+        function searchMembers(page) {
+    	    currentState = 'search';
+    	    var searchType = currentSearchType || $('#searchType').val();
+    	    var keyword = currentKeyword || $('#keyword').val();
+    	    currentSearchType = searchType;
+    	    currentKeyword = keyword;
+    	    
+    	    $.ajax({
+    	        url: '${pageContext.request.contextPath}/member/search',
+    	        type: 'GET',
+    	        data: { 
+    	            searchType: searchType,
+    	            keyword: keyword,
+    	            page: page
+    	        },
+    	        success: function(response) {
+    	            updateTable(response);
+    	        },
+    	        error: function() {
+    	            alert('검색에 실패했습니다.');
+    	        }
+    	    });
+    	}
+	  
+       	function updateTable(response) {
+    	    $('#memberTable tbody').empty();
+    	    var members = $(response).find('#memberTable tbody tr');
+    	    $('#memberTable tbody').append(members);
+    	    
+    	    $('.pagination').html($(response).find('.pagination').html());
+    	    
+    	    // 페이지네이션 이벤트 다시 바인딩
+    	    $('.pagination a').click(function(e) {
+    	        e.preventDefault();
+    	        var page = $(this).attr('href').split('page=')[1];
+    	        
+    	        switch(currentState) {
+    	            case 'list':
+    	                loadMembers(page);
+    	                break;
+    	            case 'search':
+    	                searchMembers(page);
+    	                break;
+    	            case 'filter':
+    	                applyFilter(page);
+    	                break;
+    	        }
+    	    });
+    	}
       	
-      // 조직도 관련 스크립트
-	  $(document).ready(function() {
+        // 조직도 관련 스크립트
+	    $(document).ready(function() {
 		   loadBranchList();
 		
 		    $('#showOrgChart').click(function() {
@@ -640,8 +662,10 @@
 
         // 필터 적용 버튼 클릭 이벤트
         $('#applyFilter').click(function() {
-            applyFilter();
-        });
+	    currentFilterType = $('#filterType').val();
+	    currentFilterValue = $('#filterValue').val();
+	    applyFilter(1);
+		});
 
         // 초기화 버튼 클릭 이벤트
         $('#resetFilter').click(function() {
@@ -796,50 +820,55 @@
 		}
 		
 		// 필터 함수
-		function applyFilter() {
-            var filterType = $('#filterType').val();
-            var filterValue = $('#filterValue').val();
-            
-            $.ajax({
-                url: '${pageContext.request.contextPath}/member/filter',
-                type: 'GET',
-                data: { 
-                    filterType: filterType,
-                    filterValue: filterValue,
-                    page: 1 // 필터 적용 시 첫 페이지로 이동
-                },
-                success: function(response) {
-                    $('#memberTable').html($(response).find('#memberTable').html());
-                    $('.pagination').html($(response).find('.pagination').html());
-                },
-                error: function() {
-                    alert('필터링에 실패했습니다.');
-                }
-            });
-        }
+		function applyFilter(page) {
+	    currentState = 'filter';
+	    var filterType = currentFilterType || $('#filterType').val();
+	    var filterValue = currentFilterValue || $('#filterValue').val();
+	    currentFilterType = filterType;
+	    currentFilterValue = filterValue;
+	    
+	    $.ajax({
+	        url: '${pageContext.request.contextPath}/member/filter',
+	        type: 'GET',
+	        data: { 
+	            filterType: filterType,
+	            filterValue: filterValue,
+	            page: page || 1
+	        },
+	        success: function(response) {
+	            updateTable(response);
+	        },
+	        error: function() {
+	            alert('필터링에 실패했습니다.');
+		        }
+		    });
+		}
 
         // 필터 초기화 함수
         function resetFilter() {
-            $('#filterType').val('');
-            $('#filterValue').empty().append('<option value="">선택하세요</option>');
-            loadMembers(1);
-        }
+	    currentState = 'list';
+	    currentFilterType = '';
+	    currentFilterValue = '';
+	    $('#filterType').val('');
+	    $('#filterValue').empty().append('<option value="">선택하세요</option>');
+	    loadMembers(1);
+		}
 
         // 페이지 로드 함수
         function loadMembers(page) {
-        	$.ajax({
-                url: '${pageContext.request.contextPath}/member/list',
-                type: 'GET',
-                data: { page: page },
-                success: function(response) {
-                    $('#memberTable').html($(response).find('#memberTable').html());
-                    $('.pagination').html($(response).find('.pagination').html());
-                },
-                error: function() {
-                    alert('사원 목록을 불러오는데 실패했습니다.');
-                }
-            });
-        }
+	    currentState = 'list';
+	    $.ajax({
+	        url: '${pageContext.request.contextPath}/member/list',
+	        type: 'GET',
+	        data: { page: page },
+	        success: function(response) {
+	            updateTable(response);
+	        },
+	        error: function() {
+	            alert('사원 목록을 불러오는데 실패했습니다.');
+		        }
+		    });
+		}
 
       
     </script>
