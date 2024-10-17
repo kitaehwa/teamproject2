@@ -129,7 +129,7 @@
     .button-container {
       display: flex;
       justify-content: flex-end;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       padding-right: 15px;
     }
 	    
@@ -138,7 +138,7 @@
     }
    		
     #filterForm {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       max-width: 20%; 
       display: flex;
       flex-wrap: wrap;
@@ -157,12 +157,11 @@
       margin-bottom: 10px; 
     }
     
-    /* 새로 추가된 스타일 */
     .controls-container {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       width: 100%;
       flex-wrap: nowrap;
     }
@@ -182,7 +181,7 @@
     }
     
     #searchForm {
-      width: 50%;
+      width: 40%;
     }
     
     #showOrgChart {
@@ -199,11 +198,51 @@
       flex-grow: 1;
     }
     
+    #searchType {
+      margin-left: 10%;
+    }
+    
     #keyword {
       width: auto;
       flex-grow: 2;
     }
-	    
+    
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .main-panel {
+      flex: 1 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      flex: 1 0 auto;
+    }
+
+    .page-inner {
+      flex: 1 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #memberTable {
+      flex: 1 0 auto;
+      overflow-y: auto;
+    }
+
+    footer {
+      flex-shrink: 0;
+    }
+
+
   </style>
     
   
@@ -221,6 +260,7 @@
 <!------------------------------------------------------------------------------------------------------------------>
 
     	<h1>사원 목록</h1>
+    	<div style="display:flex;">
         <!-- 필터 폼 추가 -->
             <form id="filterForm" class="form-inline">
               <select name="filterType" id="filterType" class="form-control">
@@ -251,6 +291,8 @@
                 
         <!-- 조직도 버튼 추가 -->
         <button id="showOrgChart" class="btn btn-primary">조직도 보기</button>
+        </div>
+        
         </div>
         
         
