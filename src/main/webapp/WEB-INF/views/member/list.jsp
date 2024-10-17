@@ -273,6 +273,7 @@
                 <option value="">선택하세요</option>
               </select>
               <button type="button" id="applyFilter" class="btn btn-primary">필터 적용</button>
+              <button type="button" id="resetFilter" class="btn btn-primary">초기화</button>
             </form>
                 
          <!-- 검색 폼 추가 -->
@@ -308,6 +309,7 @@
             </thead>
             <tbody>
                 <c:forEach var="member" items="${members}">
+                  <c:if test="${member.emp_status ne '퇴직'}">
                     <tr>
                         <td>${member.emp_id}</td>
                         <td>${member.emp_name}</td>
@@ -315,6 +317,7 @@
                         <td>${member.emp_dnum}</td>
                         <td><button class="btn btn-info btn-sm" onclick="showDetail('${member.emp_id}')">상세보기</button></td>
                     </tr>
+                  </c:if> 
                 </c:forEach>
             </tbody>
         </table>
@@ -664,6 +667,7 @@
         $('#applyFilter').click(function() {
 	    currentFilterType = $('#filterType').val();
 	    currentFilterValue = $('#filterValue').val();
+	    var pageType = $('input[name="pageType"]').val();
 	    applyFilter(1);
 		});
 
@@ -824,6 +828,7 @@
 	    currentState = 'filter';
 	    var filterType = currentFilterType || $('#filterType').val();
 	    var filterValue = currentFilterValue || $('#filterValue').val();
+	    var pageType = $('input[name="pageType"]').val();
 	    currentFilterType = filterType;
 	    currentFilterValue = filterValue;
 	    
@@ -833,6 +838,7 @@
 	        data: { 
 	            filterType: filterType,
 	            filterValue: filterValue,
+	            pageType: pageType,
 	            page: page || 1
 	        },
 	        success: function(response) {

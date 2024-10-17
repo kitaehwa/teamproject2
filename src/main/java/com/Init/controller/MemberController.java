@@ -361,7 +361,7 @@ public class MemberController implements ServletContextAware {
     public String filterMembers(@RequestParam String filterType, 
                                 @RequestParam String filterValue,
                                 @RequestParam(defaultValue = "1") int page,
-                                HttpServletRequest request,
+                                @RequestParam(required = false) String pageType,
                                 Model model) {
         int pageSize = 10;
         List<MemberVO> members = mService.getFilteredMembers(filterType, filterValue, page, pageSize);
@@ -372,26 +372,21 @@ public class MemberController implements ServletContextAware {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
         
-        String fullUrl = request.getRequestURL().toString(); 
-        logger.debug(fullUrl);  
+        logger.debug("Received pageType: " + pageType);
         
-        if (fullUrl.contains("/member/list")) {  
-            return "member/list";  
+        if ("manager".equals(pageType)) {
+            return "member/manager";
         } else {
-            return "member/manager";   
-        } 
+            return "member/list";  
+        }
     }
   
-    <form id="filterForm" action="/member/filter" method="get">
-    <input type="hidden" name="pageType" value="list">
-    <!-- 기타 필터 입력 필드 -->
-    </form>
-    
     // 검색기능
     @GetMapping("/search")
     public String searchMembers(@RequestParam String searchType, 
                                 @RequestParam String keyword,
                                 @RequestParam(defaultValue = "1") int page,
+                                @RequestParam(required = false) String pageType,
                                 Model model) {
         int pageSize = 10;
         List<MemberVO> members = mService.searchMembers(searchType, keyword, page, pageSize);
@@ -401,7 +396,14 @@ public class MemberController implements ServletContextAware {
         model.addAttribute("members", members);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
-        return "member/list"; 
+        
+        logger.debug("Received pageType: " + pageType);
+        
+        if ("manager".equals(pageType)) {
+            return "member/manager";
+        } else {
+            return "member/list";  
+        }
     }
     
     

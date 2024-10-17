@@ -241,7 +241,15 @@
     footer {
       flex-shrink: 0;
     }
-
+	
+	#register {
+	  margin-left: 90%;
+	  display: flex;
+	  justify-content: center; 
+	  align-items: center;      
+	  font-size: 1.5rem;
+	  padding: 20px 30px;
+	}
 
   </style>
     
@@ -261,7 +269,8 @@
     	<h1>관리자 페이지</h1>
     	<div style="display:flex;">
         <!-- 필터 폼 추가 -->
-            <form id="filterForm" class="form-inline">
+            <form id="filterForm" class="form-inline" action="${pageContext.request.contextPath}/member/filter" method="get">
+             <input type="hidden" name="pageType" value="manager">
               <select name="filterType" id="filterType" class="form-control">
                 <option value="">필터 선택</option>
                 <option value="emp_dnum">부서</option>
@@ -273,11 +282,13 @@
                 <option value="">선택하세요</option>
               </select>
               <button type="button" id="applyFilter" class="btn btn-primary">필터 적용</button>
+              <button type="button" id="resetFilter" class="btn btn-primary">초기화</button>
             </form>
                 
          <!-- 검색 폼 추가 -->
           <form id="searchForm" class="form-inline">
-              <select name="searchType" id="searchType" class="form-control">
+        	<input type="hidden" name="pageType" value="manager">
+              <select name="searchType" id="searchType" class="form-control" >
                 <option value="emp_id">사원번호</option>
                 <option value="emp_name">사원명</option>
                 <option value="emp_dnum">부서명</option>
@@ -288,12 +299,10 @@
               <button type="button" id="searchBtn" class="btn btn-primary">검색</button>
             </form>
                 
-        <!-- 조직도 버튼 추가 -->
-        <button id="showOrgChart" class="btn btn-primary">조직도 보기</button>
-        <button id="showOrgChart" class="btn btn-primary">사원등록</button>
-        </div>
-        
-        </div>
+         <!-- 조직도 버튼 추가 -->
+         <button id="showOrgChart" class="btn btn-primary">조직도 보기</button>
+       </div>
+     </div>
         
         
     	<!-- 사원 목록 테이블 -->
@@ -369,6 +378,8 @@
 		        </li>
 		    </ul>
 		</div>
+        
+        <button id="register" class="btn btn-primary">사원등록</button>
         
         <!-- 조직도 모달 -->
 	    <div class="modal fade" id="orgChartModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -569,9 +580,9 @@
 
         // 검색 버튼 클릭 이벤트
         $('#searchBtn').click(function() {
-	    currentSearchType = $('#searchType').val();
-	    currentKeyword = $('#keyword').val();
-	    searchMembers(1);
+		    currentSearchType = $('#searchType').val();
+		    currentKeyword = $('#keyword').val();
+		    searchMembers(1);
 		});
 
         // 엔터 키 이벤트
@@ -601,6 +612,7 @@
     	    currentState = 'search';
     	    var searchType = currentSearchType || $('#searchType').val();
     	    var keyword = currentKeyword || $('#keyword').val();
+    	    var pageType = $('#searchForm input[name="pageType"]').val();
     	    currentSearchType = searchType;
     	    currentKeyword = keyword;
     	    
@@ -610,6 +622,7 @@
     	        data: { 
     	            searchType: searchType,
     	            keyword: keyword,
+    	            pageType: pageType,
     	            page: page
     	        },
     	        success: function(response) {
@@ -853,6 +866,7 @@
 	    currentState = 'filter';
 	    var filterType = currentFilterType || $('#filterType').val();
 	    var filterValue = currentFilterValue || $('#filterValue').val();
+	    var pageType = $('input[name="pageType"]').val();
 	    currentFilterType = filterType;
 	    currentFilterValue = filterValue;
 	    
@@ -862,6 +876,7 @@
 	        data: { 
 	            filterType: filterType,
 	            filterValue: filterValue,
+	            pageType: pageType,
 	            page: page || 1
 	        },
 	        success: function(response) {
