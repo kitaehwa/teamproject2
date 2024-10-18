@@ -315,7 +315,7 @@ public class MemberController implements ServletContextAware {
 	@ResponseBody
 	public MemberVO getMemberDetail(@PathVariable String emp_id) {
 		MemberVO member = mService.getMemberDetail(emp_id);
-		logger.info("Member detail requested for emp_id: {}, Result: {}", emp_id, member);
+		logger.debug("Member detail requested for emp_id: {}, Result: {}", emp_id, member);
 		return member;
 	}
 

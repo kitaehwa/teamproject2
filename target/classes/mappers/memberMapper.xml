@@ -219,6 +219,7 @@
         <when test="_parameter == 'emp_bnum'">emp_bnum</when>
         <when test="_parameter == 'emp_position'">emp_position</when>
         <when test="_parameter == 'emp_job'">emp_job</when>
+        <when test="_parameter == 'emp_status'">emp_status</when>
     </choose>
     FROM employee
     ORDER BY 
@@ -227,6 +228,7 @@
         <when test="_parameter == 'emp_bnum'">emp_bnum</when>
         <when test="_parameter == 'emp_position'">emp_position</when>
         <when test="_parameter == 'emp_job'">emp_job</when>
+        <when test="_parameter == 'emp_status'">emp_status</when>
     </choose>
 	</select>
 

@@ -24,8 +24,13 @@ public class OrgServiceImpl implements OrgService {
         List<MemberVO> allMembers = orgDAO.getAllMemPage();
         Map<String, Object> orgChart = new HashMap<>();
         
-        // CEO 노드 생성
-        orgChart.put("name", "CEO");
+     // CEO 노드 생성
+        MemberVO ceo = allMembers.stream()
+            .filter(m -> "CEO".equals(m.getEmp_job()))
+            .findFirst()
+            .orElse(null);
+        
+        orgChart.put("name", ceo != null ? ceo.getEmp_name() : "미정");
         orgChart.put("title", "CEO");
         orgChart.put("children", new ArrayList<>());
 

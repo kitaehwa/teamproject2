@@ -273,6 +273,7 @@ footer {
 								<option value="emp_bnum">근무지</option>
 								<option value="emp_position">직급</option>
 								<option value="emp_job">직책</option>
+								<option value="emp_status">재직구분</option>
 							</select> <select name="filterValue" id="filterValue" class="form-control">
 								<option value="">선택하세요</option>
 							</select>
@@ -473,7 +474,6 @@ footer {
 									        <option value="대리">대리</option>
 									        <option value="과장">과장</option>
 									        <option value="부장">부장</option>
-									        <option value="대표이사">대표이사</option>
 									    </select>
 				                    </div>
 				                    <div class="form-group">
@@ -486,7 +486,6 @@ footer {
 									        <option value="영업사원">영업사원</option>
 									        <option value="부서장">부서장</option>
 									        <option value="본부장">본부장</option>
-									        <option value="CEO">CEO</option>
 									    </select>
 				                    </div>
 				                    <div class="form-group">
@@ -659,7 +658,38 @@ footer {
 	        	    $('#edit_emp_break_date').val(member.emp_break_date || $('#edit_emp_break_date').val());
 	        	    $('#edit_emp_restart_date').val(member.emp_restart_date || $('#edit_emp_restart_date').val());
 	        	    $('#edit_emp_quit_date').val(member.emp_quit_date || $('#edit_emp_quit_date').val());
-	           
+	           		
+	        	    // 날짜 필드는 sessionStorage에 저장된 값이 있으면 그 값을 사용
+	                if (sessionStorage.getItem('edit_emp_start_date')) {
+	                    $('#edit_emp_start_date').val(sessionStorage.getItem('edit_emp_start_date'));
+	                } else {
+	                    $('#edit_emp_start_date').val(member.emp_start_date || '');
+	                }
+
+	                if (sessionStorage.getItem('edit_emp_break_date')) {
+	                    $('#edit_emp_break_date').val(sessionStorage.getItem('edit_emp_break_date'));
+	                } else {
+	                    $('#edit_emp_break_date').val(member.emp_break_date || '');
+	                }
+
+	                if (sessionStorage.getItem('edit_emp_restart_date')) {
+	                    $('#edit_emp_restart_date').val(sessionStorage.getItem('edit_emp_restart_date'));
+	                } else {
+	                    $('#edit_emp_restart_date').val(member.emp_restart_date || '');
+	                }
+
+	                if (sessionStorage.getItem('edit_emp_quit_date')) {
+	                    $('#edit_emp_quit_date').val(sessionStorage.getItem('edit_emp_quit_date'));
+	                } else {
+	                    $('#edit_emp_quit_date').val(member.emp_quit_date || '');
+	                }
+
+	                if (sessionStorage.getItem('edit_emp_birth')) {
+	                    $('#edit_emp_birth').val(sessionStorage.getItem('edit_emp_birth'));
+	                } else {
+	                    $('#edit_emp_birth').val(member.emp_birth || '');
+	                }
+	        	    
 	            $('#editModal').modal('show');
 	        },
 	        error: function(xhr, status, error) {
@@ -667,6 +697,15 @@ footer {
 		        }
 		    });
 		}
+      
+   	  // 모달이 닫힐 때 날짜 값을 sessionStorage에 저장
+      $('#editModal').on('hidden.bs.modal', function () {
+          sessionStorage.setItem('edit_emp_start_date', $('#edit_emp_start_date').val());
+          sessionStorage.setItem('edit_emp_break_date', $('#edit_emp_break_date').val());
+          sessionStorage.setItem('edit_emp_restart_date', $('#edit_emp_restart_date').val());
+          sessionStorage.setItem('edit_emp_quit_date', $('#edit_emp_quit_date').val());
+          sessionStorage.setItem('edit_emp_birth', $('#edit_emp_birth').val());
+      });
 	
       function updateEmployee() {
     	  var formData = $('#editForm').serializeArray();
@@ -682,7 +721,7 @@ footer {
     	    data: JSON.stringify(jsonData),
     	    success: function(response) {
 		            if(response.success) {
-		                alert('사원 정보가 성공적으로 업데이트되었습니다.');
+		            	alert('사원 정보가 성공적으로 업데이트되었습니다.');
 		                $('#editModal').modal('hide');
 		                loadMembers(1);
 		            } else {
