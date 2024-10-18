@@ -410,7 +410,8 @@ footer {
 				        <div class="modal-content">
 				            <div class="modal-header">
 				                <h5 class="modal-title">사원 정보 수정</h5>
-				                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				                <button type="button" class="close" data-dismiss="modal"
+									aria-label="Close" onclick="$('#editModal').modal('hide');">
 				                    <span aria-hidden="true">&times;</span>
 				                </button>
 				            </div>
@@ -430,7 +431,10 @@ footer {
 				                    </div>
 				                    <div class="form-group">
 				                        <label for="edit_emp_gender">성별</label>
-				                        <input type="text" class="form-control" id="edit_emp_gender" name="emp_gender">
+				                        <select class="form-control" id="edit_emp_gender" name="emp_gender">
+									        <option value="남자">남자</option>
+									        <option value="여자">여자</option>
+									    </select>
 				                    </div>
 				                    <div class="form-group">
 				                        <label for="edit_emp_tel">연락처</label>
@@ -446,7 +450,7 @@ footer {
 				                    </div>
 				                    <div class="form-group">
 				                        <label for="edit_emp_bnum">지점명</label>
-				                        <input type="text" class="form-control" id="edit_emp_bnum" name="emp_bnm">
+				                        <input type="text" class="form-control" id="edit_emp_bnum" name="emp_bnum">
 				                    </div>
 				                    <div class="form-group">
 				                        <label for="edit_emp_dnum">부서</label>
@@ -492,7 +496,7 @@ footer {
 				                </form>
 				            </div>
 				            <div class="modal-footer">
-				                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+				                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#editModal').modal('hide');">취소</button>
 				                <button type="button" class="btn btn-primary" onclick="updateEmployee()">저장</button>
 						
 						<!-- page-inner -->
@@ -603,23 +607,25 @@ footer {
 	        url: '${pageContext.request.contextPath}/member/detail/' + emp_id,
 	        type: 'GET',
 	        success: function(member) {
-	            $('#edit_emp_name').val(member.emp_name);
-	            $('#edit_emp_birth').val(member.emp_birth);
-	            $('#edit_emp_gender').val(member.emp_gender);
-	            $('#edit_emp_tel').val(member.emp_tel);
-	            $('#edit_emp_email').val(member.emp_email);
-	            $('#edit_emp_addr').val(member.emp_addr);
-	            $('#edit_emp_bnum').val(member.emp_bnum);
-	            $('#edit_emp_dnum').val(member.emp_dnum);
-	            $('#edit_emp_position').val(member.emp_position);
-	            $('#edit_emp_job').val(member.emp_job);
-	            $('#edit_emp_salary').val(member.emp_salary);
-	            $('#edit_emp_work_type').val(member.work_type);
-	            $('#edit_emp_status').val(member.emp_status);
-	            $('#edit_emp_start_date').val(member.emp_start_date);
-	            $('#edit_emp_break_date').val(member.emp_break_date);
-	            $('#edit_emp_restart_date').val(member.emp_restart_date);
-	            $('#edit_emp_quit_date').val(member.emp_quit_date);
+	        	console.log(member);
+	        	 $('#edit_emp_id').val(member.emp_id || $('#edit_emp_id').val());
+	        	    $('#edit_emp_name').val(member.emp_name || $('#edit_emp_name').val());
+	        	    $('#edit_emp_birth').val(member.emp_birth || $('#edit_emp_birth').val());
+	        	    $('#edit_emp_gender').val(member.emp_gender || $('#edit_emp_gender').val());
+	        	    $('#edit_emp_tel').val(member.emp_tel || $('#edit_emp_tel').val());
+	        	    $('#edit_emp_email').val(member.emp_email || $('#edit_emp_email').val());
+	        	    $('#edit_emp_addr').val(member.emp_addr || $('#edit_emp_addr').val());
+	        	    $('#edit_emp_bnum').val(member.emp_bnum || $('#edit_emp_bnum').val());
+	        	    $('#edit_emp_dnum').val(member.emp_dnum || $('#edit_emp_dnum').val());
+	        	    $('#edit_emp_position').val(member.emp_position || $('#edit_emp_position').val());
+	        	    $('#edit_emp_job').val(member.emp_job || $('#edit_emp_job').val());
+	        	    $('#edit_emp_salary').val(member.emp_salary || $('#edit_emp_salary').val());
+	        	    $('#edit_emp_work_type').val(member.emp_work_type || $('#edit_emp_work_type').val());
+	        	    $('#edit_emp_status').val(member.emp_status || $('#edit_emp_status').val());
+	        	    $('#edit_emp_start_date').val(member.emp_start_date || $('#edit_emp_start_date').val());
+	        	    $('#edit_emp_break_date').val(member.emp_break_date || $('#edit_emp_break_date').val());
+	        	    $('#edit_emp_restart_date').val(member.emp_restart_date || $('#edit_emp_restart_date').val());
+	        	    $('#edit_emp_quit_date').val(member.emp_quit_date || $('#edit_emp_quit_date').val());
 	           
 	            $('#editModal').modal('show');
 	        },
