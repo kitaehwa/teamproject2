@@ -178,7 +178,7 @@
           <div class="page-inner">
 <!------------------------------------------------------------------------------------------------------------------>
  <h1 class="page-title">내정보</h1>
-<div class="info-container">
+	<div class="info-container">
             <!-- 사진 및 기본 정보 -->
               <table class="info-table" style="width: 70%;">
                 <tr>

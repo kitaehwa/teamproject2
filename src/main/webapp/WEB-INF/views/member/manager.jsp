@@ -1,25 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Kaiadmin - Bootstrap 5 Admin Dashboard</title>
-    <meta
-      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
-      name="viewport"
-    />
-    <link
-      rel="icon"
-      href="${pageContext.request.contextPath }/resources/assets/img/kaiadmin/favicon.ico"
-      type="image/x-icon"
-    />
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>Kaiadmin - Bootstrap 5 Admin Dashboard</title>
+<meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+	name="viewport" />
+<link rel="icon"
+	href="${pageContext.request.contextPath }/resources/assets/img/kaiadmin/favicon.ico"
+	type="image/x-icon" />
 
-    <!-- Fonts and icons -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/webfont/webfont.min.js"></script>
-    <script>
+<!-- Fonts and icons -->
+<script
+	src="${pageContext.request.contextPath }/resources/assets/js/plugin/webfont/webfont.min.js"></script>
+<script>
       WebFont.load({
         google: { families: ["Public Sans:300,400,500,600,700"] },
         custom: {
@@ -36,480 +33,506 @@
         },
       });
     </script>
-	
-	 <!-- OrgChart.js 라이브러리 추가 -->
-	<script src="https://balkan.app/js/OrgChart.js"></script>
-	
-    <!-- CSS Files -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/plugins.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/kaiadmin.min.css" />
 
-    <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/demo.css" />
-  
-  
-  <style>
-      	   /* 기존 스타일 */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 10px;
-    }
-		
-    th, td {
-      border: 1px solid #ddd;
-      padding: 6px;
-      text-align: left;
-    }
-		
-    .btn-info {
-      padding: 4px 8px;
-      font-size: 12px;
-    }
-      
-    .modal-dialog { 
-      max-width: 800px; 
-    }
-       
-    .pagination ul {
-      list-style: none;
-      display: flex;
-      justify-content: center;
-      padding: 0;
-    }
-	    
-    .pagination ul li {
-      margin: 0 5px;
-    }
-	    
-    .pagination ul li a {
-      display: block;
-      padding: 5px 10px;
-      background-color: #f1f1f1;
-      border-radius: 3px;
-      text-decoration: none;
-      color: #333;
-    }
-	    
-    .pagination ul li.active a {
-      background-color: #007bff;
-      color: white;
-    }
-	    
-    .pagination ul li.disabled a {
-      pointer-events: none;
-      background-color: #ddd;
-    }
-	    
-    .img-fluid {
-      max-width: 100%;
-      height: auto;
-    }
-	
-    .rounded-circle {
-      border-radius: 50%;
-    }
-	
-    .table-bordered th {
-      width: 20%;
-    }
-	
-    .table-bordered th,
-    .table-bordered td {
-      padding: 10px;
-      vertical-align: middle;
-    }
-	
-    .table-bordered th {
-      background-color: #f2f2f2;
-      width: 30%;
-    }
-	    
-    .button-container {
-      display: flex;
-      justify-content: flex-end;
-      margin-bottom: 10px;
-      padding-right: 15px;
-    }
-	    
-    #showOrgChart {
-      margin-left: auto;
-    }
-   		
-    #filterForm {
-      margin-bottom: 10px;
-      max-width: 20%; 
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-    }
-        
-    #filterForm select,
-    #filterForm button {
-      width: auto;
-      margin-right: 1%;
-    }
-        
-    #filterForm select {
-      flex: 1 1 10%; 
-      margin-bottom: 10px; 
-    }
-    
-    .controls-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      width: 100%;
-      flex-wrap: nowrap;
-    }
-    
-    #filterForm, #searchForm {
-      display: flex;
-      align-items: center;
-    }
-    
-    #filterForm select, #searchForm select, #searchForm input, .btn {
-      margin-right: 5px;
-      height: 38px;
-    }
-    
-    #filterForm {
-      width: 35%;
-    }
-    
-    #searchForm {
-      width: 40%;
-    }
-    
-    #showOrgChart {
-      width: auto;
-      white-space: nowrap;
-    }
-    
-    .btn {
-      padding: 0.375rem 0.75rem;
-    }
-    
-    #filterType, #filterValue, #searchType {
-      width: auto;
-      flex-grow: 1;
-    }
-    
-    #searchType {
-      margin-left: 10%;
-    }
-    
-    #keyword {
-      width: auto;
-      flex-grow: 2;
-    }
-    
-    html, body {
-      height: 100%;
-      margin: 0;
-    }
+<!-- OrgChart.js 라이브러리 추가 -->
+<script src="https://balkan.app/js/OrgChart.js"></script>
 
-    body {
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .main-panel {
-      flex: 1 0 auto;
-      display: flex;
-      flex-direction: column;
-    }
+<!-- CSS Files -->
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/resources/assets/css/bootstrap.min.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/resources/assets/css/plugins.min.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/resources/assets/css/kaiadmin.min.css" />
 
-    .container {
-      flex: 1 0 auto;
-    }
+<!-- CSS Just for demo purpose, don't include it in your project -->
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/resources/assets/css/demo.css" />
 
-    .page-inner {
-      flex: 1 0 auto;
-      display: flex;
-      flex-direction: column;
-    }
 
-    #memberTable {
-      flex: 1 0 auto;
-      overflow-y: auto;
-    }
+<style>
 
-    footer {
-      flex-shrink: 0;
-    }
-	
-	#register {
-	  margin-left: 90%;
-	  display: flex;
-	  justify-content: center; 
-	  align-items: center;      
-	  font-size: 1.5rem;
-	  padding: 20px 30px;
-	}
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 10px;
+}
 
-  </style>
-    
-  
-  </head>
-  <body>
-    <div class="wrapper">
-      <%@ include file="/resources/assets/inc/sidebar.jsp" %> <!-- sidebar -->
-      <div class="main-panel">
-        <div class="main-header">
-          <%@ include file="/resources/assets/inc/logo_header.jsp" %> <!-- Logo Header -->
-          <%@ include file="/resources/assets/inc/navbar.jsp" %> <!-- Navbar Header -->
-        </div>
-        <div class="container">
-          <div class="page-inner">
-<!------------------------------------------------------------------------------------------------------------------>
-    	<h1>관리자 페이지</h1>
-    	<div style="display:flex;">
-        <!-- 필터 폼 추가 -->
-            <form id="filterForm" class="form-inline" action="${pageContext.request.contextPath}/member/filter" method="get">
-             <input type="hidden" name="pageType" value="manager">
-              <select name="filterType" id="filterType" class="form-control">
-                <option value="">필터 선택</option>
-                <option value="emp_dnum">부서</option>
-                <option value="emp_bnum">근무지</option>
-                <option value="emp_position">직급</option>
-                <option value="emp_job">직책</option>
-              </select>
-              <select name="filterValue" id="filterValue" class="form-control">
-                <option value="">선택하세요</option>
-              </select>
-              <button type="button" id="applyFilter" class="btn btn-primary">필터 적용</button>
-              <button type="button" id="resetFilter" class="btn btn-primary">초기화</button>
-            </form>
-                
-         <!-- 검색 폼 추가 -->
-          <form id="searchForm" class="form-inline">
-        	<input type="hidden" name="pageType" value="manager">
-              <select name="searchType" id="searchType" class="form-control" >
-                <option value="emp_id">사원번호</option>
-                <option value="emp_name">사원명</option>
-                <option value="emp_dnum">부서명</option>
-                <option value="emp_position">직급</option>
-                <option value="emp_job">직책</option>
-              </select>
-              <input type="text" name="keyword" id="keyword" class="form-control" placeholder="검색어 입력">
-              <button type="button" id="searchBtn" class="btn btn-primary">검색</button>
-            </form>
-                
-         <!-- 조직도 버튼 추가 -->
-         <button id="showOrgChart" class="btn btn-primary">조직도 보기</button>
-       </div>
-     </div>
-        
-        
-    	<!-- 사원 목록 테이블 -->
-        <table class="table table-striped" id="memberTable">
-            <thead>
-                <tr>
-                    <th>사원번호</th>
-                    <th>이름</th>
-                    <th>생년월일</th>
-                    <th>성별</th>
-                    <th>연락처</th>
-                    <th>이메일</th>
-                    <th>주소</th>
-                    <th>지점명</th>
-                    <th>부서</th>
-                    <th>직급</th>
-                    <th>직책</th>
-                    <th>연봉</th>
-                    <th>근무형태</th>
-                    <th>재직구분</th>
-                    <th>입사일</th>
-                    <th>휴직일</th>
-                    <th>복직일</th>
-                    <th>퇴사일</th>
-                    <th>정보수정</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="member" items="${members}">
-                    <tr>
-                        <td>${member.emp_id}</td>
-                        <td>${member.emp_name}</td>
-	                    <td>${member.emp_birth}</td>
-	                    <td>${member.emp_gender}</td>
-	                    <td>${member.emp_tel}</td>
-	                    <td>${member.emp_email}</td>
-	                    <td>${member.emp_addr}</td>
-	                    <td>${member.emp_bnum}</td>
-                        <td>${member.emp_dnum}</td>
-                        <td>${member.emp_position}</td>
-	                    <td>${member.emp_job}</td>
-	                    <td>${member.emp_salary}</td>
-	                    <td>${member.emp_work_type}</td>
-	                    <td>${member.emp_status}</td>
-	                    <td>${member.emp_start_date}</td>
-	                    <td>${member.emp_break_date}</td>
-	                    <td>${member.emp_restart_date}</td>
-	                    <td>${member.emp_quit_date}</td>
-                        <td><button class="btn btn-info btn-sm" onclick="showDetail('${member.emp_id}')">수정</button></td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
-        
-        <!-- 페이징  -->
-        <div class="pagination">
-		    <ul>
-		        <!-- 이전 페이지로 가는 링크 (첫 페이지에서는 비활성화) -->
-		        <li class="${currentPage == 1 ? 'disabled' : ''}">
-		            <a href="?page=${currentPage - 1}" aria-label="Previous">&laquo; 이전</a>
-		        </li>
-		
-		        <!-- 페이지 숫자 링크 -->
-		        <c:forEach var="i" begin="1" end="${totalPages}">
-		            <li class="${currentPage == i ? 'active' : ''}">
-		                <a href="?page=${i}">${i}</a>
-		            </li>
-		        </c:forEach>
-		
-		        <!-- 다음 페이지로 가는 링크 (마지막 페이지에서는 비활성화) -->
-		        <li class="${currentPage == totalPages ? 'disabled' : ''}">
-		            <a href="?page=${currentPage + 1}" aria-label="Next">다음 &raquo;</a>
-		        </li>
-		    </ul>
+th, td {
+	border: 1px solid #ddd;
+	padding: 6px;
+	text-align: left;
+	white-space: nowrap; /* 줄바꿈 방지 */
+    word-wrap: normal; /* 단어가 넘치면 줄바꿈 하지 않고 계속 이어짐 */
+}
+
+.btn-info {
+	padding: 4px 8px;
+	font-size: 12px;
+}
+
+.modal-dialog {
+	max-width: 800px;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: space-between; /* 양 끝에 배치 */
+    align-items: center; /* 세로 정렬 */
+    width: 100%;
+}
+
+.pagination ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+}
+
+.pagination ul li {
+    margin: 0 5px;
+}
+
+.pagination ul li a {
+    display: block;
+    padding: 5px 10px;
+    background-color: #f1f1f1;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #333;
+}
+
+.pagination ul li.active a {
+    background-color: #007bff;
+    color: white;
+}
+
+.pagination ul li.disabled a {
+    pointer-events: none;
+    background-color: #ddd;
+}
+
+#register {
+    padding: 10px 20px;
+    font-size: 14px;
+}
+
+.img-fluid {
+	max-width: 100%;
+	height: auto;
+}
+
+.rounded-circle {
+	border-radius: 50%;
+}
+
+.table-bordered th {
+	width: 20%;
+}
+
+.table-bordered th, .table-bordered td {
+	padding: 10px;
+	vertical-align: middle;
+}
+
+.table-bordered th {
+	background-color: #f2f2f2;
+	width: 30%;
+}
+
+.btn {
+	padding: 0.375rem 0.75rem;
+}
+
+#keyword {
+	width: auto;
+	flex-grow: 2;
+}
+
+html, body {
+	height: 100%;
+	margin: 0;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+}
+
+.main-panel {
+	flex: 1 0 auto;
+	display: flex;
+	flex-direction: column;
+}
+
+.container {
+	flex: 1 0 auto;
+}
+
+.page-inner {
+	flex: 1 0 auto;
+	display: flex;
+	flex-direction: column;
+}
+
+#memberTable {
+	flex: 1 0 auto;
+	overflow-x: auto;
+}
+
+footer {
+	flex-shrink: 0;
+}
+
+.table-responsive {
+	overflow-x: auto;
+	max-width: 100%;
+}
+
+#infoDetail {
+	width: max-content;
+	min-width: 100%;
+}
+
+#infoDetail th, #infoDetail td {
+	white-space: nowrap;
+	padding: 8px;
+}
+
+.controls-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+
+#filterForm, #searchForm {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%; /* width 조정 */
+  margin-bottom: 10px;
+}
+
+#filterForm select, #searchForm select, #searchForm input, .btn {
+  margin-right: 5px;
+  height: 38px; /* 높이 통일 */
+}
+
+#filterForm {
+  width: 40%;
+}
+
+#searchForm {
+  width: 40%;
+}
+
+#showOrgChart {
+  width: auto;
+  white-space: nowrap;
+}
+
+#filterType, #filterValue, #searchType {
+  width: auto;
+  flex-grow: 1;
+}
+
+#keyword {
+  width: auto;
+  flex-grow: 2;
+}
+</style>
+
+
+</head>
+<body>
+	<div class="wrapper">
+		<%@ include file="/resources/assets/inc/sidebar.jsp"%>
+		<!-- sidebar -->
+		<div class="main-panel">
+			<div class="main-header">
+				<%@ include file="/resources/assets/inc/logo_header.jsp"%>
+				<!-- Logo Header -->
+				<%@ include file="/resources/assets/inc/navbar.jsp"%>
+				<!-- Navbar Header -->
+			</div>
+			<div class="container">
+				<div class="page-inner">
+					<!------------------------------------------------------------------------------------------------------------------>
+					<h1>관리자 페이지</h1>
+					<div class="controls-container"
+						style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+						<!-- 필터 폼 추가 -->
+						<form id="filterForm" class="form-inline"
+							action="${pageContext.request.contextPath}/member/filter"
+							method="get">
+							<input type="hidden" name="pageType" value="manager"> <select
+								name="filterType" id="filterType" class="form-control">
+								<option value="">필터 선택</option>
+								<option value="emp_dnum">부서</option>
+								<option value="emp_bnum">근무지</option>
+								<option value="emp_position">직급</option>
+								<option value="emp_job">직책</option>
+							</select> <select name="filterValue" id="filterValue" class="form-control">
+								<option value="">선택하세요</option>
+							</select>
+							<button type="button" id="applyFilter" class="btn btn-primary">필터
+								적용</button>
+							<button type="button" id="resetFilter" class="btn btn-primary">초기화</button>
+						</form>
+
+						<!-- 검색 폼 추가 -->
+						<form id="searchForm" class="form-inline">
+							<input type="hidden" name="pageType" value="manager"> <select
+								name="searchType" id="searchType" class="form-control">
+								<option value="emp_id">사원번호</option>
+								<option value="emp_name">사원명</option>
+								<option value="emp_dnum">부서명</option>
+								<option value="emp_position">직급</option>
+								<option value="emp_job">직책</option>
+							</select> <input type="text" name="keyword" id="keyword"
+								class="form-control" placeholder="검색어 입력">
+							<button type="button" id="searchBtn" class="btn btn-primary">검색</button>
+						</form>
+
+						<!-- 조직도 버튼 추가 -->
+						<button id="showOrgChart" class="btn btn-primary">조직도 보기</button>
+					</div>
+				</div>
+
+
+				<!-- 사원 목록 테이블 -->
+				<div class="table-responsive">
+					<table class="table table-bordered" id="memberTable">
+						<thead>
+							<tr>
+								<th>사원번호</th>
+								<th>이름</th>
+								<th>생년월일</th>
+								<th>성별</th>
+								<th>연락처</th>
+								<th>이메일</th>
+								<th>주소</th>
+								<th>지점명</th>
+								<th>부서</th>
+								<th>직급</th>
+								<th>직책</th>
+								<th>연봉</th>
+								<th>근무형태</th>
+								<th>재직구분</th>
+								<th>입사일</th>
+								<th>휴직일</th>
+								<th>복직일</th>
+								<th>퇴사일</th>
+								<th>정보수정</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var="member" items="${members}">
+								<tr>
+									<td>${member.emp_id}</td>
+									<td>${member.emp_name}</td>
+									<td>${member.emp_birth}</td>
+									<td>${member.emp_gender}</td>
+									<td>${member.emp_tel}</td>
+									<td>${member.emp_email}</td>
+									<td>${member.emp_addr}</td>
+									<td>${member.emp_bnum}</td>
+									<td>${member.emp_dnum}</td>
+									<td>${member.emp_position}</td>
+									<td>${member.emp_job}</td>
+									<td>${member.emp_salary}</td>
+									<td>${member.emp_work_type}</td>
+									<td>${member.emp_status}</td>
+									<td>${member.emp_start_date}</td>
+									<td>${member.emp_break_date}</td>
+									<td>${member.emp_restart_date}</td>
+									<td>${member.emp_quit_date}</td>
+									<td><button class="btn btn-info btn-sm"
+											onclick="showDetail('${member.emp_id}')">수정</button></td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</div>
+
+				<!-- 페이징  -->
+				<div class="pagination-container">
+				<div class="pagination">
+					<ul>
+						<!-- 이전 페이지로 가는 링크 (첫 페이지에서는 비활성화) -->
+						<li class="${currentPage == 1 ? 'disabled' : ''}"><a
+							href="?page=${currentPage - 1}" aria-label="Previous">&laquo;
+								이전</a></li>
+
+						<!-- 페이지 숫자 링크 -->
+						<c:forEach var="i" begin="1" end="${totalPages}">
+							<li class="${currentPage == i ? 'active' : ''}"><a
+								href="?page=${i}">${i}</a></li>
+						</c:forEach>
+
+						<!-- 다음 페이지로 가는 링크 (마지막 페이지에서는 비활성화) -->
+						<li class="${currentPage == totalPages ? 'disabled' : ''}"><a
+							href="?page=${currentPage + 1}" aria-label="Next">다음 &raquo;</a>
+						</li>
+					</ul>
+				</div>
+
+				<button id="register" class="btn btn-primary">사원등록</button>
+				</div>
+				<!-- 조직도 모달 -->
+				<div class="modal fade" id="orgChartModal" tabindex="-1"
+					role="dialog" aria-hidden="true">
+					<div class="modal-dialog modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">조직도</h5>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<div class="form-group">
+									<label for="branchSelect">지부 선택:</label> <select
+										id="branchSelect" class="form-control">
+										<!-- 옵션들은 JavaScript로 동적으로 추가될 것입니다 -->
+									</select>
+								</div>
+								<div id="orgChart" style="height: 600px;"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Modal -->
+				<div class="modal fade" id="detailModal" tabindex="-1" role="dialog"
+					aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">회원 상세 정보</h5>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body" id="modalBody">
+								<div class="row">
+									<div
+										class="col-md-4 d-flex align-items-center justify-content-center">
+										<!-- 프로필 사진 표시 영역 -->
+										<img id="emp_photo" src="" alt="프로필 사진"
+											class="img-fluid rounded-circle"
+											style="width: 150px; height: 150px;">
+									</div>
+									<div class="col-md-8">
+										<!-- 사원 정보를 4행 2열 테이블 형식으로 출력 -->
+										<table class="table table-bordered">
+											<tr>
+												<th>사원번호</th>
+												<td id="emp_id"></td>
+												<th>이름</th>
+												<td id="emp_name"></td>
+											</tr>
+											<tr>
+												<th>직급</th>
+												<td id="emp_position"></td>
+												<th>직책</th>
+												<td id="emp_job"></td>
+											</tr>
+											<tr>
+												<th>부서</th>
+												<td id="emp_dnum"></td>
+												<th>근무지</th>
+												<td id="emp_bnum"></td>
+											</tr>
+											<tr>
+												<th>이메일</th>
+												<td id="emp_email"></td>
+												<th>연락처</th>
+												<td id="emp_tel"></td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- page-inner -->
+					</div>
+					<!-- container -->
+					<%-- 	    <%@ include file="/resources/assets/inc/footer.jsp" %> --%>
+				</div>
+			</div>
+
+			<!------------------------------------------------------------------------------------------------------------------>
 		</div>
-        
-        <button id="register" class="btn btn-primary">사원등록</button>
-        
-        <!-- 조직도 모달 -->
-	    <div class="modal fade" id="orgChartModal" tabindex="-1" role="dialog" aria-hidden="true">
-	    <div class="modal-dialog modal-lg" role="document">
-	        <div class="modal-content">
-	            <div class="modal-header">
-	                <h5 class="modal-title">조직도</h5>
-	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                    <span aria-hidden="true">&times;</span>
-	                </button>
-	            </div>
-	            <div class="modal-body">
-	                <div class="form-group">
-	                    <label for="branchSelect">지부 선택:</label>
-	                    <select id="branchSelect" class="form-control">
-	                        <!-- 옵션들은 JavaScript로 동적으로 추가될 것입니다 -->
-	                    </select>
-	                </div>
-	                <div id="orgChart" style="height: 600px;"></div>
-			    </div>
-			  </div>
-		 </div>
-		 </div>
-	
-        <!-- Modal -->
-	    <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-hidden="true">
-	    <div class="modal-dialog" role="document">
-	        <div class="modal-content">
-	            <div class="modal-header">
-		            <h5 class="modal-title">회원 상세 정보</h5>
-	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                    <span aria-hidden="true">&times;</span>
-	                </button>
-            	</div>
-	            <div class="modal-body" id="modalBody">
-	                <div class="row">
-	                    <div class="col-md-4 d-flex align-items-center justify-content-center">
-	                        <!-- 프로필 사진 표시 영역 -->
-	                        <img id="emp_photo" src="" alt="프로필 사진" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
-	                    </div>
-	                    <div class="col-md-8">
-	                        <!-- 사원 정보를 4행 2열 테이블 형식으로 출력 -->
-	                        <table class="table table-bordered">
-	                            <tr>
-	                                <th>사원번호</th>
-	                                <td id="emp_id"></td>
-	                                <th>이름</th>
-	                                <td id="emp_name"></td>
-	                            </tr>
-	                            <tr>
-	                                <th>직급</th>
-	                                <td id="emp_position"></td>
-	                                <th>직책</th>
-	                                <td id="emp_job"></td>
-	                            </tr>
-	                            <tr>
-	                                <th>부서</th>
-	                                <td id="emp_dnum"></td>
-	                                <th>근무지</th>
-	                                <td id="emp_bnum"></td>
-	                            </tr>
-	                            <tr>
-	                                <th>이메일</th>
-	                                <td id="emp_email"></td>
-	                                <th>연락처</th>
-	                                <td id="emp_tel"></td>
-	                            </tr>
-	                        </table>
-	                    </div>
-	                </div>
-	            </div>
-	        </div>
-	        <!-- page-inner -->
-	      </div>
-	    <!-- container -->
-<%-- 	    <%@ include file="/resources/assets/inc/footer.jsp" %> --%>
-	  </div>
+		<!-- page-inner -->
 	</div>
-                 
-<!------------------------------------------------------------------------------------------------------------------>
-          </div>
-          <!-- page-inner -->
-        </div>
-		<!-- container -->
-        <%@ include file="/resources/assets/inc/footer.jsp" %>
-      </div>
-      <!-- main-panel -->
-    </div>
-    <!-- main-wrapper -->
-    
-    <!--   Core JS Files   -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/core/jquery-3.7.1.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/assets/js/core/popper.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/assets/js/core/bootstrap.min.js"></script>
-    
-	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<!-- container -->
+	<%@ include file="/resources/assets/inc/footer.jsp"%>
+	</div>
+	<!-- main-panel -->
+	</div>
+	<!-- main-wrapper -->
 
-    <!-- jQuery Scrollbar -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+	<!--   Core JS Files   -->
+	<script
+		src="${pageContext.request.contextPath }/resources/assets/js/core/jquery-3.7.1.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath }/resources/assets/js/core/popper.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath }/resources/assets/js/core/bootstrap.min.js"></script>
 
-    <!-- Chart JS -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/chart.js/chart.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- jQuery Sparkline -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+	<!-- jQuery Scrollbar -->
+	<script
+		src="${pageContext.request.contextPath }/resources/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 
-    <!-- Chart Circle -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/chart-circle/circles.min.js"></script>
+	<!-- Chart JS -->
+	<script
+		src="${pageContext.request.contextPath }/resources/assets/js/plugin/chart.js/chart.min.js"></script>
 
-    <!-- Datatables -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/datatables/datatables.min.js"></script>
+	<!-- jQuery Sparkline -->
+	<script
+		src="${pageContext.request.contextPath }/resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
 
-    <!-- Bootstrap Notify -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+	<!-- Chart Circle -->
+	<script
+		src="${pageContext.request.contextPath }/resources/assets/js/plugin/chart-circle/circles.min.js"></script>
 
-    <!-- jQuery Vector Maps -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/jsvectormap/world.js"></script>
+	<!-- Datatables -->
+	<script
+		src="${pageContext.request.contextPath }/resources/assets/js/plugin/datatables/datatables.min.js"></script>
 
-    <!-- Sweet Alert -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+	<!-- Bootstrap Notify -->
+	<script
+		src="${pageContext.request.contextPath }/resources/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
 
-    <!-- Kaiadmin JS -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/kaiadmin.min.js"></script>
+	<!-- jQuery Vector Maps -->
+	<script
+		src="${pageContext.request.contextPath }/resources/assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath }/resources/assets/js/plugin/jsvectormap/world.js"></script>
 
-    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-    <script src="${pageContext.request.contextPath }/resources/assets/js/setting-demo.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/assets/js/demo.js"></script>
-    <script>
+	<!-- Sweet Alert -->
+	<script
+		src="${pageContext.request.contextPath }/resources/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+	<!-- Kaiadmin JS -->
+	<script
+		src="${pageContext.request.contextPath }/resources/assets/js/kaiadmin.min.js"></script>
+
+	<!-- Kaiadmin DEMO methods, don't include it in your project! -->
+	<script
+		src="${pageContext.request.contextPath }/resources/assets/js/setting-demo.js"></script>
+	<script
+		src="${pageContext.request.contextPath }/resources/assets/js/demo.js"></script>
+	<script>
       $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
         type: "line",
         height: "70",
@@ -916,5 +939,5 @@
 
       
     </script>
-  </body>
+</body>
 </html>

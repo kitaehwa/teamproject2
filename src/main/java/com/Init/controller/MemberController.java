@@ -290,7 +290,7 @@ public class MemberController implements ServletContextAware {
     
     @GetMapping("/list")
     public String listMembers(@RequestParam(defaultValue = "1") int page, Model model) {
-        int pageSize = 10;
+        int pageSize = 8;
         List<MemberVO> members = mService.getPaginatedMembers(page, pageSize);
         int totalMembers = mService.getTotalMembersCount();
         int totalPages = (int) Math.ceil((double) totalMembers / pageSize);
@@ -303,7 +303,7 @@ public class MemberController implements ServletContextAware {
     
     @GetMapping("/manager")
     public String listManager(@RequestParam(defaultValue = "1") int page, Model model) {
-    	int pageSize = 10;
+    	int pageSize = 8;
     	List<MemberVO> members = mService.getPaginatedMembers(page, pageSize);
     	int totalMembers = mService.getTotalMembersCount();
     	int totalPages = (int) Math.ceil((double) totalMembers / pageSize);
@@ -363,7 +363,7 @@ public class MemberController implements ServletContextAware {
                                 @RequestParam(defaultValue = "1") int page,
                                 @RequestParam(required = false) String pageType,
                                 Model model) {
-        int pageSize = 10;
+        int pageSize = 8;
         List<MemberVO> members = mService.getFilteredMembers(filterType, filterValue, page, pageSize);
         int totalMembers = mService.getFilteredMembersCount(filterType, filterValue);
         int totalPages = (int) Math.ceil((double) totalMembers / pageSize);
@@ -388,7 +388,7 @@ public class MemberController implements ServletContextAware {
                                 @RequestParam(defaultValue = "1") int page,
                                 @RequestParam(required = false) String pageType,
                                 Model model) {
-        int pageSize = 10;
+        int pageSize = 8;
         List<MemberVO> members = mService.searchMembers(searchType, keyword, page, pageSize);
         int totalMembers = mService.getSearchMembersCount(searchType, keyword);
         int totalPages = (int) Math.ceil((double) totalMembers / pageSize);
