@@ -645,14 +645,14 @@ footer {
 		            if(response.success) {
 		                alert('사원 정보가 성공적으로 업데이트되었습니다.');
 		                $('#editModal').modal('hide');
-		                loadMembers(currentPage);  // 현재 페이지 새로고침
+		                loadMembers(1);
 		            } else {
 		                alert('사원 정보 업데이트에 실패했습니다: ' + response.message);
 		            }
 		        },
 		        error: function(xhr, status, error) {
 		            console.error("Error details:", xhr.responseText);
-		            alert('서버 오류가 발생했습니다: ' + xhr.responseText);
+		            alert('서버 오류가 발생했습니다.');
 		        }
 		      });
       		}
@@ -692,7 +692,7 @@ footer {
           data: { page: page },
           success: function(response) {
             updateTable(response);
-          },
+           },
           error: function() {
             alert('사원 목록을 불러오는데 실패했습니다.');
 	        }
@@ -987,22 +987,6 @@ footer {
 	    $('#filterType').val('');
 	    $('#filterValue').empty().append('<option value="">선택하세요</option>');
 	    loadMembers(1);
-		}
-
-        // 페이지 로드 함수
-        function loadMembers(page) {
-	    currentState = 'manager';
-	    $.ajax({
-	        url: '${pageContext.request.contextPath}/member/manager',
-	        type: 'GET',
-	        data: { page: page },
-	        success: function(response) {
-	            updateTable(response);
-	        },
-	        error: function() {
-	            alert('사원 목록을 불러오는데 실패했습니다.');
-		        }
-		    });
 		}
 
       

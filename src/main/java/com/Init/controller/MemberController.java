@@ -403,7 +403,8 @@ public class MemberController implements ServletContextAware {
 	public ResponseEntity<Map<String, Object>> updateEmployeeInfo(@RequestBody MemberVO vo) {
 	    Map<String, Object> response = new HashMap<>();
 	    try {
-	        boolean result = mService.updateEmployeeInfo(vo);
+	    	logger.info("Updating employee info: {}", vo);
+	    	boolean result = mService.updateEmployeeInfo(vo);
 	        if(result) {
 	            response.put("success", true);
 	            response.put("message", "사원 정보가 성공적으로 업데이트되었습니다.");
