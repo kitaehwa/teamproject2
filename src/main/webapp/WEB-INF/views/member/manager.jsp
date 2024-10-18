@@ -450,19 +450,44 @@ footer {
 				                    </div>
 				                    <div class="form-group">
 				                        <label for="edit_emp_bnum">지점명</label>
-				                        <input type="text" class="form-control" id="edit_emp_bnum" name="emp_bnum">
+				                        <select class="form-control" id="edit_emp_bnum" name="emp_bnum">
+									        <option value="서울본부">서울본부</option>
+									        <option value="부산본부">부산본부</option>
+									        <option value="대전본부">대전본부</option>
+									    </select>
 				                    </div>
 				                    <div class="form-group">
 				                        <label for="edit_emp_dnum">부서</label>
-				                        <input type="text" class="form-control" id="edit_emp_dnum" name="emp_dnum">
+				                        <select class="form-control" id="edit_emp_dnum" name="emp_dnum">
+									        <option value="인사부">인사부</option>
+									        <option value="개발부">개발부</option>
+									        <option value="영업부">영업부</option>
+									        <option value="마케팅부">마케팅부</option>
+									        <option value="재무부">재무부</option>
+									    </select>
 				                    </div>
 				                    <div class="form-group">
 				                        <label for="edit_emp_position">직급</label>
-				                        <input type="text" class="form-control" id="edit_emp_position" name="emp_position">
+				                        <select class="form-control" id="edit_emp_position" name="emp_position">
+									        <option value="사원">사원</option>
+									        <option value="대리">대리</option>
+									        <option value="과장">과장</option>
+									        <option value="부장">부장</option>
+									        <option value="대표이사">대표이사</option>
+									    </select>
 				                    </div>
 				                    <div class="form-group">
 				                        <label for="edit_emp_job">직책</label>
-				                        <input type="text" class="form-control" id="edit_emp_job" name="emp_job">
+				                        <select class="form-control" id="edit_emp_job" name="emp_job">
+									        <option value="개발자">개발자</option>
+									        <option value="기획자">기획자</option>
+									        <option value="디자이너">디자이너</option>
+									        <option value="매니저">매니저</option>
+									        <option value="영업사원">영업사원</option>
+									        <option value="부서장">부서장</option>
+									        <option value="본부장">본부장</option>
+									        <option value="CEO">CEO</option>
+									    </select>
 				                    </div>
 				                    <div class="form-group">
 				                        <label for="edit_emp_salary">연봉</label>
@@ -470,11 +495,19 @@ footer {
 				                    </div>
 				                    <div class="form-group">
 				                        <label for="edit_emp_work_type">근무형태</label>
-				                        <input type="text" class="form-control" id="edit_emp_work_type" name="emp_work_type">
+				                        <select class="form-control" id="edit_emp_work_type" name="emp_work_type">
+									        <option value="통상">통상</option>
+									        <option value="교대">교대</option>
+									        <option value="시급">시급</option>
+									    </select>
 				                    </div>
 				                    <div class="form-group">
 				                        <label for="edit_emp_status">재직구분</label>
-				                        <input type="text" class="form-control" id="edit_emp_status" name="emp_status">
+				                        <select class="form-control" id="edit_emp_status" name="emp_status">
+									        <option value="재직">재직</option>
+									        <option value="휴직">휴직</option>
+									        <option value="퇴직">퇴직</option>
+									    </select>
 				                    </div>
 				                    <div class="form-group">
 				                        <label for="edit_emp_start_date">입사일</label>
