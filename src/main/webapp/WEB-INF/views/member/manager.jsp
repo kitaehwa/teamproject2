@@ -348,8 +348,7 @@ footer {
 									<td>${member.emp_break_date}</td>
 									<td>${member.emp_restart_date}</td>
 									<td>${member.emp_quit_date}</td>
-									<td><button class="btn btn-info btn-sm"
-											onclick="showDetail('${member.emp_id}')">수정</button></td>
+									<td><button class="btn btn-info btn-sm" onclick="showEditModal('${member.emp_id}')">수정</button></td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -406,58 +405,97 @@ footer {
 				</div>
 
 				<!-- Modal -->
-				<div class="modal fade" id="detailModal" tabindex="-1" role="dialog"
-					aria-hidden="true">
-					<div class="modal-dialog" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title">회원 상세 정보</h5>
-								<button type="button" class="close" data-dismiss="modal"
-									aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body" id="modalBody">
-								<div class="row">
-									<div
-										class="col-md-4 d-flex align-items-center justify-content-center">
-										<!-- 프로필 사진 표시 영역 -->
-										<img id="emp_photo" src="" alt="프로필 사진"
-											class="img-fluid rounded-circle"
-											style="width: 150px; height: 150px;">
-									</div>
-									<div class="col-md-8">
-										<!-- 사원 정보를 4행 2열 테이블 형식으로 출력 -->
-										<table class="table table-bordered">
-											<tr>
-												<th>사원번호</th>
-												<td id="emp_id"></td>
-												<th>이름</th>
-												<td id="emp_name"></td>
-											</tr>
-											<tr>
-												<th>직급</th>
-												<td id="emp_position"></td>
-												<th>직책</th>
-												<td id="emp_job"></td>
-											</tr>
-											<tr>
-												<th>부서</th>
-												<td id="emp_dnum"></td>
-												<th>근무지</th>
-												<td id="emp_bnum"></td>
-											</tr>
-											<tr>
-												<th>이메일</th>
-												<td id="emp_email"></td>
-												<th>연락처</th>
-												<td id="emp_tel"></td>
-											</tr>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
+				<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+				    <div class="modal-dialog modal-lg" role="document">
+				        <div class="modal-content">
+				            <div class="modal-header">
+				                <h5 class="modal-title">사원 정보 수정</h5>
+				                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				                    <span aria-hidden="true">&times;</span>
+				                </button>
+				            </div>
+				            <div class="modal-body">
+				                <form id="editForm">
+				                    
+				                    <div class="form-group">
+				                        <label for="edit_emp_id">사원번호</label>
+				                        <input type="text" class="form-control" id="edit_emp_id" name="emp_id">
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="edit_emp_name">이름</label>
+				                        <input type="text" class="form-control" id="edit_emp_name" name="emp_name">
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="edit_emp_birth">생년월일</label>
+				                        <input type="date" class="form-control" id="edit_emp_birth" name="emp_birth">
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="edit_emp_gender">성별</label>
+				                        <input type="text" class="form-control" id="edit_emp_gender" name="emp_gender">
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="edit_emp_tel">연락처</label>
+				                        <input type="text" class="form-control" id="edit_emp_tel" name="emp_tel">
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="edit_emp_email">이메일</label>
+				                        <input type="text" class="form-control" id="edit_emp_email" name="emp_email">
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="edit_emp_addr">주소</label>
+				                        <input type="text" class="form-control" id="edit_emp_addr" name="emp_addr">
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="edit_emp_bnum">지점명</label>
+				                        <input type="text" class="form-control" id="edit_emp_bnum" name="emp_bnm">
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="edit_emp_dnum">부서</label>
+				                        <input type="text" class="form-control" id="edit_emp_dnum" name="emp_dnum">
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="edit_emp_position">직급</label>
+				                        <input type="text" class="form-control" id="edit_emp_position" name="emp_position">
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="edit_emp_job">직책</label>
+				                        <input type="text" class="form-control" id="edit_emp_job" name="emp_job">
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="edit_emp_salary">연봉</label>
+				                        <input type="text" class="form-control" id="edit_emp_salary" name="emp_salary">
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="edit_emp_work_type">근무형태</label>
+				                        <input type="text" class="form-control" id="edit_emp_work_type" name="emp_work_type">
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="edit_emp_status">재직구분</label>
+				                        <input type="text" class="form-control" id="edit_emp_status" name="emp_status">
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="edit_emp_start_date">입사일</label>
+				                        <input type="date" class="form-control" id="edit_emp_start_date" name="emp_start_date">
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="edit_emp_break_date">휴직일</label>
+				                        <input type="date" class="form-control" id="edit_emp_break_date" name="emp_break_date">
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="edit_emp_restart_date">복직일</label>
+				                        <input type="date" class="form-control" id="edit_emp_restart_date" name="emp_restart_date">
+				                    </div>
+				                    
+				                    <div class="form-group">
+				                        <label for="edit_emp_quit_date">퇴사일</label>
+				                        <input type="date" class="form-control" id="edit_emp_quit_date" name="emp_quit_date">
+				                    </div>
+				                </form>
+				            </div>
+				            <div class="modal-footer">
+				                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+				                <button type="button" class="btn btn-primary" onclick="updateEmployee()">저장</button>
+						
 						<!-- page-inner -->
 					</div>
 					<!-- container -->
@@ -560,35 +598,60 @@ footer {
         fillColor: "rgba(255, 165, 52, .14)",
       });
       
-      function showDetail(emp_id) {
-    	    $.ajax({
-    	        url: '${pageContext.request.contextPath}/member/detail/' + emp_id,
-    	        type: 'GET',
-    	        dataType: 'json',
-    	        success: function(data) {
-    	            if (data) {
-    	                // 서버에서 받은 데이터를 모달에 출력
-    	                $('#emp_profile').attr('src', data.emp_photo || '${pageContext.request.contextPath}/resources/default-profile.jpg'); // 사진이 없을 경우 기본 이미지 설정
-    	                $('#emp_id').text(data.emp_id);
-    	                $('#emp_name').text(data.emp_name);
-    	                $('#emp_position').text(data.emp_position);
-    	                $('#emp_job').text(data.emp_job);
-    	                $('#emp_dnum').text(data.emp_dnum);
-    	                $('#emp_bnum').text(data.emp_bnum);
-    	                $('#emp_email').text(data.emp_email);
-    	                $('#emp_tel').text(data.emp_tel);
-
-    	                // 모달을 띄우기
-    	                $('#detailModal').modal('show');
-    	            } else {
-    	                alert('데이터를 불러오는데 실패했습니다.');
-    	            }
-    	        },
-    	        error: function(jqXHR, textStatus, errorThrown) {
-    	            console.error("AJAX error:", textStatus, errorThrown);
-    	        }
-    	    });
-    	}
+      // 사원 정보 수정
+      function showEditModal(emp_id) {
+	    $.ajax({
+	        url: '${pageContext.request.contextPath}/member/detail/' + emp_id,
+	        type: 'GET',
+	        success: function(member) {
+	            $('#edit_emp_id').val(member.emp_id);
+	            $('#edit_emp_name').val(member.emp_name);
+	            $('#edit_emp_birth').val(member.emp_birth);
+	            $('#edit_emp_gender').val(member.emp_gender);
+	            $('#edit_emp_tel').val(member.emp_tel);
+	            $('#edit_emp_email').val(member.emp_email);
+	            $('#edit_emp_addr').val(member.emp_addr);
+	            $('#edit_emp_bnum').val(member.emp_bnum);
+	            $('#edit_emp_dnum').val(member.emp_dnum);
+	            $('#edit_emp_position').val(member.emp_position);
+	            $('#edit_emp_job').val(member.emp_job);
+	            $('#edit_emp_salary').val(member.emp_salary);
+	            $('#edit_emp_work_type').val(member.work_type);
+	            $('#edit_emp_status').val(member.emp_status);
+	            $('#edit_emp_start_date').val(member.emp_start_date);
+	            $('#edit_emp_break_date').val(member.emp_break_date);
+	            $('#edit_emp_restart_date').val(member.emp_restart_date);
+	            $('#edit_emp_quit_date').val(member.emp_quit_date);
+	           
+	            $('#editModal').modal('show');
+	        },
+	        error: function(xhr, status, error) {
+	            alert('사원 정보를 불러오는데 실패했습니다.');
+		        }
+		    });
+		}
+	
+		function updateEmployee() {
+		    var formData = $('#editForm').serialize();
+		    $.ajax({
+		        url: '${pageContext.request.contextPath}/member/update',
+		        type: 'POST',
+		        data: formData,
+		        success: function(response) {
+		            if(response.success) {
+		                alert('사원 정보가 성공적으로 업데이트되었습니다.');
+		                $('#editModal').modal('hide');
+		                loadMembers(currentPage);  // 현재 페이지 새로고침
+		            } else {
+		                alert('사원 정보 업데이트에 실패했습니다: ' + response.message);
+		            }
+		        },
+		        error: function(xhr, status, error) {
+		            alert('서버 오류가 발생했습니다.');
+			        }
+			    });
+			}
+	      
 	    // 전역 변수 추가
 	    var currentState = 'manager'; 
 		var currentSearchType = '';
