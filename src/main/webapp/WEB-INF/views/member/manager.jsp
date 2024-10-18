@@ -416,7 +416,6 @@ footer {
 				            </div>
 				            <div class="modal-body">
 				                <form id="editForm">
-				                    
 				                    <div class="form-group">
 				                        <label for="edit_emp_id">사원번호</label>
 				                        <input type="text" class="form-control" id="edit_emp_id" name="emp_id">
@@ -604,7 +603,6 @@ footer {
 	        url: '${pageContext.request.contextPath}/member/detail/' + emp_id,
 	        type: 'GET',
 	        success: function(member) {
-	            $('#edit_emp_id').val(member.emp_id);
 	            $('#edit_emp_name').val(member.emp_name);
 	            $('#edit_emp_birth').val(member.emp_birth);
 	            $('#edit_emp_gender').val(member.emp_gender);
@@ -631,13 +629,19 @@ footer {
 		    });
 		}
 	
-		function updateEmployee() {
-		    var formData = $('#editForm').serialize();
-		    $.ajax({
-		        url: '${pageContext.request.contextPath}/member/update',
-		        type: 'POST',
-		        data: formData,
-		        success: function(response) {
+      function updateEmployee() {
+    	  var formData = $('#editForm').serializeArray();
+    	  var jsonData = {};
+    	  $.each(formData, function(i, field){
+    	    jsonData[field.name] = field.value;
+    	  });
+    	  
+    	  $.ajax({
+    	    url: '${pageContext.request.contextPath}/member/mupdate',
+    	    type: 'POST',
+    	    contentType: 'application/json',
+    	    data: JSON.stringify(jsonData),
+    	    success: function(response) {
 		            if(response.success) {
 		                alert('사원 정보가 성공적으로 업데이트되었습니다.');
 		                $('#editModal').modal('hide');
@@ -647,10 +651,11 @@ footer {
 		            }
 		        },
 		        error: function(xhr, status, error) {
-		            alert('서버 오류가 발생했습니다.');
-			        }
-			    });
-			}
+		            console.error("Error details:", xhr.responseText);
+		            alert('서버 오류가 발생했습니다: ' + xhr.responseText);
+		        }
+		      });
+      		}
 	      
 	    // 전역 변수 추가
 	    var currentState = 'manager'; 

@@ -32,10 +32,10 @@
   	<!-- 회원 정보 수정 -->
 	<update id="updateMember">
 	    update employee 
-	    set emp_id=#{emp_id}, emp_name=#{emp_name}, emp_birth=#{emp_birth}, emp_gender=#{emp_gender}, emp_tel=#{emp_tel}, emp_email=#{emp_email},
-	    emp_addr=#{emp_addr}, emp_dnum=#{emp_dnum}, emp_position=#{emp_position}, emp_job=#{emp_job}, emp_status=#{emp_status}, emp_bnum=#{emp_bnum},
+	    set emp_name=#{emp_name}, emp_birth=#{emp_birth}, emp_gender=#{emp_gender}, emp_tel=#{emp_tel}, emp_email=#{emp_email}, 
+	    emp_addr=#{emp_addr}, emp_dnum=#{emp_dnum}, emp_position=#{emp_position}, emp_job=#{emp_job}, emp_status=#{emp_status}, emp_bnum=#{emp_bnum}, 
 		emp_work_type=#{emp_work_type}, emp_bank_name=#{emp_bank_name}, emp_account_num=#{emp_account_num}, emp_account_name=#{emp_account_name}, 
-		emp_start_date=#{emp_start_date}, emp_salary=#{emp_salary}, emp_break_date=#{emp_break_date}, emp_restart_date=#{emp_restart_date},	emp_quit_date=#{emp_quit_date},    
+		emp_start_date=#{emp_start_date}, emp_salary=#{emp_salary}, emp_break_date=#{emp_break_date}, emp_restart_date=#{emp_restart_date},	emp_quit_date=#{emp_quit_date}    
 	     
 	    where emp_id=#{emp_id}
 	</update>
@@ -259,5 +259,42 @@
             </if>
         </where>
     </select>
+    
+    <!-- 관리자 수정 -->
+    <update id="updateEmployee" parameterType="MemberVO">
+        UPDATE employee
+        SET emp_name = #{emp_name},
+            emp_birth = #{emp_birth},
+            emp_gender = #{emp_gender},
+            emp_tel = #{emp_tel},
+            emp_email = #{emp_email},
+            emp_addr = #{emp_addr},
+            emp_bnum = #{emp_bnum},
+            emp_dnum = #{emp_dnum},
+            emp_position = #{emp_position},
+            emp_job = #{emp_job},
+            emp_salary = #{emp_salary},
+            emp_work_type = #{emp_work_type},
+            emp_status = #{emp_status},
+            emp_start_date = #{emp_start_date},
+            emp_break_date = #{emp_break_date},
+            emp_restart_date = #{emp_restart_date},
+            emp_quit_date = #{emp_quit_date}
+        WHERE emp_id = #{emp_id}
+    </update>
+
+    <insert id="insertEmployeeHistory" parameterType="MemberVO">
+        INSERT INTO his_employee (
+            emp_id, emp_name, emp_birth, emp_gender, emp_tel, emp_email, emp_addr,
+            emp_bnum, emp_dnum, emp_position, emp_job, emp_salary, emp_work_type,
+            emp_status, emp_start_date, emp_break_date, emp_restart_date, emp_quit_date,
+            update_date
+        ) VALUES (
+            #{emp_id}, #{emp_name}, #{emp_birth}, #{emp_gender}, #{emp_tel}, #{emp_email}, #{emp_addr},
+            #{emp_bnum}, #{emp_dnum}, #{emp_position}, #{emp_job}, #{emp_salary}, #{emp_work_type},
+            #{emp_status}, #{emp_start_date}, #{emp_break_date}, #{emp_restart_date}, #{emp_quit_date},
+            NOW()
+        )
+    </insert>
 	
 </mapper>

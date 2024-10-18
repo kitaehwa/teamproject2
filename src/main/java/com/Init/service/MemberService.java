@@ -74,4 +74,7 @@ public interface MemberService {
     // 비밀번호 수정
     boolean updatePassword(String emp_id, String currentPassword, String newPassword) throws Exception;
     
+    // 관리자정보 수정
+    boolean updateEmployeeInfo(MemberVO vo);
+    
 }

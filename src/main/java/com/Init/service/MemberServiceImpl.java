@@ -258,4 +258,21 @@ public class MemberServiceImpl implements MemberService {
         return false;
     }
     
+    // 관리자 수정
+    
+    @Transactional
+    public boolean updateEmployeeInfo(MemberVO vo) {
+      try {
+        int result = mdao.updateEmployee(vo);
+        if(result > 0) {
+          mdao.insertEmployeeHistory(vo);
+          return true;
+        }
+        return false;
+      } catch (Exception e) {
+        logger.error("회원 정보 업데이트 중 오류 발생", e);
+        throw new RuntimeException("사원 정보 업데이트 실패", e);
+      }
+    }
+    
 }

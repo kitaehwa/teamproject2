@@ -228,4 +228,15 @@ public class MemberDAOImpl implements MemberDAO{
     public void updatePassword(MemberVO member) {
         sqlSession.update(NAMESPACE + ".updatePassword", member);
     }
+    
+    // 관리자 수정
+    @Override
+    public int updateEmployee(MemberVO vo) {
+      return sqlSession.update(NAMESPACE + ".updateEmployee", vo);
+    }
+
+    @Override
+    public void insertEmployeeHistory(MemberVO vo) {
+        sqlSession.insert(NAMESPACE + "insertEmployeeHistory", vo);
+    }
 }    

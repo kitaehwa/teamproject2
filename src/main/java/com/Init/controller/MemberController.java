@@ -83,45 +83,45 @@ public class MemberController implements ServletContextAware {
 	}
 
 	// 회원정보 수정 - 입력GET
-	@RequestMapping(value = "/update", method = RequestMethod.GET)
-	public String updateMemberGET(HttpSession session, Model model) {
-		logger.debug("/member/update -> updateMemberGET() 실행");
-		logger.debug("기존의 회원정보를 DB에서 가져오기");
-
-		String emp_id = (String) session.getAttribute("emp_id");
-
-		model.addAttribute(mService.memberInfo(emp_id));
-		logger.debug("연결된 뷰페이지 출력(/views/member/update.jsp)");
-
-		return "/member/update";
-	}
-
-	// 회원정보 수정 - 처리POST
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	@ResponseBody
-	public ResponseEntity<Map<String, Object>> updateMemberPOST(@ModelAttribute MemberVO vo) {
-		logger.debug("/member/update -> updateMemberPOST() 실행");
-		logger.debug("전달받은 정보(파라메터)를 저장");
-		logger.debug(" vo : " + vo);
-
-		Map<String, Object> response = new HashMap<>();
-		try {
-			int result = mService.memberUpdate(vo);
-			if (result == 0) {
-				response.put("success", false);
-				response.put("message", "회원 정보 업데이트 실패");
-				return ResponseEntity.ok(response);
-			}
-			// 수정 성공
-			response.put("success", true);
-			response.put("message", "회원 정보가 성공적으로 업데이트되었습니다.");
-			return ResponseEntity.ok(response);
-		} catch (Exception e) {
-			response.put("success", false);
-			response.put("message", "서버 오류: " + e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-		}
-	}
+	 	@RequestMapping(value = "/update",method = RequestMethod.GET)
+	 	public String updateMemberGET(HttpSession session, Model model) {
+	 	logger.debug("/member/update -> updateMemberGET() 실행");				
+	 	logger.debug("기존의 회원정보를 DB에서 가져오기");
+	 	
+	 	String emp_id = (String) session.getAttribute("emp_id");
+	 				
+	 	model.addAttribute(mService.memberInfo(emp_id));				
+	 	logger.debug("연결된 뷰페이지 출력(/views/member/update.jsp)");
+	 				
+	 	return "/member/update";
+	 	}
+	 			
+	 	// 회원정보 수정 - 처리POST
+	 	@RequestMapping(value="/update", method = RequestMethod.POST)
+	 	@ResponseBody
+	 	public ResponseEntity<Map<String, Object>> updateMemberPOST(@ModelAttribute MemberVO vo) {
+	 	    logger.debug("/member/update -> updateMemberPOST() 실행");
+	 	    logger.debug("전달받은 정보(파라메터)를 저장");
+	 	    logger.debug(" vo : "+vo);	
+	 			
+	 	    Map<String, Object> response = new HashMap<>();
+	 	    try {
+	 	        int result = mService.memberUpdate(vo);				
+	 	        if(result == 0) {	
+	 	            response.put("success", false);
+	 	            response.put("message", "회원 정보 업데이트 실패");
+	 	            return ResponseEntity.ok(response);
+	 	        }
+	 	        // 수정 성공
+	 	        response.put("success", true);
+	 	        response.put("message", "회원 정보가 성공적으로 업데이트되었습니다.");
+	 	        return ResponseEntity.ok(response);
+	 	    } catch (Exception e) {
+	 	        response.put("success", false);
+	 	        response.put("message", "서버 오류: " + e.getMessage());
+	 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+	 	    }
+	 	}
 
 	// 비밀번호 수정
 	@PostMapping("/updatePassword")
@@ -395,6 +395,29 @@ public class MemberController implements ServletContextAware {
 		} else {
 			return "member/list";
 		}
+	}
+	
+	// 관리자 수정
+	@PostMapping("/mupdate")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> updateEmployeeInfo(@RequestBody MemberVO vo) {
+	    Map<String, Object> response = new HashMap<>();
+	    try {
+	        boolean result = mService.updateEmployeeInfo(vo);
+	        if(result) {
+	            response.put("success", true);
+	            response.put("message", "사원 정보가 성공적으로 업데이트되었습니다.");
+	        } else {
+	            response.put("success", false);
+	            response.put("message", "사원 정보 업데이트에 실패했습니다.");
+	        }
+	        return ResponseEntity.ok(response);
+	    } catch (Exception e) {
+	    	logger.error("사원 정보 업데이트 중 서버 오류 발생", e);
+	    	response.put("success", false);
+	        response.put("message", "서버 오류: " + e.getMessage());
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+	    }
 	}
 	
 }

@@ -74,4 +74,8 @@ public interface MemberDAO {
     // 비밀번호 수정
     void updatePassword(MemberVO member);
     
+    // 관리자 수정
+    int updateEmployee(MemberVO vo);
+    void insertEmployeeHistory(MemberVO vo);
+    
 }
