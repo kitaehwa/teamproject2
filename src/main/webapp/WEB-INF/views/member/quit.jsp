@@ -45,8 +45,40 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/demo.css" />
   
 <style>
-	.form-group { margin-bottom: 20px; }
-	#quitRules { margin-top: 30px; }
+	
+	 .form-group { margin-bottom: 20px; }
+        #quitRules { 
+            margin-top: 30px; 
+            padding: 20px; 
+            border: 1px solid #ddd; 
+            border-radius: 5px; 
+        }
+        .approver-box {
+            width: 100%;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .approver-item {
+            flex: 1;
+            padding: 5px;
+            border: 1px solid #eee;
+            margin-right: 10px;
+            text-align: center;
+        }
+        .approver-item:last-child {
+            margin-right: 0;
+        }
+        .table-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .table {
+            width: 100%;
+        }
+	
 </style>
   
   </head>
@@ -63,49 +95,67 @@
 <!------------------------------------------------------------------------------------------------------------------>
 
 <h2>퇴사 신청</h2>
+
+                  <div class="approver-box">
+                        <div class="approver-item">
+                            <strong>1차 결재자</strong><br>
+                            <span id="approver1">미지정</span>
+                        </div>
+                        <div class="approver-item">
+                            <strong>2차 결재자</strong><br>
+                            <span id="approver2">미지정</span>
+                        </div>
+                        <div class="approver-item">
+                            <strong>3차 결재자</strong><br>
+                            <span id="approver3">미지정</span>
+                        </div>
+                    </div>
+                    
                     <form id="quitForm">
-                        <table class="table table-bordered">
-                            <tr>
-                                <th>사원번호</th>
-                                <td><input type="text" class="form-control" id="empId" name="empId" value="${memberVO.emp_id}" readonly></td>
-                            </tr>
-                            <tr>
-                                <th>이름</th>
-                                <td><input type="text" class="form-control" id="empName" name="empName" value="${memberVO.emp_name}" readonly></td>
-                            </tr>
-                            <tr>
-                                <th>부서</th>
-                                <td><input type="text" class="form-control" id="empDept" name="empDept" value="${memberVO.emp_dnum}" readonly></td>
-                            </tr>
-                            <tr>
-                                <th>직책</th>
-                                <td><input type="text" class="form-control" id="empPosition" name="empPosition" value="${memberVO.emp_job}" readonly></td>
-                            </tr>
-                            <tr>
-                                <th>퇴사희망일</th>
-                                <td><input type="date" class="form-control datepicker" id="quitDate" name="quitDate"></td>
-                            </tr>
-                            <tr>
-                                <th>퇴사사유</th>
-                                <td>
-                                    <select class="form-control" id="quitReason" name="quitReason">
-                                        <option value="">선택하세요</option>
-                                        <option value="이직">이직</option>
-                                        <option value="휴식">휴식</option>
-                                        <option value="학업/자기개발">학업/자기개발</option>
-                                        <option value="창업/자영업">창업/자영업</option>
-                                        <option value="가족/육아">가족/육아</option>
-                                        <option value="해외거주/이주">해외거주/이주</option>
-                                        <option value="직무불만족">직무불만족</option>
-                                        <option value="기타">기타</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>사유상세</th>
-                                <td><textarea class="form-control" id="quitReasonDetail" name="quitReasonDetail" rows="5"></textarea></td>
-                            </tr>
-                        </table>
+                        <div class="table-container">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th width="30%">사원번호</th>
+                                    <td><input type="text" class="form-control" id="empId" name="empId" value="${memberVO.emp_id}" readonly></td>
+                                </tr>
+                                <tr>
+                                    <th>이름</th>
+                                    <td><input type="text" class="form-control" id="empName" name="empName" value="${memberVO.emp_name}" readonly></td>
+                                </tr>
+                                <tr>
+                                    <th>부서</th>
+                                    <td><input type="text" class="form-control" id="empDept" name="empDept" value="${memberVO.emp_dnum}" readonly></td>
+                                </tr>
+                                <tr>
+                                    <th>직책</th>
+                                    <td><input type="text" class="form-control" id="empPosition" name="empPosition" value="${memberVO.emp_job}" readonly></td>
+                                </tr>
+                                <tr>
+                                    <th>퇴사희망일</th>
+                                    <td><input type="text" class="form-control datepicker" id="quitDate" name="quitDate"></td>
+                                </tr>
+                                <tr>
+                                    <th>퇴사사유</th>
+                                    <td>
+                                        <select class="form-control" id="quitReason" name="quitReason">
+                                            <option value="">선택하세요</option>
+                                            <option value="이직">이직</option>
+                                            <option value="휴식">휴식</option>
+                                            <option value="학업/자기개발">학업/자기개발</option>
+                                            <option value="창업/자영업">창업/자영업</option>
+                                            <option value="가족/육아">가족/육아</option>
+                                            <option value="해외거주/이주">해외거주/이주</option>
+                                            <option value="직무불만족">직무불만족</option>
+                                            <option value="기타">기타</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>사유상세</th>
+                                    <td><textarea class="form-control" id="quitReasonDetail" name="quitReasonDetail" rows="5"></textarea></td>
+                                </tr>
+                            </table>
+                        </div>
 
                         <div id="quitRules">
                             <h4>퇴사 규칙</h4>
@@ -225,6 +275,11 @@
             }
         });
     });
+    
+    
+    document.getElementById('approver1').textContent = '홍길동 부장';
+    document.getElementById('approver2').textContent = '김철수 과장';
+    document.getElementById('approver3').textContent = '이영희 대리';
     </script>
     
     <script>
