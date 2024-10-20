@@ -10,7 +10,7 @@
     <h2>비밀번호 찾기</h2>
     <form id="forgotPasswordForm">
         <input type="text" id="emp_id" name="emp_id" placeholder="사원번호" required><br>
-        <input type="email" id="email" name="email" placeholder="이메일" required><br>
+        <input type="email" id="emp_email" name="emp_email" placeholder="이메일" required><br>
         <button type="button" id="sendVerificationCode">인증코드 전송</button><br>
         <input type="text" id="verificationCode" name="verificationCode" placeholder="인증코드" required><br>
         <button type="button" id="verifyCode">인증코드 확인</button>
@@ -20,7 +20,7 @@
         $("#sendVerificationCode").click(function() {
             $.post("/member/sendVerificationCode", {
                 emp_id: $("#emp_id").val(),
-                email: $("#email").val()
+                emp_email: $("#emp_email").val()
             }, function(response) {
                 alert(response);
             }).fail(function(xhr) {
