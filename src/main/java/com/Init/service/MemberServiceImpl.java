@@ -273,7 +273,7 @@ public class MemberServiceImpl implements MemberService {
             
             // 비밀번호를 생년월일로 설정
             String birthDate = vo.getEmp_birth().toString().replaceAll("-", "");
-            vo.setEmp_pw(passwordEncoder.encode(birthDate));
+            vo.setEmp_pw(birthDate);
             
             insertMember(vo);
             return true;
