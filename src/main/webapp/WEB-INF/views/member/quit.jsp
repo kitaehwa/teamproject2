@@ -47,14 +47,8 @@
 <style>
 	
 	 .form-group { margin-bottom: 20px; }
-        #quitRules { 
-            margin-top: 30px; 
-            padding: 20px; 
-            border: 1px solid #ddd; 
-            border-radius: 5px; 
-        }
         .approver-box {
-            width: 100%;
+            width: 30%;
             border: 1px solid #ddd;
             padding: 10px;
             margin-bottom: 20px;
@@ -72,13 +66,32 @@
             margin-right: 0;
         }
         .table-container {
-            max-width: 800px;
+            max-width: 90%
             margin: 0 auto;
         }
         .table {
             width: 100%;
         }
-	
+        #quitRules {
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        #quitRules h4 {
+            margin-top: 0;
+        }
+        
+        .button-container {
+            text-align: right;
+            margin-top: 20px;
+        }
+        
+        .button-container {
+            text-align: right;
+            margin-top: 20px;
+        }
+        
 </style>
   
   </head>
@@ -97,25 +110,29 @@
 <h2>퇴사 신청</h2>
 
                   <div class="approver-box">
+                       <h4>결재선</h4>
                         <div class="approver-item">
-                            <strong>1차 결재자</strong><br>
+                            <button class="btn btn-sm btn-primary" onclick="openApproverModal(1)">1차 결재자 선택</button>
                             <span id="approver1">미지정</span>
                         </div>
                         <div class="approver-item">
-                            <strong>2차 결재자</strong><br>
+                            <button class="btn btn-sm btn-primary" onclick="openApproverModal(2)">2차 결재자 선택</button>
                             <span id="approver2">미지정</span>
                         </div>
                         <div class="approver-item">
-                            <strong>3차 결재자</strong><br>
+                            <button class="btn btn-sm btn-primary" onclick="openApproverModal(3)">3차 결재자 선택</button>
                             <span id="approver3">미지정</span>
                         </div>
                     </div>
                     
                     <form id="quitForm">
                         <div class="table-container">
+                    
+                    <form id="quitForm">
+                        <div class="table-container">
                             <table class="table table-bordered">
                                 <tr>
-                                    <th width="30%">사원번호</th>
+                                    <th width="20%">사원번호</th>
                                     <td><input type="text" class="form-control" id="empId" name="empId" value="${memberVO.emp_id}" readonly></td>
                                 </tr>
                                 <tr>
@@ -132,7 +149,7 @@
                                 </tr>
                                 <tr>
                                     <th>퇴사희망일</th>
-                                    <td><input type="text" class="form-control datepicker" id="quitDate" name="quitDate"></td>
+                                    <td><input type="date" class="form-control datepicker" id="quitDate" name="quitDate"></td>
                                 </tr>
                                 <tr>
                                     <th>퇴사사유</th>
@@ -154,31 +171,37 @@
                                     <th>사유상세</th>
                                     <td><textarea class="form-control" id="quitReasonDetail" name="quitReasonDetail" rows="5"></textarea></td>
                                 </tr>
+                                <tr>
+                                    <th>퇴사 규칙</th>
+                                    <td>
+                                        <div id="quitRules">
+                                            <h4>퇴사 규칙</h4>
+                                            <ol>
+                                                <li>퇴사 후 12개월 동안 동종업계 또는 경쟁 회사로의 이직을 금지하며, 위반 시 법적 책임을 질 수 있습니다.</li>
+                                                <li>퇴사 후에도 회사의 기밀 정보 및 영업 비밀을 외부에 유출하거나 개인적으로 사용하지 않을 것을 동의합니다.</li>
+                                                <li>회사에서 근무 중에 개발된 모든 지식 재산은 회사의 소유임을 인정하고, 이에 대한 권리를 주장하지 않겠습니다.</li>
+                                                <li>퇴사 전 모든 업무에 대한 인수인계를 완료하고, 필요한 자료 및 정보를 후임자에게 제공할 것에 동의합니다.</li>
+                                                <li>회사 소유의 장비 및 자산(노트북, 명함, 업무 관련 자료 등)을 퇴사 전 모두 반환할 것에 동의합니다.</li>
+                                                <li>퇴사 후에도 회사 및 동료에 대해 비방하지 않으며, 명예를 훼손하는 행동을 하지 않을 것을 동의합니다.</li>
+                                                <li>퇴사 시 남아있는 미지급금(급여, 퇴직금 등)은 정확히 정산되며 이에 동의합니다.</li>
+                                                <li>퇴사 후 12개월 동안 회사의 고객, 협력업체, 거래처 등에 접촉하여 사업 제안이나 개인적인 거래를 하지 않겠다는 것에 동의합니다.</li>
+                                            </ol>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>퇴사절차 동의</th>
+                                    <td>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="agreeRules" name="agreeRules">
+                                            <label class="custom-control-label" for="agreeRules">퇴사절차에 동의합니다.</label>
+                                        </div>
+                                    </td>
+                                </tr>
                             </table>
                         </div>
 
-                        <div id="quitRules">
-                            <h4>퇴사 규칙</h4>
-                            <ol>
-                                <li>퇴사 후 12개월 동안 동종업계 또는 경쟁 회사로의 이직을 금지하며, 위반 시 법적 책임을 질 수 있습니다.</li>
-                                <li>퇴사 후에도 회사의 기밀 정보 및 영업 비밀을 외부에 유출하거나 개인적으로 사용하지 않을 것을 동의합니다.</li>
-                                <li>회사에서 근무 중에 개발된 모든 지식 재산은 회사의 소유임을 인정하고, 이에 대한 권리를 주장하지 않겠습니다.</li>
-                                <li>퇴사 전 모든 업무에 대한 인수인계를 완료하고, 필요한 자료 및 정보를 후임자에게 제공할 것에 동의합니다.</li>
-                                <li>회사 소유의 장비 및 자산(노트북, 명함, 업무 관련 자료 등)을 퇴사 전 모두 반환할 것에 동의합니다.</li>
-                                <li>퇴사 후에도 회사 및 동료에 대해 비방하지 않으며, 명예를 훼손하는 행동을 하지 않을 것을 동의합니다.</li>
-                                <li>퇴사 시 남아있는 미지급금(급여, 퇴직금 등)은 정확히 정산되며 이에 동의합니다.</li>
-                                <li>퇴사 후 12개월 동안 회사의 고객, 협력업체, 거래처 등에 접촉하여 사업 제안이나 개인적인 거래를 하지 않겠다는 것에 동의합니다.</li>
-                            </ol>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="agreeRules" name="agreeRules">
-                                <label class="custom-control-label" for="agreeRules">퇴사절차에 동의합니다.</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
+                        <div class="button-container">
                             <button type="submit" class="btn btn-primary">제출</button>
                             <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
                         </div>
@@ -187,7 +210,36 @@
             </div>
         </div>
     </div>
-
+	
+	<!-- 결재선 모달 -->
+	<div class="modal fade" id="approverModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">결재자 선택</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped" id="approverTable">
+                        <thead>
+                            <tr>
+                                <th>사원번호</th>
+                                <th>이름</th>
+                                <th>부서</th>
+                                <th>직책</th>
+                                <th>선택</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 사원 목록이 여기에 동적으로 추가됩니다 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>	
 
                          
                  
@@ -276,10 +328,47 @@
         });
     });
     
+    </script>
     
-    document.getElementById('approver1').textContent = '홍길동 부장';
-    document.getElementById('approver2').textContent = '김철수 과장';
-    document.getElementById('approver3').textContent = '이영희 대리';
+    <script>
+    
+    let currentApproverStep = 0;
+
+    function openApproverModal(step) {
+        currentApproverStep = step;
+        $('#approverModal').modal('show');
+        loadEmployeeList();
+    }
+
+    function loadEmployeeList() {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/member/list', // 사원 목록을 가져오는 API 엔드포인트
+            type: 'GET',
+            success: function(response) {
+                let tableBody = $('#approverTable tbody');
+                tableBody.empty();
+                response.forEach(function(employee) {
+                    let row = `<tr>
+                        <td>${employee.emp_id}</td>
+                        <td>${employee.emp_name}</td>
+                        <td>${employee.emp_dnum}</td>
+                        <td>${employee.emp_job}</td>
+                        <td><button class="btn btn-sm btn-primary" onclick="selectApprover('${employee.emp_id}', '${employee.emp_name}')">선택</button></td>
+                    </tr>`;
+                    tableBody.append(row);
+                });
+            },
+            error: function() {
+                alert('사원 목록을 불러오는데 실패했습니다.');
+            }
+        });
+    }
+
+    function selectApprover(emp_id, emp_name) {
+        $(`#approver${currentApproverStep}`).text(`${emp_name} (${emp_id})`);
+        $('#approverModal').modal('hide');
+    }
+    
     </script>
     
     <script>
