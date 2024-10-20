@@ -410,7 +410,8 @@ footer {
 				        <div class="modal-content">
 				            <div class="modal-header">
 				                <h5 class="modal-title">사원 등록</h5>
-				                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				                <button type="button" class="close" data-dismiss="modal"
+									aria-label="Close" onclick="$('#registerModal').modal('hide');">
 				                    <span aria-hidden="true">&times;</span>
 				                </button>
 				            </div>
@@ -492,7 +493,7 @@ footer {
 				                </form>
 				            </div>
 				            <div class="modal-footer">
-				                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+				                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#registerModal').modal('hide');">취소</button>
 				                <button type="button" class="btn btn-primary" onclick="registerEmployee()">등록</button>
 				            </div>
 				        </div>
