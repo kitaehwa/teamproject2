@@ -10,6 +10,19 @@
   		select now()
   	</select>
   	
+  	<!-- 퇴사신청 -->
+    <insert id="insertQuit" parameterType="com.Init.domain.QuitVO">
+        INSERT INTO quit_application (
+            emp_id, emp_name, emp_dept, emp_position, 
+            quit_date, quit_reason, quit_reason_detail, 
+            application_date
+        ) VALUES (
+            #{emp_id}, #{emp_name}, #{emp_dept}, #{emp_position}, 
+            #{quit_date}, #{quit_reason}, #{quit_reason_detail}, 
+            NOW()
+        )
+    </insert>
+	
   	<!-- 사원 등록 -->
     <insert id="insertMember" parameterType="com.Init.domain.MemberVO">
         INSERT INTO employee (

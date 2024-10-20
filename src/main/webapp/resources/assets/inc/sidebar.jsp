@@ -64,7 +64,7 @@
                       </a>
                     </li>
                     <li>
-                      <a href="/member/quit">
+                      <a href="/quit/application">
                         <span class="sub-item">퇴사신청</span>
                       </a>
                     </li>
