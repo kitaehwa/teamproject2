@@ -28,13 +28,17 @@
         SELECT COUNT(*) FROM employee WHERE emp_id = #{emp_id} AND emp_email = #{emp_email}
     </select>
 
-    <update id="saveVerificationCode">
-        UPDATE employee SET verification_code = #{verificationCode} WHERE emp_id = #{emp_id}
-    </update>
-
-    <select id="verifyCode" resultType="int">
-        SELECT COUNT(*) FROM employee WHERE emp_id = #{emp_id} AND verification_code = #{verificationCode}
-    </select>
+    <insert id="saveVerificationCode">
+    INSERT INTO verification_codes (emp_id, code, expiry_time)
+    VALUES (#{emp_id}, #{code}, #{expiryTime})
+	</insert>
+	
+	<select id="verifyCode" resultType="int">
+	    SELECT COUNT(*) FROM verification_codes 
+	    WHERE emp_id = #{emp_id} 
+	    AND code = #{code}
+	    AND expiry_time > #{currentTime}
+	</select>
 
     <update id="resetPassword">
         UPDATE employee SET emp_pw = #{newPassword}, verification_code = NULL WHERE emp_id = #{emp_id}

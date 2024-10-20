@@ -1,5 +1,6 @@
 package com.Init.persistence;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ public interface MemberDAO {
 	
 	// 비밀번호 찾기
 	boolean isValidEmployee(String emp_id, String emp_email);
-    void saveVerificationCode(String emp_id, String verificationCode);
+    void saveVerificationCode(String emp_id, String verificationCode, Timestamp expiryTime);
     boolean verifyCode(String emp_id, String verificationCode);
     void resetPassword(String emp_id, String newPassword);
 	

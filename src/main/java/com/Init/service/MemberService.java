@@ -21,7 +21,7 @@ public interface MemberService {
 	
 	// 비밀번호 찾기
 	boolean isValidEmployee(String emp_id, String emp_email);
-    void sendVerificationEmail(String emp_email, String verificationCode);
+	void sendVerificationEmail(String emp_id, String emp_email, String verificationCode);
     boolean verifyCode(String emp_id, String verificationCode);
     void resetPassword(String emp_id, String newPassword);
 	

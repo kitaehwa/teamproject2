@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,12 +54,16 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void sendVerificationEmail(String emp_email, String verificationCode) {
+    public void sendVerificationEmail(String emp_id, String emp_email, String verificationCode) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(emp_email);
         message.setSubject("비밀번호 재설정 인증 코드");
         message.setText("인증 코드: " + verificationCode);
         mailSender.send(message);
+
+        // 인증 코드 저장 및 만료 시간 설정 (10분)
+        Timestamp expiryTime = new Timestamp(System.currentTimeMillis() + 10 * 60 * 1000);
+        mdao.saveVerificationCode(emp_id, verificationCode, expiryTime);
     }
 
     @Override

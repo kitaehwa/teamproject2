@@ -72,27 +72,27 @@ public class MemberController implements ServletContextAware {
         return "member/forgotPassword";
     }
 
-    @PostMapping("/sendVerificationCode")
-    @ResponseBody
-    public ResponseEntity<?> sendVerificationCode(@RequestParam String emp_id, @RequestParam String emp_email) {
-        if (mService.isValidEmployee(emp_id, emp_email)) {
-            String verificationCode = generateVerificationCode();
-            mService.sendVerificationEmail(emp_email, verificationCode);
-            return ResponseEntity.ok().body("인증 코드가 이메일로 전송되었습니다.");
-        } else {
-            return ResponseEntity.badRequest().body("유효하지 않은 사원번호 또는 이메일입니다.");
-        }
-    }
+	@PostMapping("/sendVerificationCode")
+	@ResponseBody
+	public ResponseEntity<?> sendVerificationCode(@RequestParam String emp_id, @RequestParam String emp_email) {
+	    if (mService.isValidEmployee(emp_id, emp_email)) {
+	        String verificationCode = generateVerificationCode();
+	        mService.sendVerificationEmail(emp_id, emp_email, verificationCode);
+	        return ResponseEntity.ok().body("인증 코드가 이메일로 전송되었습니다.");
+	    } else {
+	        return ResponseEntity.badRequest().body("유효하지 않은 사원번호 또는 이메일입니다.");
+	    }
+	}
 
-    @PostMapping("/verifyCode")
-    @ResponseBody
-    public ResponseEntity<?> verifyCode(@RequestParam String emp_id, @RequestParam String verificationCode) {
-        if (mService.verifyCode(emp_id, verificationCode)) {
-            return ResponseEntity.ok().body("인증 성공");
-        } else {
-            return ResponseEntity.badRequest().body("잘못된 인증 코드입니다.");
-        }
-    }
+	@PostMapping("/verifyCode")
+	@ResponseBody
+	public ResponseEntity<?> verifyCode(@RequestParam String emp_id, @RequestParam String verificationCode) {
+	    if (mService.verifyCode(emp_id, verificationCode)) {
+	        return ResponseEntity.ok().body("인증 성공");
+	    } else {
+	        return ResponseEntity.badRequest().body("잘못된 인증 코드이거나 만료되었습니다.");
+	    }
+	}
 
     @GetMapping("/resetPassword")
     public String showResetPasswordForm(@RequestParam String emp_id, Model model) {

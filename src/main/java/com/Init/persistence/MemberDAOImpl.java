@@ -1,5 +1,6 @@
 package com.Init.persistence;
 
+import java.sql.Timestamp;
 import java.time.Year;
 import java.util.HashMap;
 import java.util.List;
@@ -68,21 +69,23 @@ public class MemberDAOImpl implements MemberDAO{
         return sqlSession.selectOne(NAMESPACE + ".isValidEmployee", params) != null;
     }
 
-    @Override
-    public void saveVerificationCode(String emp_id, String verificationCode) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("emp_id", emp_id);
-        params.put("verificationCode", verificationCode);
-        sqlSession.update(NAMESPACE + ".saveVerificationCode", params);
-    }
+	@Override
+	public void saveVerificationCode(String emp_id, String verificationCode, Timestamp expiryTime) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("emp_id", emp_id);
+	    params.put("code", verificationCode);
+	    params.put("expiryTime", expiryTime);
+	    sqlSession.insert(NAMESPACE + ".saveVerificationCode", params);
+	}
 
-    @Override
-    public boolean verifyCode(String emp_id, String verificationCode) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("emp_id", emp_id);
-        params.put("verificationCode", verificationCode);
-        return sqlSession.selectOne(NAMESPACE + ".verifyCode", params) != null;
-    }
+	@Override
+	public boolean verifyCode(String emp_id, String verificationCode) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("emp_id", emp_id);
+	    params.put("code", verificationCode);
+	    params.put("currentTime", new Timestamp(System.currentTimeMillis()));
+	    return sqlSession.selectOne(NAMESPACE + ".verifyCode", params) != null;
+	}
 
     @Override
     public void resetPassword(String emp_id, String newPassword) {
