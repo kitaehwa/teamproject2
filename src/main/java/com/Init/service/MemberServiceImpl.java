@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,14 +29,10 @@ public class MemberServiceImpl implements MemberService {
     @Autowired
     private MemberDAO mdao;
     
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    
     private static final String UPLOAD_DIR = "/path/to/upload/directory/";
-
-    @Override
-    @Transactional
-    public void memberJoin(MemberVO vo) {
-        logger.debug("회원가입 서비스 실행: {}", vo);
-        mdao.insertMember(vo);
-    }
 
     @Override
     public MemberVO memberLoginCheck(MemberVO vo) {
@@ -258,8 +256,39 @@ public class MemberServiceImpl implements MemberService {
         return false;
     }
     
-    // 관리자 수정
+    // 사원 등록
+    @Override
+    public String generateEmployeeId() {
+        String year = String.format("%02d", Year.now().getValue() % 100);
+        int sequence = mdao.getNextEmployeeSequence();
+        return year + String.format("%04d", sequence);
+    }
+
+    @Override
+    @Transactional
+    public boolean registerEmployee(MemberVO vo) {
+        try {
+            String emp_id = generateEmployeeId();
+            vo.setEmp_id(emp_id);
+            
+            // 비밀번호를 생년월일로 설정
+            String birthDate = vo.getEmp_birth().toString().replaceAll("-", "");
+            vo.setEmp_pw(passwordEncoder.encode(birthDate));
+            
+            insertMember(vo);
+            return true;
+        } catch (Exception e) {
+            logger.error("사원 등록 중 오류 발생", e);
+            return false;
+        }
+    }
     
+    @Override
+    public void insertMember(MemberVO vo) {
+        mdao.insertMember(vo);
+    }
+    
+    // 관리자 수정
     @Transactional
     public boolean updateEmployeeInfo(MemberVO vo) {
       try {

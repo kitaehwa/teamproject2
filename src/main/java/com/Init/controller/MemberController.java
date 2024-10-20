@@ -39,19 +39,15 @@ public class MemberController implements ServletContextAware {
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
 	@GetMapping("/main")
-	public String mainPage() {
-		return "member/main";
-	}
-
-	@GetMapping("/join")
-	public String joinMemberGet() {
-		return "member/join";
-	}
-
-	@PostMapping("/join")
-	public String joinMemberPost(@ModelAttribute MemberVO vo) {
-		mService.memberJoin(vo);
-		return "redirect:/member/login";
+	public String mainPage(HttpSession session, Model model) {
+	    String emp_id = (String) session.getAttribute("emp_id");
+	    MemberVO member = mService.memberInfo(emp_id);
+	    
+	    if (member.getEmp_tel() == null || member.getEmp_email() == null || member.getEmp_addr() == null) {
+	        model.addAttribute("needInfoUpdate", true);
+	    }
+	    
+	    return "member/main";
 	}
 
 	@GetMapping("/login")
@@ -395,6 +391,38 @@ public class MemberController implements ServletContextAware {
 		} else {
 			return "member/list";
 		}
+	}
+	
+	// 사원 등록
+	@PostMapping("/register")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> registerEmployee(@RequestBody MemberVO vo) {
+	    Map<String, Object> response = new HashMap<>();
+	    try {
+	        // 사원번호 자동 생성
+	        String emp_id = mService.generateEmployeeId();
+	        vo.setEmp_id(emp_id);
+	        
+	        // 비밀번호를 생년월일로 설정
+	        String birthDate = vo.getEmp_birth().toString().replaceAll("-", "");
+	        vo.setEmp_pw(birthDate);
+	        
+	        // 사원 등록
+	        boolean result = mService.registerEmployee(vo);
+	        if (result) {
+	            response.put("success", true);
+	            response.put("message", "사원이 성공적으로 등록되었습니다.");
+	            response.put("emp_id", emp_id);
+	        } else {
+	            response.put("success", false);
+	            response.put("message", "사원 등록에 실패했습니다.");
+	        }
+	        return ResponseEntity.ok(response);
+	    } catch (Exception e) {
+	        response.put("success", false);
+	        response.put("message", "서버 오류: " + e.getMessage());
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+	    }
 	}
 	
 	// 관리자 수정

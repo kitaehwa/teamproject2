@@ -9,12 +9,26 @@
   	<select id="getTime" resultType="string">
   		select now()
   	</select>
-	
-	<!-- 회원가입 -->
-	<insert id="insertMember">
-		insert into employee(emp_id,emp_pw,emp_name,emp_birth,emp_gender,emp_tel,emp_email,emp_addr) 
-		values(#{emp_id},#{emp_pw},#{emp_name},#{emp_birth},#{emp_gender},#{emp_tel},#{emp_email},#{emp_addr})
-	</insert>
+  	
+  	<!-- 사원 등록 -->
+    <insert id="insertMember" parameterType="com.Init.domain.MemberVO">
+        INSERT INTO employee (
+            emp_id, emp_pw, emp_name, emp_birth, emp_gender, 
+            emp_bnum, emp_dnum, emp_position, emp_job, 
+            emp_salary, emp_work_type, emp_status, emp_start_date
+        ) VALUES (
+            #{emp_id}, #{emp_pw}, #{emp_name}, #{emp_birth}, #{emp_gender}, 
+            #{emp_bnum}, #{emp_dnum}, #{emp_position}, #{emp_job}, 
+            #{emp_salary}, #{emp_work_type}, #{emp_status}, #{emp_start_date}
+        )
+    </insert>
+
+    <!-- 다음 사원 번호 시퀀스 가져오기 -->
+    <select id="getNextEmployeeSequence" resultType="int">
+        SELECT IFNULL(MAX(CAST(SUBSTRING(emp_id, 3) AS UNSIGNED)), 0) + 1
+        FROM employee
+        WHERE emp_id LIKE CONCAT(DATE_FORMAT(CURDATE(), '%y'), '%')
+    </select>
 	
 	<!-- 로그인 체크 -->
   	<select id="loginMember" resultType="MemberVO">

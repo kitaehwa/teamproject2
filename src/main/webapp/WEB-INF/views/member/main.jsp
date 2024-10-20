@@ -137,6 +137,7 @@
         fillColor: "rgba(255, 165, 52, .14)",
       });
       
+      // 로그아웃 관련
       function confirmLogout() {
           swal({
             title: "로그아웃",
@@ -157,6 +158,15 @@
             }
           });
         }
+      
+      // 최초 로그인 시 회원정보 수정페이지 보내기
+		$(document).ready(function() {
+		    var needInfoUpdate = ${needInfoUpdate};
+		    if (needInfoUpdate) {
+		        alert("개인정보를 업데이트해야 합니다. 정보 수정 페이지로 이동합니다.");
+		        window.location.href = "${pageContext.request.contextPath}/member/update";
+		    }
+		});
     </script>
   </body>
 </html>

@@ -44,6 +44,11 @@
                 <div class="collapse" id="dashboard">
                   <ul class="nav nav-collapse">
                     <li>
+                      <a href="/member/main">
+                        <span class="sub-item">메인페이지</span>
+                      </a>
+                    </li>
+                    <li>
                       <a href="/member/info">
                         <span class="sub-item">내정보</span>
                       </a>
@@ -56,6 +61,11 @@
                     <li>
                       <a href="/member/org/chart">
                         <span class="sub-item">조직도</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/member/quit">
+                        <span class="sub-item">퇴사신청</span>
                       </a>
                     </li>
                     <li>

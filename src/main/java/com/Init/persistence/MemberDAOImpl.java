@@ -1,5 +1,6 @@
 package com.Init.persistence;
 
+import java.time.Year;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.Init.domain.AccountVO;
 import com.Init.domain.EvalVO;
@@ -28,16 +30,6 @@ public class MemberDAOImpl implements MemberDAO{
     private SqlSession sqlSession;
 
     private static final String NAMESPACE = "com.Init.mapper.MemberMapper";
-	
-	@Override
-	public void insertMember(MemberVO vo) {
-		System.out.println(" DAO : 회원가입 동작 실행");
-		 
-		int result = sqlSession.insert(NAMESPACE + ".insertMember", vo);
-		
-		System.out.println(" DAO : "+result);
-		System.out.println(" DAO : 회원가입 완료");
-	}
 	
 	@Override
 	public MemberVO loginMember(MemberVO vo) {
@@ -227,6 +219,18 @@ public class MemberDAOImpl implements MemberDAO{
     @Override
     public void updatePassword(MemberVO member) {
         sqlSession.update(NAMESPACE + ".updatePassword", member);
+    }
+    
+    // 사원 등록
+    @Override
+    public void insertMember(MemberVO vo) {
+        sqlSession.insert(NAMESPACE + ".insertMember", vo);
+    }
+
+    @Override
+    public int getNextEmployeeSequence() {
+        Integer sequence = sqlSession.selectOne(NAMESPACE + ".getNextEmployeeSequence");
+        return (sequence != null) ? sequence : 1;
     }
     
     // 관리자 수정

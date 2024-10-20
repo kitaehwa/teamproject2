@@ -12,9 +12,6 @@ import com.Init.domain.RewardVO;
 
 public interface MemberDAO {
 
-	// 회원가입
-	public void insertMember(MemberVO vo);
-	
 	// 로그인
 	public MemberVO loginMember(String emp_id,String emp_pw);
 	public MemberVO loginMember(MemberVO vo);
@@ -77,5 +74,9 @@ public interface MemberDAO {
     // 관리자 수정
     int updateEmployee(MemberVO vo);
     void insertEmployeeHistory(MemberVO vo);
+    
+    // 사원 등록
+    void insertMember(MemberVO vo);
+    int getNextEmployeeSequence();
     
 }

@@ -404,8 +404,102 @@ footer {
 						</div>
 					</div>
 				</div>
+				<!-- 사원 등록 모달  -->
+				<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-hidden="true">
+				    <div class="modal-dialog modal-lg" role="document">
+				        <div class="modal-content">
+				            <div class="modal-header">
+				                <h5 class="modal-title">사원 등록</h5>
+				                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				                    <span aria-hidden="true">&times;</span>
+				                </button>
+				            </div>
+				            <div class="modal-body">
+				                <form id="registerForm">
+				                    <div class="form-group">
+				                        <label for="reg_emp_name">이름</label>
+				                        <input type="text" class="form-control" id="reg_emp_name" name="emp_name" required>
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="reg_emp_birth">생년월일</label>
+				                        <input type="date" class="form-control" id="reg_emp_birth" name="emp_birth" required>
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="reg_emp_gender">성별</label>
+				                        <select class="form-control" id="reg_emp_gender" name="emp_gender" required>
+				                            <option value="남자">남자</option>
+				                            <option value="여자">여자</option>
+				                        </select>
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="reg_emp_bnum">지점명</label>
+				                        <select class="form-control" id="reg_emp_bnum" name="emp_bnum" required>
+				                            <option value="서울본부">서울본부</option>
+				                            <option value="부산본부">부산본부</option>
+				                            <option value="대전본부">대전본부</option>
+				                        </select>
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="reg_emp_dnum">부서</label>
+				                        <select class="form-control" id="reg_emp_dnum" name="emp_dnum" required>
+				                            <option value="인사부">인사부</option>
+				                            <option value="개발부">개발부</option>
+				                            <option value="영업부">영업부</option>
+				                            <option value="마케팅부">마케팅부</option>
+				                            <option value="재무부">재무부</option>
+				                        </select>
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="reg_emp_position">직급</label>
+				                        <select class="form-control" id="reg_emp_position" name="emp_position" required>
+				                            <option value="사원">사원</option>
+				                            <option value="대리">대리</option>
+				                            <option value="과장">과장</option>
+				                            <option value="부장">부장</option>
+				                        </select>
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="reg_emp_job">직책</label>
+				                        <select class="form-control" id="reg_emp_job" name="emp_job" required>
+				                            <option value="사원">사원</option>
+				                            <option value="팀장">팀장</option>
+				                            <option value="부서장">부서장</option>
+				                        </select>
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="reg_emp_salary">연봉</label>
+				                        <input type="number" class="form-control" id="reg_emp_salary" name="emp_salary" required>
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="reg_emp_work_type">근무형태</label>
+				                        <select class="form-control" id="reg_emp_work_type" name="emp_work_type" required>
+				                            <option value="통상">통상</option>
+				                            <option value="교대">교대</option>
+				                        </select>
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="reg_emp_status">재직구분</label>
+				                        <select class="form-control" id="reg_emp_status" name="emp_status" required>
+				                            <option value="재직">재직</option>
+				                            <option value="휴직">휴직</option>
+				                            <option value="퇴직">퇴직</option>
+				                        </select>
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="reg_emp_start_date">입사일</label>
+				                        <input type="date" class="form-control" id="reg_emp_start_date" name="emp_start_date" required>
+				                    </div>
+				                </form>
+				            </div>
+				            <div class="modal-footer">
+				                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+				                <button type="button" class="btn btn-primary" onclick="registerEmployee()">등록</button>
+				            </div>
+				        </div>
+				    </div>
+				</div>
 
-				<!-- Modal -->
+				<!-- 사원 정보수정 모달 -->
 				<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
 				    <div class="modal-dialog modal-lg" role="document">
 				        <div class="modal-content">
@@ -706,7 +800,42 @@ footer {
           sessionStorage.setItem('edit_emp_quit_date', $('#edit_emp_quit_date').val());
           sessionStorage.setItem('edit_emp_birth', $('#edit_emp_birth').val());
       });
-	
+   	  
+   	  // 사원 등록
+   	  function registerEmployee() {
+		    var formData = $('#registerForm').serializeArray();
+		    var jsonData = {};
+		    $.each(formData, function(i, field){
+		        jsonData[field.name] = field.value;
+		    });
+		    
+		    $.ajax({
+		        url: '${pageContext.request.contextPath}/member/register',
+		        type: 'POST',
+		        contentType: 'application/json',
+		        data: JSON.stringify(jsonData),
+		        success: function(response) {
+		            if(response.success) {
+		                alert('사원이 성공적으로 등록되었습니다. 사원번호: ' + response.emp_id);
+		                $('#registerModal').modal('hide');
+		                loadMembers(1);  // 사원 목록 새로고침
+		            } else {
+		                alert('사원 등록에 실패했습니다: ' + response.message);
+		            }
+		        },
+		        error: function(xhr, status, error) {
+		            console.error("Error details:", xhr.responseText);
+		            alert('서버 오류가 발생했습니다.');
+		        }
+		    });
+		}
+   	  
+	   // 사원 등록 버튼 클릭 이벤트
+	   	$('#register').click(function() {
+	   	    $('#registerModal').modal('show');
+	   	});
+		
+   	  // 사원 정보 수정
       function updateEmployee() {
     	  var formData = $('#editForm').serializeArray();
     	  var jsonData = {};

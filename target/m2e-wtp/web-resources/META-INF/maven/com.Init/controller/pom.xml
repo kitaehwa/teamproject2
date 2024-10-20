@@ -124,7 +124,7 @@
 		<dependency>
 		    <groupId>com.mysql</groupId>
 		    <artifactId>mysql-connector-j</artifactId>
-		    <version>8.0.33</version>
+		    <version>8.1.0</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
@@ -202,6 +202,12 @@
 		    <version>1.2</version>
 		</dependency>
 		
+		<!-- 비밀번호 설정  -->
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-core</artifactId>
+		    <version>5.5.0</version>
+		</dependency>
 		
 		<!-- 외부 라이브러리 추가 -->
 		

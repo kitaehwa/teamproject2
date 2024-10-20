@@ -16,9 +16,6 @@ import com.Init.domain.RewardVO;
 
 public interface MemberService {
 	
-	// 회원가입 동작
-	public void memberJoin(MemberVO vo);
-	
 	// 회원로그인 체크 동작
 	public MemberVO memberLoginCheck(MemberVO vo);
 	
@@ -76,5 +73,10 @@ public interface MemberService {
     
     // 관리자정보 수정
     boolean updateEmployeeInfo(MemberVO vo);
+    
+    // 사원등록
+    String generateEmployeeId();
+    boolean registerEmployee(MemberVO vo);
+    void insertMember(MemberVO vo);
     
 }
