@@ -7,6 +7,7 @@
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 	
+<context:property-placeholder location="classpath:application.properties"/>
 	
 	<!-- HikariCP 설정정보 객체 -->
 	<bean id="hikariconfig"
@@ -49,5 +50,24 @@
 	</bean>
 	<!-- SqlSession (SqlSessionTemplate) : connection 생성(+연결정보), SQL쿼리 실행, Mybatis 접근 + 자원해제(자동) -->
 	
+	<!-- 비밀번호 찾기 관련 -->
+
+		<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	    <property name="host" value="${mail.host}"/>
+	    <property name="port" value="${mail.port}"/>
+	    <property name="username" value="${mail.username}"/>
+	    <property name="password" value="${mail.password}"/>
+	    <property name="javaMailProperties">
+	        <props>
+	            <prop key="mail.transport.protocol">smtp</prop>
+	            <prop key="mail.smtp.auth">true</prop>
+	            <prop key="mail.smtp.starttls.enable">true</prop>
+	            <prop key="mail.debug">true</prop>
+	        </props>
+	    </property>
+	</bean>
+	
+	
 	
 </beans>
+

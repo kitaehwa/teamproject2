@@ -19,6 +19,12 @@ public interface MemberService {
 	// 회원로그인 체크 동작
 	public MemberVO memberLoginCheck(MemberVO vo);
 	
+	// 비밀번호 찾기
+	boolean isValidEmployee(String emp_id, String emp_email);
+    void sendVerificationEmail(String emp_email, String verificationCode);
+    boolean verifyCode(String emp_id, String verificationCode);
+    void resetPassword(String emp_id, String newPassword);
+	
 	// 회원정보 조회 및 수정
 	public MemberVO memberInfo(String emp_id);
 	public int memberUpdate(MemberVO uvo);

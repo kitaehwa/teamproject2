@@ -59,6 +59,40 @@ public class MemberDAOImpl implements MemberDAO{
 		return resultVO;
 	}
 	
+	// 비밀번호 찾기
+	@Override
+    public boolean isValidEmployee(String emp_id, String emp_email) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("emp_id", emp_id);
+        params.put("emp_email", emp_email);
+        return sqlSession.selectOne(NAMESPACE + ".isValidEmployee", params) != null;
+    }
+
+    @Override
+    public void saveVerificationCode(String emp_id, String verificationCode) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("emp_id", emp_id);
+        params.put("verificationCode", verificationCode);
+        sqlSession.update(NAMESPACE + ".saveVerificationCode", params);
+    }
+
+    @Override
+    public boolean verifyCode(String emp_id, String verificationCode) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("emp_id", emp_id);
+        params.put("verificationCode", verificationCode);
+        return sqlSession.selectOne(NAMESPACE + ".verifyCode", params) != null;
+    }
+
+    @Override
+    public void resetPassword(String emp_id, String newPassword) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("emp_id", emp_id);
+        params.put("newPassword", newPassword);
+        sqlSession.update(NAMESPACE + ".resetPassword", params);
+    }
+	
+	
 	@Override
 	public MemberVO getMember(String emp_id) {
 		System.out.println(" DAO : getMember(String emp_id)");

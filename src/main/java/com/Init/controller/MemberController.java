@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 //http://localhost:8088/member/login
@@ -64,6 +65,53 @@ public class MemberController implements ServletContextAware {
 		session.setAttribute("emp_id", resultVO.getEmp_id());
 		return "redirect:/member/main";
 	}
+	
+	// 비밀번호 찾기
+	@GetMapping("/forgotPassword")
+    public String showForgotPasswordForm() {
+        return "member/forgotPassword";
+    }
+
+    @PostMapping("/sendVerificationCode")
+    @ResponseBody
+    public ResponseEntity<?> sendVerificationCode(@RequestParam String emp_id, @RequestParam String emp_email) {
+        if (mService.isValidEmployee(emp_id, emp_email)) {
+            String verificationCode = generateVerificationCode();
+            mService.sendVerificationEmail(emp_email, verificationCode);
+            return ResponseEntity.ok().body("인증 코드가 이메일로 전송되었습니다.");
+        } else {
+            return ResponseEntity.badRequest().body("유효하지 않은 사원번호 또는 이메일입니다.");
+        }
+    }
+
+    @PostMapping("/verifyCode")
+    @ResponseBody
+    public ResponseEntity<?> verifyCode(@RequestParam String emp_id, @RequestParam String verificationCode) {
+        if (mService.verifyCode(emp_id, verificationCode)) {
+            return ResponseEntity.ok().body("인증 성공");
+        } else {
+            return ResponseEntity.badRequest().body("잘못된 인증 코드입니다.");
+        }
+    }
+
+    @GetMapping("/resetPassword")
+    public String showResetPasswordForm(@RequestParam String emp_id, Model model) {
+        model.addAttribute("emp_id", emp_id);
+        return "member/resetPassword";
+    }
+
+    @PostMapping("/resetPassword")
+    @ResponseBody
+    public ResponseEntity<?> resetPassword(@RequestParam String emp_id, @RequestParam String newPassword) {
+        mService.resetPassword(emp_id, newPassword);
+        return ResponseEntity.ok().body("비밀번호가 성공적으로 변경되었습니다.");
+    }
+
+    private String generateVerificationCode() {
+        // 6자리 랜덤 숫자 생성
+        return String.format("%06d", new Random().nextInt(999999));
+    }
+	
 
 	@GetMapping("/logout")
 	public String logoutMemberGET(HttpSession session) {

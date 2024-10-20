@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.SimpleMailMessage;
+
 @Service
 public class MemberServiceImpl implements MemberService {
 
@@ -32,12 +35,41 @@ public class MemberServiceImpl implements MemberService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     
+    @Autowired
+    private JavaMailSender mailSender;
+    
     private static final String UPLOAD_DIR = "/path/to/upload/directory/";
 
     @Override
     public MemberVO memberLoginCheck(MemberVO vo) {
         logger.debug("로그인 체크 서비스 실행: {}", vo);
         return mdao.loginMember(vo);
+    }
+    
+    // 비밀번호 찾기
+    @Override
+    public boolean isValidEmployee(String emp_id, String emp_email) {
+        return mdao.isValidEmployee(emp_id, emp_email);
+    }
+
+    @Override
+    public void sendVerificationEmail(String emp_email, String verificationCode) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(emp_email);
+        message.setSubject("비밀번호 재설정 인증 코드");
+        message.setText("인증 코드: " + verificationCode);
+        mailSender.send(message);
+    }
+
+    @Override
+    public boolean verifyCode(String emp_id, String verificationCode) {
+        return mdao.verifyCode(emp_id, verificationCode);
+    }
+
+    @Override
+    public void resetPassword(String emp_id, String newPassword) {
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        mdao.resetPassword(emp_id, encodedPassword);
     }
 
     @Override

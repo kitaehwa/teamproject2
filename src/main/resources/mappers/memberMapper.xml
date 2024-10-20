@@ -22,6 +22,23 @@
             NOW()
         )
     </insert>
+    
+    <!-- 비밀번호 찾기 -->
+    <select id="isValidEmployee" resultType="int">
+        SELECT COUNT(*) FROM employee WHERE emp_id = #{emp_id} AND emp_email = #{emp_email}
+    </select>
+
+    <update id="saveVerificationCode">
+        UPDATE employee SET verification_code = #{verificationCode} WHERE emp_id = #{emp_id}
+    </update>
+
+    <select id="verifyCode" resultType="int">
+        SELECT COUNT(*) FROM employee WHERE emp_id = #{emp_id} AND verification_code = #{verificationCode}
+    </select>
+
+    <update id="resetPassword">
+        UPDATE employee SET emp_pw = #{newPassword}, verification_code = NULL WHERE emp_id = #{emp_id}
+    </update>
 	
   	<!-- 사원 등록 -->
     <insert id="insertMember" parameterType="com.Init.domain.MemberVO">

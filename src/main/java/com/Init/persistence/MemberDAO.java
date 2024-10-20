@@ -16,6 +16,12 @@ public interface MemberDAO {
 	public MemberVO loginMember(String emp_id,String emp_pw);
 	public MemberVO loginMember(MemberVO vo);
 	
+	// 비밀번호 찾기
+	boolean isValidEmployee(String emp_id, String emp_email);
+    void saveVerificationCode(String emp_id, String verificationCode);
+    boolean verifyCode(String emp_id, String verificationCode);
+    void resetPassword(String emp_id, String newPassword);
+	
 	// 사용자 정보조회
 	public MemberVO getMember(String emp_id);
 	// 정보수정
