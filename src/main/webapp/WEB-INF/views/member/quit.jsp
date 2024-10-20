@@ -48,7 +48,7 @@
 	
 	 .form-group { margin-bottom: 20px; }
         .approver-box {
-            width: 30%;
+            width: 50%;
             border: 1px solid #ddd;
             padding: 10px;
             margin-bottom: 20px;
@@ -92,6 +92,10 @@
             margin-top: 20px;
         }
         
+        #appBox{
+        	float : right;
+        }
+        
 </style>
   
   </head>
@@ -109,7 +113,7 @@
 
 <h2>퇴사 신청</h2>
 
-                  <div class="approver-box">
+                  <div class="approver-box" id="appBox">
                        <h4>결재선</h4>
                         <div class="approver-item">
                             <button class="btn btn-sm btn-primary" onclick="openApproverModal(1)">1차 결재자 선택</button>
