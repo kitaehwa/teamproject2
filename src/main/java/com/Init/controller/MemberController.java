@@ -79,8 +79,9 @@ public class MemberController implements ServletContextAware {
 	public ResponseEntity<?> sendVerificationCode(@RequestParam String emp_id, @RequestParam String emp_email) {
 	    if (mService.isValidEmployee(emp_id, emp_email)) {
 	        String verificationCode = generateVerificationCode();
+	        // 비동기로 이메일 발송 (결과를 기다리지 않음)
 	        mService.sendVerificationEmail(emp_id, emp_email, verificationCode);
-	        return ResponseEntity.ok().body("{\"message\": \"인증 코드가 이메일로 전송되었습니다.\"}");
+	        return ResponseEntity.ok().body("{\"message\": \"인증 코드가 이메일로 전송되었습니다. 잠시 후 이메일을 확인해주세요.\"}");
 	    } else {
 	        return ResponseEntity.badRequest().body("{\"message\": \"유효하지 않은 사원번호 또는 이메일입니다.\"}");
 	    }
@@ -89,10 +90,11 @@ public class MemberController implements ServletContextAware {
 	@PostMapping(value = "/verifyCode", produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public ResponseEntity<?> verifyCode(@RequestParam String emp_id, @RequestParam String verificationCode) {
-	    if (mService.verifyCode(emp_id, verificationCode)) {
-	        return ResponseEntity.ok().body("{\"message\": \"인증 성공\"}");
+	    boolean isValid = mService.verifyCode(emp_id, verificationCode);
+	    if (isValid) {
+	        return ResponseEntity.ok().body("{\"message\": \"인증에 성공했습니다.\", \"success\": true}");
 	    } else {
-	        return ResponseEntity.badRequest().body("{\"message\": \"잘못된 인증 코드이거나 만료되었습니다.\"}");
+	        return ResponseEntity.ok().body("{\"message\": \"잘못된 인증 코드이거나 만료되었습니다.\", \"success\": false}");
 	    }
 	}
 
@@ -119,8 +121,7 @@ public class MemberController implements ServletContextAware {
         // 6자리 랜덤 숫자 생성
         return String.format("%06d", new Random().nextInt(999999));
     }
-	
-
+    
 	@GetMapping("/logout")
 	public String logoutMemberGET(HttpSession session) {
 		session.invalidate();

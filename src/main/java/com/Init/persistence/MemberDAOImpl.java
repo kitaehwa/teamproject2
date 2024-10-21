@@ -2,6 +2,7 @@ package com.Init.persistence;
 
 import java.sql.Timestamp;
 import java.time.Year;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import com.Init.domain.His_eduVO;
 import com.Init.domain.LicenseVO;
 import com.Init.domain.MemberVO;
 import com.Init.domain.RewardVO;
+import com.Init.domain.VerificationCode;
 
 
 
@@ -59,15 +61,31 @@ public class MemberDAOImpl implements MemberDAO{
         params.put("emp_email", emp_email);
         return sqlSession.selectOne(NAMESPACE + ".isValidEmployee", params) != null;
     }
-
+	
+	// 인증코드
 	@Override
-	public void saveVerificationCode(String emp_id, String verificationCode, Timestamp expiryTime) {
-	    Map<String, Object> params = new HashMap<>();
-	    params.put("emp_id", emp_id);
-	    params.put("code", verificationCode);
-	    params.put("expiryTime", expiryTime);
-	    sqlSession.insert(NAMESPACE + ".saveVerificationCode", params);
+	public VerificationCode getVerificationCode(String emp_id) {
+	    List<VerificationCode> codes = sqlSession.selectList(NAMESPACE + ".getVerificationCode", emp_id);
+	    if (codes.isEmpty()) {
+	        return null;
+	    }
+	    // 가장 최근의 인증 코드를 반환
+	    return codes.get(0);
 	}
+	
+	 @Override
+	    public void saveVerificationCode(String emp_id, String code, Date expiryTime) {
+	        Map<String, Object> params = new HashMap<>();
+	        params.put("emp_id", emp_id);
+	        params.put("code", code);
+	        params.put("expiryTime", expiryTime);
+	        sqlSession.insert(NAMESPACE + ".saveVerificationCode", params);
+	    }
+	 
+	 @Override
+	    public void deleteVerificationCode(String emp_id) {
+	        sqlSession.delete(NAMESPACE + ".deleteVerificationCode", emp_id);
+	    }
 
 	@Override
 	public boolean verifyCode(String emp_id, String verificationCode) {

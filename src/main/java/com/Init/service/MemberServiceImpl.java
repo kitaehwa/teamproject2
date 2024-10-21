@@ -17,12 +17,14 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.mail.SimpleMailMessage;
 
 @Service
@@ -68,10 +70,11 @@ public class MemberServiceImpl implements MemberService {
         MemberVO member = mdao.getMember(emp_id);
         return member != null && member.getEmp_email().equals(emp_email);
     }
-
+    // 비동기 처리
     @Override
+    @Async
     public void sendVerificationEmail(String emp_id, String emp_email, String verificationCode) {
-        if (isValidEmployee(emp_id, emp_email)) {
+        try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(emp_email);
             message.setSubject("비밀번호 재설정 인증 코드");
@@ -81,16 +84,26 @@ public class MemberServiceImpl implements MemberService {
             // 인증 코드 저장 및 만료 시간 설정 (10분)
             Timestamp expiryTime = new Timestamp(System.currentTimeMillis() + 10 * 60 * 1000);
             mdao.saveVerificationCode(emp_id, verificationCode, expiryTime);
-        } else {
-            throw new IllegalArgumentException("유효하지 않은 사원번호 또는 이메일입니다.");
+        } catch (Exception e) {
+            logger.debug("Error sending verification email", e);
         }
     }
     
     // 인증코드
     @Override
     public boolean verifyCode(String emp_id, String verificationCode) {
-        return mdao.verifyCode(emp_id, verificationCode);
+        VerificationCode storedCode = mdao.getVerificationCode(emp_id);
+        if (storedCode != null) {
+            boolean isValid = storedCode.getCode().equals(verificationCode) 
+                              && storedCode.getExpiryTime().after(new Date());
+            if (isValid) {
+                mdao.deleteVerificationCode(emp_id);
+                return true;
+            }
+        }
+        return false;
     }
+    
     // 비밀번호 재설정
     @Override
     public void resetPassword(String emp_id, String newPassword) {

@@ -21,11 +21,6 @@
         SELECT COUNT(*) FROM employee WHERE emp_id = #{emp_id} AND emp_email = #{emp_email}
     </select>
 
-    <insert id="saveVerificationCode">
-    INSERT INTO verification_codes (emp_id, code, expiry_time)
-    VALUES (#{emp_id}, #{code}, #{expiryTime})
-	</insert>
-	
 	<select id="verifyCode" resultType="int">
 	    SELECT COUNT(*) FROM verification_codes 
 	    WHERE emp_id = #{emp_id} 
@@ -68,6 +63,27 @@
   	<update id="resetPassword">
 	    UPDATE employee SET emp_pw = #{newPassword} WHERE emp_id = #{emp_id}
 	</update>
+	
+	<!-- 인증번호 -->
+	<select id="getVerificationCode" resultType="com.Init.domain.VerificationCode">
+	    SELECT emp_id, code, expiry_time as expiryTime
+	    FROM verification_codes
+	    WHERE emp_id = #{emp_id}
+	    ORDER BY expiry_time DESC
+	    LIMIT 1
+	</select>
+
+    <insert id="saveVerificationCode">
+        INSERT INTO verification_codes (emp_id, code, expiry_time)
+        VALUES (#{emp_id}, #{code}, #{expiryTime})
+        ON DUPLICATE KEY UPDATE
+        code = #{code}, expiry_time = #{expiryTime}
+    </insert>
+
+    <delete id="deleteVerificationCode">
+        DELETE FROM verification_codes
+        WHERE emp_id = #{emp_id}
+    </delete>
   	
   	<!-- 회원정보 조회 -->
   	<select id="getMember" resultType="MemberVO">

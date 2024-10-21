@@ -1,6 +1,7 @@
 package com.Init.persistence;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import com.Init.domain.His_eduVO;
 import com.Init.domain.LicenseVO;
 import com.Init.domain.MemberVO;
 import com.Init.domain.RewardVO;
+import com.Init.domain.VerificationCode;
 
 public interface MemberDAO {
 
@@ -19,9 +21,12 @@ public interface MemberDAO {
 	
 	// 비밀번호 찾기
 	boolean isValidEmployee(String emp_id, String emp_email);
-    void saveVerificationCode(String emp_id, String verificationCode, Timestamp expiryTime);
     boolean verifyCode(String emp_id, String verificationCode);
     int resetPassword(String emp_id, String newPassword);
+    VerificationCode getVerificationCode(String emp_id);
+    void saveVerificationCode(String emp_id, String code, Date expiryTime);
+    void deleteVerificationCode(String emp_id);
+    
 	
 	// 사용자 정보조회
 	public MemberVO getMember(String emp_id);

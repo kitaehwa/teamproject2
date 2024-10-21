@@ -102,7 +102,6 @@
         }, 1000);
     }
     
-    
     $("#sendVerificationCode").click(function() {
         $.ajax({
             url: "/member/sendVerificationCode",
@@ -132,7 +131,6 @@
         });
     });
 
-
     $("#verifyCode").click(function() {
         $.ajax({
             url: "/member/verifyCode",
@@ -144,10 +142,12 @@
             dataType: 'json',
             success: function(response) {
                 alert(response.message);
-                window.location.href = "/member/resetPassword?emp_id=" + $("#emp_id").val();
+                if (response.success) {
+                    window.location.href = "/member/resetPassword?emp_id=" + $("#emp_id").val();
+                }
             },
             error: function(xhr) {
-                alert(xhr.responseJSON.message);
+                alert("오류가 발생했습니다. 다시 시도해 주세요.");
             }
         });
     });
