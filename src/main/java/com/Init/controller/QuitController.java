@@ -40,18 +40,6 @@ private static final Logger logger = LoggerFactory.getLogger(QuitController.clas
         return "member/quit";
     }
     
-    @GetMapping("/listAllMembers")
-    @ResponseBody
-    public ResponseEntity<List<MemberVO>> listAllMembers() {
-        try {
-            List<MemberVO> members = mService.getAllMembers();
-            logger.info("Returning {} members", members.size());
-            return ResponseEntity.ok(members);
-        } catch (Exception e) {
-            logger.error("Error fetching all members", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
 
     @PostMapping("/submit")
     public ResponseEntity<String> submitQuit(@RequestBody QuitVO quitVO) {

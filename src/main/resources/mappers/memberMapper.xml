@@ -33,10 +33,6 @@
 	    AND expiry_time > #{currentTime}
 	</select>
 
-    <update id="resetPassword">
-        UPDATE employee SET emp_pw = #{newPassword}, verification_code = NULL WHERE emp_id = #{emp_id}
-    </update>
-	
   	<!-- 사원 등록 -->
     <insert id="insertMember" parameterType="com.Init.domain.MemberVO">
         INSERT INTO employee (
@@ -63,6 +59,11 @@
   		where emp_id=#{emp_id} 
   		and emp_pw=#{emp_pw}
   	</select>
+  	
+  	<!-- 비밀번호 찾기 -->
+  	<update id="resetPassword">
+	    UPDATE employee SET emp_pw = #{newPassword} WHERE emp_id = #{emp_id}
+	</update>
   	
   	<!-- 회원정보 조회 -->
   	<select id="getMember" resultType="MemberVO">
@@ -319,29 +320,4 @@
         LIMIT #{offset}, #{pageSize}
     </select>
 
-    <select id="getSearchMembersCount" parameterType="map" resultType="int">
-        SELECT COUNT(*) FROM employee
-        <where>
-            <if test="searchType == 'emp_id'">
-                emp_id LIKE #{keyword}
-            </if>
-            <if test="searchType == 'emp_name'">
-                emp_name LIKE #{keyword}
-            </if>
-            <if test="searchType == 'emp_dnum'">
-                emp_dnum LIKE #{keyword}
-            </if>
-            <if test="searchType == 'emp_position'">
-                emp_position LIKE #{keyword}
-            </if>
-            <if test="searchType == 'emp_job'">
-                emp_job LIKE #{keyword}
-            </if>
-        </where>
-    </select>
-    
-    <select id="getAllQuitApplications" resultType="com.Init.domain.QuitVO">
-        SELECT * FROM quit_application
-    </select>
-	
 </mapper>

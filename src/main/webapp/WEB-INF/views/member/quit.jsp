@@ -112,26 +112,8 @@
 <!------------------------------------------------------------------------------------------------------------------>
 
 <h2>퇴사 신청</h2>
-
-                    <div class="approver-box" id="appBox">
-                    <h4>결재선</h4>
-                    <div class="approver-item">
-                        <button class="btn btn-sm btn-primary" onclick="openApproverModal(1)">1차 결재자 선택</button>
-                        <span id="approver1">미지정</span>
-                    </div>
-                    <div class="approver-item">
-                        <button class="btn btn-sm btn-primary" onclick="openApproverModal(2)">2차 결재자 선택</button>
-                        <span id="approver2">미지정</span>
-                    </div>
-                    <div class="approver-item">
-                        <button class="btn btn-sm btn-primary" onclick="openApproverModal(3)">3차 결재자 선택</button>
-                        <span id="approver3">미지정</span>
-                    </div>
-                </div>
-                
-               
                     
-                    <form id="quitForm">
+    <form id="quitForm">
     <div class="table-container">
         <table class="table table-bordered">
             <tr>
@@ -204,8 +186,8 @@
                         </div>
 
                         <div class="button-container">
-                            <button type="submit" class="btn btn-primary">제출</button>
                             <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
+                            <button type="submit" class="btn btn-primary">결재선 지정</button>
                         </div>
                     </form>
                 </div>
@@ -213,32 +195,7 @@
         </div>
     </div>
 	
-	<!-- 결재선 모달 -->
-	<div class="modal fade" id="approverModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">결재자 선택</h5>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-striped" id="approverTable">
-                        <thead>
-                            <tr>
-                                <th>사원번호</th>
-                                <th>이름</th>
-                                <th>부서</th>
-                                <th>직책</th>
-                                <th>선택</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- 사원 목록이 여기에 동적으로 추가됩니다 -->
-                        </tbody>
-                    </table>
 
-
-                         
-                 
 <!------------------------------------------------------------------------------------------------------------------>
           </div>
           <!-- page-inner -->
@@ -318,51 +275,7 @@
     </script>
     
     <script>
-    let currentApproverStep = 0;
 
-    function openApproverModal(step) {
-        currentApproverStep = step;
-        $('#approverModal').modal('show');
-        loadEmployeeList();
-    }
-
-    function loadEmployeeList() {
-        $.ajax({
-            url: '${pageContext.request.contextPath}/quit/listAllMembers', 
-            type: 'GET',
-            success: function(response) {
-                console.log('Received response:', response);
-                let tableBody = $('#approverTable tbody');
-                tableBody.empty();
-                if (Array.isArray(response)) {
-                    response.forEach(function(employee) {
-                        
-                        let row = `<tr>
-                            <td>${employee.emp_id || ''}</td>
-                            <td>${employee.emp_name || ''}</td>
-                            <td>${employee.emp_dnum || ''}</td>
-                            <td>${employee.emp_job || ''}</td>
-                            <td><button class="btn btn-sm btn-primary" onclick="selectApprover('${employee.emp_id || ''}', '${employee.emp_name || ''}')">선택</button></td>
-                        </tr>`;
-                        tableBody.append(row);
-                    });
-                } else {
-                    console.error('Response is not an array:', response);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error fetching employee list:', status, error);
-                alert('사원 목록을 불러오는데 실패했습니다.');
-            }
-        });
-    }
-
-    function selectApprover(emp_id, emp_name) {
-        $(`#approver${currentApproverStep}`).text(`${emp_name} (${emp_id})`);
-        $('#approverModal').modal('hide');
-    }
-
-    /* 결재자 선택 */
     $('#quitForm').submit(function(e) {
     e.preventDefault();
     if (!$('#agreeRules').is(':checked')) {
@@ -370,52 +283,7 @@
         return;
     }
     
-    function getApproverEmpId(approverElement) {
-        var approverText = approverElement.text();
-        var match = approverText.match(/\(([^)]+)\)/);
-        return match ? match[1] : '';
-    }
 
-    var formData = {
-        emp_id: $('#emp_id').val(),
-        emp_name: $('#emp_name').val(),
-        emp_dnum: $('#emp_dnum').val(),
-        emp_position: $('#emp_position').val(),
-        quit_date: $('#quit_date').val(),
-        quit_reason: $('#quit_reason').val(),
-        quit_reason_detail: $('#quit_reason_detail').val(),
-        approver1: getApproverEmpId($('#approver1')),
-        approver2: getApproverEmpId($('#approver2')),
-        approver3: getApproverEmpId($('#approver3'))
-    };
-
-    // 결재자가 모두 선택되었는지 확인
-    if (!formData.approver1 || !formData.approver2 || !formData.approver3) {
-        alert('모든 결재자를 선택해주세요.');
-        return;
-    }
-
-    $.ajax({
-        url: '${pageContext.request.contextPath}/quit/submit',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(formData),
-        success: function(response) {
-            if (response === 'success') {
-                alert('퇴사 신청이 성공적으로 제출되었습니다.');
-                window.location.href = '${pageContext.request.contextPath}/member/main';
-            } else {
-                alert('퇴사 신청 제출에 실패했습니다: ' + response);
-            }
-        },
-        error: function(xhr, status, error) {
-            alert('서버와의 통신 중 오류가 발생했습니다: ' + error);
-        }
-    });
-});
-$('#approverModal').on('shown.bs.modal', function () {
-    loadEmployeeList();
-});
 
 
     

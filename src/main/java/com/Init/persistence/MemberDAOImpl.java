@@ -87,13 +87,13 @@ public class MemberDAOImpl implements MemberDAO{
 	    return sqlSession.selectOne(NAMESPACE + ".verifyCode", params) != null;
 	}
 
-    @Override
-    public void resetPassword(String emp_id, String newPassword) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("emp_id", emp_id);
-        params.put("newPassword", newPassword);
-        sqlSession.update(NAMESPACE + ".resetPassword", params);
-    }
+	@Override
+	public int resetPassword(String emp_id, String newPassword) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("emp_id", emp_id);
+	    params.put("newPassword", newPassword);
+	    return sqlSession.update(NAMESPACE + ".resetPassword", params);
+	}
 	
 	
 	@Override

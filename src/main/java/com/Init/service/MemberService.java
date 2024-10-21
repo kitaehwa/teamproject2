@@ -85,6 +85,4 @@ public interface MemberService {
     boolean registerEmployee(MemberVO vo);
     void insertMember(MemberVO vo);
     
-    // 결재선
-    List<MemberVO> getAllMembers();
 }

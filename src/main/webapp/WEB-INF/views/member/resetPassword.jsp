@@ -69,22 +69,36 @@
 
 
     <script>
-        $("#resetPassword").click(function() {
-            if ($("#newPassword").val() !== $("#confirmPassword").val()) {
-                alert("비밀번호가 일치하지 않습니다.");
-                return;
-            }
+    $("#resetPassword").click(function() {
+        var newPassword = $("#newPassword").val();
+        var confirmPassword = $("#confirmPassword").val();
 
-            $.post("/member/resetPassword", {
+        if (newPassword.length < 8) {
+            alert("비밀번호는 8자 이상이어야 합니다.");
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            alert("비밀번호가 일치하지 않습니다.");
+            return;
+        }
+
+        $.ajax({
+            url: "/member/resetPassword",
+            type: "POST",
+            data: {
                 emp_id: $("#emp_id").val(),
-                newPassword: $("#newPassword").val()
-            }, function(response) {
+                newPassword: newPassword
+            },
+            success: function(response) {
                 alert(response);
                 window.location.href = "/member/login";
-            }).fail(function(xhr) {
-                alert(xhr.responseText);
-            });
+            },
+            error: function(xhr, status, error) {
+                alert("비밀번호 재설정 중 오류가 발생했습니다: " + xhr.responseText);
+            }
         });
+    });
     </script>
 </body>
 </html>

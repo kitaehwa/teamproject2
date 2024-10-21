@@ -21,7 +21,7 @@ public interface MemberDAO {
 	boolean isValidEmployee(String emp_id, String emp_email);
     void saveVerificationCode(String emp_id, String verificationCode, Timestamp expiryTime);
     boolean verifyCode(String emp_id, String verificationCode);
-    void resetPassword(String emp_id, String newPassword);
+    int resetPassword(String emp_id, String newPassword);
 	
 	// 사용자 정보조회
 	public MemberVO getMember(String emp_id);

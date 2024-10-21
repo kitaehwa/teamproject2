@@ -66,21 +66,6 @@ public class MemberController implements ServletContextAware {
 		return "redirect:/member/main";
 	}
 	
-	// 결재선
-	@GetMapping("/listAllMembers")
-	@ResponseBody
-	public ResponseEntity<List<MemberVO>> listAllMembers() {
-	    try {
-	        List<MemberVO> members = mService.getAllMembers();
-	        logger.info("Returning {} members", members.size());
-	        members.forEach(m -> logger.debug("Member: {}", m));
-	        return ResponseEntity.ok(members);
-	    } catch (Exception e) {
-	        logger.error("Error fetching all members", e);
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-	    }
-	}
-	
 	// 비밀번호 찾기
 	@GetMapping("/forgotPassword")
     public String showForgotPasswordForm() {
@@ -118,8 +103,14 @@ public class MemberController implements ServletContextAware {
     @PostMapping("/resetPassword")
     @ResponseBody
     public ResponseEntity<?> resetPassword(@RequestParam String emp_id, @RequestParam String newPassword) {
-        mService.resetPassword(emp_id, newPassword);
-        return ResponseEntity.ok().body("비밀번호가 성공적으로 변경되었습니다.");
+        try {
+            mService.resetPassword(emp_id, newPassword);
+            return ResponseEntity.ok("비밀번호가 성공적으로 변경되었습니다.");
+        } catch (Exception e) {
+            logger.error("비밀번호 재설정 중 오류 발생", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("비밀번호 재설정 중 오류가 발생했습니다: " + e.getMessage());
+        }
     }
 
     private String generateVerificationCode() {

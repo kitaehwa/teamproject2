@@ -36,6 +36,7 @@ public class MemberVO {
 	private String emp_power; 
 	private String emp_level;
 	private Timestamp update_date;	
+	private String newPassword;
 	
 	// 기본 생성자
     public MemberVO() {}

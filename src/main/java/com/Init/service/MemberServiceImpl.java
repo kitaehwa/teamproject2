@@ -41,10 +41,15 @@ public class MemberServiceImpl implements MemberService {
     
     private static final String UPLOAD_DIR = "/path/to/upload/directory/";
 
+    // 로그인 체크
     @Override
     public MemberVO memberLoginCheck(MemberVO vo) {
         logger.debug("로그인 체크 서비스 실행: {}", vo);
-        return mdao.loginMember(vo);
+        MemberVO resultVO = mdao.loginMember(vo);
+        if (resultVO != null && passwordEncoder.matches(vo.getEmp_pw(), resultVO.getEmp_pw())) {
+            return resultVO;
+        }
+        return null;
     }
     
     // 비밀번호 찾기
@@ -65,16 +70,20 @@ public class MemberServiceImpl implements MemberService {
         Timestamp expiryTime = new Timestamp(System.currentTimeMillis() + 10 * 60 * 1000);
         mdao.saveVerificationCode(emp_id, verificationCode, expiryTime);
     }
-
+    // 인증코드
     @Override
     public boolean verifyCode(String emp_id, String verificationCode) {
         return mdao.verifyCode(emp_id, verificationCode);
     }
-
+    // 비밀번호 재설정
+    @Transactional
     @Override
     public void resetPassword(String emp_id, String newPassword) {
         String encodedPassword = passwordEncoder.encode(newPassword);
-        mdao.resetPassword(emp_id, encodedPassword);
+        int updatedRows = mdao.resetPassword(emp_id, encodedPassword);
+        if (updatedRows == 0) {
+            throw new RuntimeException("비밀번호 재설정에 실패했습니다.");
+        }
     }
 
     @Override
@@ -323,12 +332,6 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void insertMember(MemberVO vo) {
         mdao.insertMember(vo);
-    }
-    
-    // 결재선
-    @Override
-    public List<MemberVO> getAllMembers() {
-        return mdao.getAllMembers();
     }
     
     // 관리자 수정
