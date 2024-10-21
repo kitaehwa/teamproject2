@@ -247,7 +247,7 @@ public class MemberDAOImpl implements MemberDAO{
     public List<MemberVO> searchMembers(String searchType, String keyword, int offset, int pageSize) {
         Map<String, Object> params = new HashMap<>();
         params.put("searchType", searchType);
-        params.put("keyword", "%" + keyword + "%");
+        params.put("keyword", keyword);
         params.put("offset", offset);
         params.put("pageSize", pageSize);
         return sqlSession.selectList(NAMESPACE + ".searchMembers", params);
@@ -257,7 +257,7 @@ public class MemberDAOImpl implements MemberDAO{
     public int getSearchMembersCount(String searchType, String keyword) {
         Map<String, Object> params = new HashMap<>();
         params.put("searchType", searchType);
-        params.put("keyword", "%" + keyword + "%");
+        params.put("keyword", keyword);
         return sqlSession.selectOne(NAMESPACE + ".getSearchMembersCount", params);
     }
     

@@ -148,8 +148,8 @@
       .profile-pic-container input[type="file"] {
 	    margin-top: 10px;
 	    display: block;
-	    width: 80%; /* 원하는 너비로 설정 */
-	    text-align: center; /* 파일 선택 버튼의 텍스트 가운데 정렬 */
+	    width: 80%; 
+	    text-align: center; 
 	  }
       
     </style>
@@ -189,13 +189,13 @@
                     <th>생년월일</th>
                     <td><input type="text" name="emp_birth" value="${memberVO.emp_birth}" readonly/></td>
                     <th>주소</th>
-                    <td><input type="text" name="emp_addr" value="${memberVO.emp_addr}" /></td>
+                    <td><input type="text" name="emp_addr" value="${memberVO.emp_addr}" required/></td>
                     <th>연락처</th>
-                    <td><input type="text" name="emp_tel" value="${memberVO.emp_tel}" /></td>                  
+                    <td><input type="text" name="emp_tel" value="${memberVO.emp_tel}" required/></td>                  
                   </tr>
                   <tr>
                     <th>이메일</th>
-                    <td><input type="email" name="emp_email" value="${memberVO.emp_email}" /></td>
+                    <td><input type="email" name="emp_email" value="${memberVO.emp_email}" required/></td>
                     <th>부서</th>
                     <td><input type="text" name="emp_dnum" value="${memberVO.emp_dnum}" readonly/></td>
                     <th>직급/직책</th>
@@ -327,8 +327,8 @@
             success: function(response) {
                 if(response.success) {
                     alert(response.message);
-                    // 비밀번호 변경 성공 시 추가 작업 (예: 폼 초기화)
-                    $('#passwordForm')[0].reset();
+                    window.location.href = '${pageContext.request.contextPath}/member/info';
+                    
                 } else {
                     alert(response.message);
                 }
@@ -370,7 +370,7 @@
                     let result = JSON.parse(response);
                     if (result.success) {
                         alert('증명사진이 성공적으로 업로드되었습니다.');
-                        // 업로드 성공 후 필요한 추가 작업
+                        
                     } else {
                         alert('사진 업로드에 실패했습니다: ' + result.message);
                     }
@@ -385,19 +385,27 @@
         $('#updateForm').submit(function(e) {
             e.preventDefault();
             
-         	// 이메일 유효성 검사
+         	// 주소 유효성 검사
+            var addrRegex = /^[가-힣]{2,5}시\s+[가-힣]{1,5}구\s+[가-힣]{1,5}(동|로)$/;
+            var addr = $('input[name="emp_addr"]').val();
+            if (!addrRegex.test(addr)) {
+                alert("올바른 주소를 입력하세요. (예시: 00시 00구 00동)");
+                return;
+            }
+         	
+            // 이메일 유효성 검사
             var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
             var email = $('input[name="emp_email"]').val();
             if (!emailRegex.test(email)) {
-                alert("올바른 이메일 주소를 입력하세요. (ex example@example.com)");
+                alert("올바른 이메일 주소를 입력하세요. (예시: email@email.com)");
                 return;
             }
 
             // 전화번호 유효성 검사
-            var phoneRegex = /^[0-9\- ]{10,13}$/;
+            var phoneRegex = /^01[0-9]-\d{4}-\d{4}$/;
             var phone = $('input[name="emp_tel"]').val();
             if (!phoneRegex.test(phone)) {
-                alert("올바른 전화번호를 입력하세요. (ex 000-0000-0000)");
+                alert("올바른 전화번호를 입력하세요. (예시: 010-1234-5678)");
                 return;
             }
             
@@ -414,6 +422,8 @@
                     }
                 },
                 error: function() {
+                	console.error("AJAX error: " + status + ": " + error);
+                    console.error(xhr.responseText);
                     alert('서버와의 통신 중 오류가 발생했습니다.');
                 }
             });
