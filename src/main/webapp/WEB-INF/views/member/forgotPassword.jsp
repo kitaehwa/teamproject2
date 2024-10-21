@@ -82,7 +82,7 @@
 
     <script>
     let countdownTimer;
-    
+    // 인증코드 타이머
     function startCountdown(duration, display) {
         let timer = duration, minutes, seconds;
         countdownTimer = setInterval(function () {
@@ -104,39 +104,53 @@
     
     
     $("#sendVerificationCode").click(function() {
-        $.post("/member/sendVerificationCode", {
-            emp_id: $("#emp_id").val(),
-            emp_email: $("#emp_email").val()
-        }, function(response) {
-            alert(response);
-            $("#verificationCode").show();
-            $("#verifyCode").show();
-            $("#countdown").show();
-            
-            // 카운트다운 시작
-            clearInterval(countdownTimer);
-            let tenMinutes = 60 * 10,
-                display = $('#countdown');
-            startCountdown(tenMinutes, display);
-            
-            $("#verifyCode").prop('disabled', false);
-        }).fail(function(xhr) {
-            alert(xhr.responseText);
+        $.ajax({
+            url: "/member/sendVerificationCode",
+            type: "POST",
+            data: {
+                emp_id: $("#emp_id").val(),
+                emp_email: $("#emp_email").val()
+            },
+            dataType: 'json',
+            success: function(response) {
+                alert(response.message);
+                $("#verificationCode").show();
+                $("#verifyCode").show();
+                $("#countdown").show();
+                
+                // 카운트다운 시작
+                clearInterval(countdownTimer);
+                let tenMinutes = 60 * 10,
+                    display = $('#countdown');
+                startCountdown(tenMinutes, display);
+                
+                $("#verifyCode").prop('disabled', false);
+            },
+            error: function(xhr) {
+                alert(xhr.responseJSON.message);
+            }
         });
     });
 
 
-        $("#verifyCode").click(function() {
-            $.post("/member/verifyCode", {
+    $("#verifyCode").click(function() {
+        $.ajax({
+            url: "/member/verifyCode",
+            type: "POST",
+            data: {
                 emp_id: $("#emp_id").val(),
                 verificationCode: $("#verificationCode").val()
-            }, function(response) {
-                alert(response);
+            },
+            dataType: 'json',
+            success: function(response) {
+                alert(response.message);
                 window.location.href = "/member/resetPassword?emp_id=" + $("#emp_id").val();
-            }).fail(function(xhr) {
-                alert(xhr.responseText);
-            });
+            },
+            error: function(xhr) {
+                alert(xhr.responseJSON.message);
+            }
         });
+    });
         
    		// 초기에 인증코드 입력칸과 확인 버튼 숨기기
         $("#verificationCode").hide();

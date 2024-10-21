@@ -65,21 +65,27 @@ public class MemberServiceImpl implements MemberService {
     // 비밀번호 찾기
     @Override
     public boolean isValidEmployee(String emp_id, String emp_email) {
-        return mdao.isValidEmployee(emp_id, emp_email);
+        MemberVO member = mdao.getMember(emp_id);
+        return member != null && member.getEmp_email().equals(emp_email);
     }
 
     @Override
     public void sendVerificationEmail(String emp_id, String emp_email, String verificationCode) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(emp_email);
-        message.setSubject("비밀번호 재설정 인증 코드");
-        message.setText("인증 코드: " + verificationCode);
-        mailSender.send(message);
+        if (isValidEmployee(emp_id, emp_email)) {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(emp_email);
+            message.setSubject("비밀번호 재설정 인증 코드");
+            message.setText("인증 코드: " + verificationCode);
+            mailSender.send(message);
 
-        // 인증 코드 저장 및 만료 시간 설정 (10분)
-        Timestamp expiryTime = new Timestamp(System.currentTimeMillis() + 10 * 60 * 1000);
-        mdao.saveVerificationCode(emp_id, verificationCode, expiryTime);
+            // 인증 코드 저장 및 만료 시간 설정 (10분)
+            Timestamp expiryTime = new Timestamp(System.currentTimeMillis() + 10 * 60 * 1000);
+            mdao.saveVerificationCode(emp_id, verificationCode, expiryTime);
+        } else {
+            throw new IllegalArgumentException("유효하지 않은 사원번호 또는 이메일입니다.");
+        }
     }
+    
     // 인증코드
     @Override
     public boolean verifyCode(String emp_id, String verificationCode) {

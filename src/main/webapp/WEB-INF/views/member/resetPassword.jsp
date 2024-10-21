@@ -69,12 +69,13 @@
 
 
     <script>
+    
     $("#resetPassword").click(function() {
         var newPassword = $("#newPassword").val();
         var confirmPassword = $("#confirmPassword").val();
         var passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&+=])(?=\S+$).{8,}$/;
 
-        if (newPassword.length < 8) {
+        if (!passwordRegex.test(newPassword)) {
             alert("비밀번호는 숫자, 영문, 특수문자[!, @, #, $, %, ^, &]를 포함하여 8자리 이상이어야 합니다.");
             return;
         }
@@ -91,15 +92,17 @@
                 emp_id: $("#emp_id").val(),
                 newPassword: newPassword
             },
+            dataType: 'json',
             success: function(response) {
-                alert(response);
+                alert(response.message);
                 window.location.href = "/member/login";
             },
-            error: function(xhr, status, error) {
-                alert("비밀번호 재설정 중 오류가 발생했습니다: " + xhr.responseText);
+            error: function(xhr) {
+                alert("비밀번호 재설정 중 오류가 발생했습니다: " + xhr.responseJSON.message);
             }
         });
     });
+    
     </script>
 </body>
 </html>
