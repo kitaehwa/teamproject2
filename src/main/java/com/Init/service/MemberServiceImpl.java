@@ -303,8 +303,9 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public boolean updatePassword(String emp_id, String currentPassword, String newPassword) throws Exception {
         MemberVO member = mdao.getMember(emp_id);
-        if (member != null && member.getEmp_pw().equals(currentPassword)) {
-            member.setEmp_pw(newPassword);
+        if (member != null && passwordEncoder.matches(currentPassword, member.getEmp_pw())) {
+            String encodedNewPassword = passwordEncoder.encode(newPassword);
+            member.setEmp_pw(encodedNewPassword);
             mdao.updatePassword(member);
             return true;
         }

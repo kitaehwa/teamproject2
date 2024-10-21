@@ -176,39 +176,39 @@ public class MemberController implements ServletContextAware {
 	 	}
 
 	// 비밀번호 수정
-	@PostMapping("/updatePassword")
-	@ResponseBody
-	public ResponseEntity<Map<String, Object>> updatePassword(@RequestParam String emp_id,
-			@RequestParam String current_password, @RequestParam String new_password,
-			@RequestParam String confirm_password) {
+	 	@PostMapping("/updatePassword")
+	 	@ResponseBody
+	 	public ResponseEntity<Map<String, Object>> updatePassword(@RequestParam String emp_id,
+	 	        @RequestParam String current_password, @RequestParam String new_password,
+	 	        @RequestParam String confirm_password) {
 
-		logger.debug("/member/updatePassword -> updatePassword() 실행");
+	 	    logger.debug("/member/updatePassword -> updatePassword() 실행");
 
-		Map<String, Object> response = new HashMap<>();
+	 	    Map<String, Object> response = new HashMap<>();
 
-		if (!new_password.equals(confirm_password)) {
-			response.put("success", false);
-			response.put("message", "새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
-			return ResponseEntity.ok(response);
-		}
+	 	    if (!new_password.equals(confirm_password)) {
+	 	        response.put("success", false);
+	 	        response.put("message", "새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+	 	        return ResponseEntity.ok(response);
+	 	    }
 
-		try {
-			boolean result = mService.updatePassword(emp_id, current_password, new_password);
-			if (result) {
-				response.put("success", true);
-				response.put("message", "비밀번호가 성공적으로 변경되었습니다.");
-			} else {
-				response.put("success", false);
-				response.put("message", "현재 비밀번호가 일치하지 않습니다.");
-			}
-		} catch (Exception e) {
-			response.put("success", false);
-			response.put("message", "비밀번호 변경 중 오류가 발생했습니다: " + e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-		}
+	 	    try {
+	 	        boolean result = mService.updatePassword(emp_id, current_password, new_password);
+	 	        if (result) {
+	 	            response.put("success", true);
+	 	            response.put("message", "비밀번호가 성공적으로 변경되었습니다.");
+	 	        } else {
+	 	            response.put("success", false);
+	 	            response.put("message", "현재 비밀번호가 일치하지 않습니다.");
+	 	        }
+	 	    } catch (Exception e) {
+	 	        response.put("success", false);
+	 	        response.put("message", "비밀번호 변경 중 오류가 발생했습니다: " + e.getMessage());
+	 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+	 	    }
 
-		return ResponseEntity.ok(response);
-	}
+	 	    return ResponseEntity.ok(response);
+	 	}
 
 	@GetMapping("/account")
 	@ResponseBody
