@@ -72,9 +72,10 @@
     $("#resetPassword").click(function() {
         var newPassword = $("#newPassword").val();
         var confirmPassword = $("#confirmPassword").val();
+        var passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&+=])(?=\S+$).{8,}$/;
 
         if (newPassword.length < 8) {
-            alert("비밀번호는 8자 이상이어야 합니다.");
+            alert("비밀번호는 숫자, 영문, 특수문자[!, @, #, $, %, ^, &]를 포함하여 8자리 이상이어야 합니다.");
             return;
         }
 

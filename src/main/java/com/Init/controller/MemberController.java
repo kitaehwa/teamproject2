@@ -209,6 +209,10 @@ public class MemberController implements ServletContextAware {
 
 	 	    return ResponseEntity.ok(response);
 	 	}
+	 	private boolean isValidPassword(String password) {
+	 	    String regex = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+	 	    return password.matches(regex);
+	 	}
 
 	@GetMapping("/account")
 	@ResponseBody

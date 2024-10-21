@@ -304,6 +304,22 @@
         // 비밀번호 수정
         $('#passwordForm').submit(function(e) {
         e.preventDefault();
+        var currentPassword = $('input[name="current_password"]').val();
+        var newPassword = $('input[name="new_password"]').val();
+        var confirmPassword = $('input[name="confirm_password"]').val();
+    	    
+   		// 비밀번호 유효성 검사
+        var passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&+=])(?=\S+$).{8,}$/;
+        if (!passwordRegex.test(newPassword)) {
+            alert("비밀번호는 숫자, 영문, 특수문자[!, @, #, $, %, ^, &]를 포함하여 8자리 이상이어야 합니다.");
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            alert("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+            return;
+        }
+        
         $.ajax({
             url: '${pageContext.request.contextPath}/member/updatePassword',
             type: 'POST',
@@ -368,6 +384,23 @@
 
         $('#updateForm').submit(function(e) {
             e.preventDefault();
+            
+         	// 이메일 유효성 검사
+            var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            var email = $('input[name="emp_email"]').val();
+            if (!emailRegex.test(email)) {
+                alert("올바른 이메일 주소를 입력하세요. (ex example@example.com)");
+                return;
+            }
+
+            // 전화번호 유효성 검사
+            var phoneRegex = /^[0-9\- ]{10,13}$/;
+            var phone = $('input[name="emp_tel"]').val();
+            if (!phoneRegex.test(phone)) {
+                alert("올바른 전화번호를 입력하세요. (ex 000-0000-0000)");
+                return;
+            }
+            
             $.ajax({
                 url: $(this).attr('action'),
                 type: 'POST',

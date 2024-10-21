@@ -15,4 +15,5 @@ public class EvalVO {
     private String feadback;
     private String valuator;
     private Date eval_date;
+    
 }
