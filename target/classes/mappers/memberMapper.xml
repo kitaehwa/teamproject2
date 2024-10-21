@@ -60,6 +60,10 @@
   		and emp_pw=#{emp_pw}
   	</select>
   	
+  	<select id="getMemberById" resultType="MemberVO">
+	    SELECT * FROM employee WHERE emp_id = #{emp_id}
+	</select>
+  	
   	<!-- 비밀번호 찾기 -->
   	<update id="resetPassword">
 	    UPDATE employee SET emp_pw = #{newPassword} WHERE emp_id = #{emp_id}

@@ -14,7 +14,7 @@ import com.Init.domain.RewardVO;
 public interface MemberDAO {
 
 	// 로그인
-	public MemberVO loginMember(String emp_id,String emp_pw);
+	public MemberVO loginMember(String emp_id);
 	public MemberVO loginMember(MemberVO vo);
 	
 	// 비밀번호 찾기

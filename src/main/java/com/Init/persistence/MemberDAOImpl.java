@@ -47,17 +47,8 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 	
 	@Override
-	public MemberVO loginMember(String emp_id, String emp_pw) {
-		System.out.println(" DAO : loginMember(String emp_id, String emp_pw) 실행");
-	
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		
-		paramMap.put("emp_id", emp_id);
-		paramMap.put("emp_pw", emp_pw);
-		
-		MemberVO resultVO = sqlSession.selectOne(NAMESPACE+".loginMember",paramMap);
-	
-		return resultVO;
+	public MemberVO loginMember(String emp_id) {
+	    return sqlSession.selectOne(NAMESPACE + ".getMemberById", emp_id);
 	}
 	
 	// 비밀번호 찾기

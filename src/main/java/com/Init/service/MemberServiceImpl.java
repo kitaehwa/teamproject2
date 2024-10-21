@@ -42,12 +42,22 @@ public class MemberServiceImpl implements MemberService {
     private static final String UPLOAD_DIR = "/path/to/upload/directory/";
 
     // 로그인 체크
+//    @Override
+//    public MemberVO memberLoginCheck(MemberVO vo) {
+//        logger.debug("로그인 체크 서비스 실행: {}", vo);
+//        MemberVO resultVO = mdao.loginMember(vo);
+//        if (resultVO != null && passwordEncoder.matches(vo.getEmp_pw(), resultVO.getEmp_pw())) {
+//            return resultVO;
+//        }
+//        return null;
+//    }
+    
     @Override
     public MemberVO memberLoginCheck(MemberVO vo) {
         logger.debug("로그인 체크 서비스 실행: {}", vo);
-        MemberVO resultVO = mdao.loginMember(vo);
-        if (resultVO != null && passwordEncoder.matches(vo.getEmp_pw(), resultVO.getEmp_pw())) {
-            return resultVO;
+        MemberVO dbMember = mdao.loginMember(vo.getEmp_id()); // emp_id로만 사용자 정보를 조회
+        if (dbMember != null && passwordEncoder.matches(vo.getEmp_pw(), dbMember.getEmp_pw())) {
+            return dbMember;
         }
         return null;
     }
@@ -76,7 +86,6 @@ public class MemberServiceImpl implements MemberService {
         return mdao.verifyCode(emp_id, verificationCode);
     }
     // 비밀번호 재설정
-    @Transactional
     @Override
     public void resetPassword(String emp_id, String newPassword) {
         String encodedPassword = passwordEncoder.encode(newPassword);
@@ -317,9 +326,9 @@ public class MemberServiceImpl implements MemberService {
             String emp_id = generateEmployeeId();
             vo.setEmp_id(emp_id);
             
-            // 비밀번호를 생년월일로 설정
+            // 비밀번호를 생년월일로 설정하고 암호화
             String birthDate = vo.getEmp_birth().toString().replaceAll("-", "");
-            vo.setEmp_pw(birthDate);
+            vo.setEmp_pw(passwordEncoder.encode(birthDate));
             
             insertMember(vo);
             return true;

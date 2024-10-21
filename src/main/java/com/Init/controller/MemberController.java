@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.Init.domain.*;
 import com.Init.service.MemberService;
@@ -57,13 +58,14 @@ public class MemberController implements ServletContextAware {
 	}
 
 	@PostMapping("/login")
-	public String loginMemberPOST(@ModelAttribute MemberVO vo, HttpSession session) {
-		MemberVO resultVO = mService.memberLoginCheck(vo);
-		if (resultVO == null) {
-			return "redirect:/member/login";
-		}
-		session.setAttribute("emp_id", resultVO.getEmp_id());
-		return "redirect:/member/main";
+	public String loginMemberPOST(@ModelAttribute MemberVO vo, HttpSession session, RedirectAttributes rttr) {
+	    MemberVO resultVO = mService.memberLoginCheck(vo);
+	    if (resultVO == null) {
+	        rttr.addFlashAttribute("loginError", "아이디 또는 비밀번호가 올바르지 않습니다.");
+	        return "redirect:/member/login";
+	    }
+	    session.setAttribute("emp_id", resultVO.getEmp_id());
+	    return "redirect:/member/main";
 	}
 	
 	// 비밀번호 찾기
