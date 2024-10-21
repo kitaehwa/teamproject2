@@ -59,6 +59,12 @@
         	margin-top: 30%;
         }
         
+        #countdown {
+            color: #0055FF;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
     </style>
 </head>
 <body>
@@ -69,21 +75,56 @@
             <input type="email" id="emp_email" name="emp_email" placeholder="이메일" required>
             <button type="button" id="sendVerificationCode">인증코드 전송</button>
             <input type="text" id="verificationCode" name="verificationCode" placeholder="인증코드" required>
+            <div id="countdown"></div>
             <button type="button" id="verifyCode">인증코드 확인</button>
         </form>
     </div>
 
     <script>
-        $("#sendVerificationCode").click(function() {
-            $.post("/member/sendVerificationCode", {
-                emp_id: $("#emp_id").val(),
-                emp_email: $("#emp_email").val()
-            }, function(response) {
-                alert(response);
-            }).fail(function(xhr) {
-                alert(xhr.responseText);
-            });
+    let countdownTimer;
+    
+    function startCountdown(duration, display) {
+        let timer = duration, minutes, seconds;
+        countdownTimer = setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.text(minutes + ":" + seconds);
+
+            if (--timer < 0) {
+                clearInterval(countdownTimer);
+                display.text("시간 만료");
+                $("#verifyCode").prop('disabled', true);
+            }
+        }, 1000);
+    }
+    
+    
+    $("#sendVerificationCode").click(function() {
+        $.post("/member/sendVerificationCode", {
+            emp_id: $("#emp_id").val(),
+            emp_email: $("#emp_email").val()
+        }, function(response) {
+            alert(response);
+            $("#verificationCode").show();
+            $("#verifyCode").show();
+            $("#countdown").show();
+            
+            // 카운트다운 시작
+            clearInterval(countdownTimer);
+            let tenMinutes = 60 * 10,
+                display = $('#countdown');
+            startCountdown(tenMinutes, display);
+            
+            $("#verifyCode").prop('disabled', false);
+        }).fail(function(xhr) {
+            alert(xhr.responseText);
         });
+    });
+
 
         $("#verifyCode").click(function() {
             $.post("/member/verifyCode", {
@@ -96,6 +137,12 @@
                 alert(xhr.responseText);
             });
         });
+        
+   		// 초기에 인증코드 입력칸과 확인 버튼 숨기기
+        $("#verificationCode").hide();
+        $("#verifyCode").hide();
+        $("#countdown").hide();
+        
     </script>
     
     
