@@ -113,68 +113,67 @@
 
 <h2>퇴사 신청</h2>
 
-                  <div class="approver-box" id="appBox">
-                       <h4>결재선</h4>
-                        <div class="approver-item">
-                            <button class="btn btn-sm btn-primary" onclick="openApproverModal(1)">1차 결재자 선택</button>
-                            <span id="approver1">미지정</span>
-                        </div>
-                        <div class="approver-item">
-                            <button class="btn btn-sm btn-primary" onclick="openApproverModal(2)">2차 결재자 선택</button>
-                            <span id="approver2">미지정</span>
-                        </div>
-                        <div class="approver-item">
-                            <button class="btn btn-sm btn-primary" onclick="openApproverModal(3)">3차 결재자 선택</button>
-                            <span id="approver3">미지정</span>
-                        </div>
+                    <div class="approver-box" id="appBox">
+                    <h4>결재선</h4>
+                    <div class="approver-item">
+                        <button class="btn btn-sm btn-primary" onclick="openApproverModal(1)">1차 결재자 선택</button>
+                        <span id="approver1">미지정</span>
                     </div>
+                    <div class="approver-item">
+                        <button class="btn btn-sm btn-primary" onclick="openApproverModal(2)">2차 결재자 선택</button>
+                        <span id="approver2">미지정</span>
+                    </div>
+                    <div class="approver-item">
+                        <button class="btn btn-sm btn-primary" onclick="openApproverModal(3)">3차 결재자 선택</button>
+                        <span id="approver3">미지정</span>
+                    </div>
+                </div>
+                
+               
                     
                     <form id="quitForm">
-                        <div class="table-container">
-                    
-                    <form id="quitForm">
-                        <div class="table-container">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th width="20%">사원번호</th>
-                                    <td><input type="text" class="form-control" id="empId" name="empId" value="${memberVO.emp_id}" readonly></td>
-                                </tr>
-                                <tr>
-                                    <th>이름</th>
-                                    <td><input type="text" class="form-control" id="empName" name="empName" value="${memberVO.emp_name}" readonly></td>
-                                </tr>
-                                <tr>
-                                    <th>부서</th>
-                                    <td><input type="text" class="form-control" id="empDept" name="empDept" value="${memberVO.emp_dnum}" readonly></td>
-                                </tr>
-                                <tr>
-                                    <th>직책</th>
-                                    <td><input type="text" class="form-control" id="empPosition" name="empPosition" value="${memberVO.emp_job}" readonly></td>
-                                </tr>
-                                <tr>
-                                    <th>퇴사희망일</th>
-                                    <td><input type="date" class="form-control datepicker" id="quitDate" name="quitDate"></td>
-                                </tr>
-                                <tr>
-                                    <th>퇴사사유</th>
-                                    <td>
-                                        <select class="form-control" id="quitReason" name="quitReason">
-                                            <option value="">선택하세요</option>
-                                            <option value="이직">이직</option>
-                                            <option value="휴식">휴식</option>
-                                            <option value="학업/자기개발">학업/자기개발</option>
-                                            <option value="창업/자영업">창업/자영업</option>
-                                            <option value="가족/육아">가족/육아</option>
-                                            <option value="해외거주/이주">해외거주/이주</option>
-                                            <option value="직무불만족">직무불만족</option>
-                                            <option value="기타">기타</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>사유상세</th>
-                                    <td><textarea class="form-control" id="quitReasonDetail" name="quitReasonDetail" rows="5"></textarea></td>
-                                </tr>
+    <div class="table-container">
+        <table class="table table-bordered">
+            <tr>
+                <th width="20%">사원번호</th>
+                <td><input type="text" class="form-control" id="emp_id" name="emp_id" value="${memberVO.emp_id}" readonly></td>
+            </tr>
+            <tr>
+                <th>이름</th>
+                <td><input type="text" class="form-control" id="emp_name" name="emp_name" value="${memberVO.emp_name}" readonly></td>
+            </tr>
+            <tr>
+                <th>부서</th>
+                <td><input type="text" class="form-control" id="emp_dnum" name="emp_dnum" value="${memberVO.emp_dnum}" readonly></td>
+            </tr>
+            <tr>
+                <th>직책</th>
+                <td><input type="text" class="form-control" id="emp_position" name="emp_position" value="${memberVO.emp_job}" readonly></td>
+            </tr>
+            <tr>
+                <th>퇴사희망일</th>
+                <td><input type="date" class="form-control datepicker" id="quit_date" name="quit_date"></td>
+            </tr>
+            <tr>
+                <th>퇴사사유</th>
+                <td>
+                    <select class="form-control" id="quit_reason" name="quit_reason">
+                        <option value="">선택하세요</option>
+                        <option value="이직">이직</option>
+                        <option value="휴식">휴식</option>
+                        <option value="학업/자기개발">학업/자기개발</option>
+                        <option value="창업/자영업">창업/자영업</option>
+                        <option value="가족/육아">가족/육아</option>
+                        <option value="해외거주/이주">해외거주/이주</option>
+                        <option value="직무불만족">직무불만족</option>
+                        <option value="기타">기타</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>사유상세</th>
+                <td><textarea class="form-control" id="quit_reason_detail" name="quit_reason_detail" rows="5"></textarea></td>
+            </tr>
                                 <tr>
                                     <th>퇴사 규칙</th>
                                     <td>
@@ -220,9 +219,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">결재자 선택</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <div class="modal-body">
                     <table class="table table-striped" id="approverTable">
@@ -239,10 +235,7 @@
                             <!-- 사원 목록이 여기에 동적으로 추가됩니다 -->
                         </tbody>
                     </table>
-                </div>
-            </div>
-        </div>
-    </div>	
+
 
                          
                  
@@ -251,7 +244,7 @@
           <!-- page-inner -->
         </div>
 		<!-- container -->
-        <%@ include file="/resources/assets/inc/footer.jsp" %>
+<%--         <%@ include file="/resources/assets/inc/footer.jsp" %> --%>
       </div>
       <!-- main-panel -->
     </div>
@@ -295,86 +288,6 @@
     <script src="${pageContext.request.contextPath }/resources/assets/js/demo.js"></script>
     
     <script>
-    $('#quitForm').submit(function(e) {
-        e.preventDefault();
-        if (!$('#agreeRules').is(':checked')) {
-            alert('퇴사 규칙에 동의해주세요.');
-            return;
-        }
-        
-        var formData = {
-            emp_id: $('#empId').val(),
-            emp_name: $('#empName').val(),
-            emp_dept: $('#empDept').val(),
-            emp_position: $('#empPosition').val(),
-            quit_date: $('#quitDate').val(),
-            quit_reason: $('#quitReason').val(),
-            quit_reason_detail: $('#quitReasonDetail').val()
-        };
-
-        $.ajax({
-            url: '${pageContext.request.contextPath}/quit/submit',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(formData),
-            success: function(response) {
-                if (response === 'success') {
-                    alert('퇴사 신청이 성공적으로 제출되었습니다.');
-                    window.location.href = '${pageContext.request.contextPath}/member/main';
-                } else {
-                    alert('퇴사 신청 제출에 실패했습니다: ' + response);
-                }
-            },
-            error: function() {
-                alert('서버와의 통신 중 오류가 발생했습니다.');
-            }
-        });
-    });
-    
-    </script>
-    
-    <script>
-    
-    let currentApproverStep = 0;
-
-    function openApproverModal(step) {
-        currentApproverStep = step;
-        $('#approverModal').modal('show');
-        loadEmployeeList();
-    }
-
-    function loadEmployeeList() {
-        $.ajax({
-            url: '${pageContext.request.contextPath}/member/list', // 사원 목록을 가져오는 API 엔드포인트
-            type: 'GET',
-            success: function(response) {
-                let tableBody = $('#approverTable tbody');
-                tableBody.empty();
-                response.forEach(function(employee) {
-                    let row = `<tr>
-                        <td>${employee.emp_id}</td>
-                        <td>${employee.emp_name}</td>
-                        <td>${employee.emp_dnum}</td>
-                        <td>${employee.emp_job}</td>
-                        <td><button class="btn btn-sm btn-primary" onclick="selectApprover('${employee.emp_id}', '${employee.emp_name}')">선택</button></td>
-                    </tr>`;
-                    tableBody.append(row);
-                });
-            },
-            error: function() {
-                alert('사원 목록을 불러오는데 실패했습니다.');
-            }
-        });
-    }
-
-    function selectApprover(emp_id, emp_name) {
-        $(`#approver${currentApproverStep}`).text(`${emp_name} (${emp_id})`);
-        $('#approverModal').modal('hide');
-    }
-    
-    </script>
-    
-    <script>
       $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
         type: "line",
         height: "70",
@@ -403,5 +316,110 @@
       });
 
     </script>
+    
+    <script>
+    let currentApproverStep = 0;
+
+    function openApproverModal(step) {
+        currentApproverStep = step;
+        $('#approverModal').modal('show');
+        loadEmployeeList();
+    }
+
+    function loadEmployeeList() {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/quit/listAllMembers', 
+            type: 'GET',
+            success: function(response) {
+                console.log('Received response:', response);
+                let tableBody = $('#approverTable tbody');
+                tableBody.empty();
+                if (Array.isArray(response)) {
+                    response.forEach(function(employee) {
+                        
+                        let row = `<tr>
+                            <td>${employee.emp_id || ''}</td>
+                            <td>${employee.emp_name || ''}</td>
+                            <td>${employee.emp_dnum || ''}</td>
+                            <td>${employee.emp_job || ''}</td>
+                            <td><button class="btn btn-sm btn-primary" onclick="selectApprover('${employee.emp_id || ''}', '${employee.emp_name || ''}')">선택</button></td>
+                        </tr>`;
+                        tableBody.append(row);
+                    });
+                } else {
+                    console.error('Response is not an array:', response);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching employee list:', status, error);
+                alert('사원 목록을 불러오는데 실패했습니다.');
+            }
+        });
+    }
+
+    function selectApprover(emp_id, emp_name) {
+        $(`#approver${currentApproverStep}`).text(`${emp_name} (${emp_id})`);
+        $('#approverModal').modal('hide');
+    }
+
+    /* 결재자 선택 */
+    $('#quitForm').submit(function(e) {
+    e.preventDefault();
+    if (!$('#agreeRules').is(':checked')) {
+        alert('퇴사 규칙에 동의해주세요.');
+        return;
+    }
+    
+    function getApproverEmpId(approverElement) {
+        var approverText = approverElement.text();
+        var match = approverText.match(/\(([^)]+)\)/);
+        return match ? match[1] : '';
+    }
+
+    var formData = {
+        emp_id: $('#emp_id').val(),
+        emp_name: $('#emp_name').val(),
+        emp_dnum: $('#emp_dnum').val(),
+        emp_position: $('#emp_position').val(),
+        quit_date: $('#quit_date').val(),
+        quit_reason: $('#quit_reason').val(),
+        quit_reason_detail: $('#quit_reason_detail').val(),
+        approver1: getApproverEmpId($('#approver1')),
+        approver2: getApproverEmpId($('#approver2')),
+        approver3: getApproverEmpId($('#approver3'))
+    };
+
+    // 결재자가 모두 선택되었는지 확인
+    if (!formData.approver1 || !formData.approver2 || !formData.approver3) {
+        alert('모든 결재자를 선택해주세요.');
+        return;
+    }
+
+    $.ajax({
+        url: '${pageContext.request.contextPath}/quit/submit',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(formData),
+        success: function(response) {
+            if (response === 'success') {
+                alert('퇴사 신청이 성공적으로 제출되었습니다.');
+                window.location.href = '${pageContext.request.contextPath}/member/main';
+            } else {
+                alert('퇴사 신청 제출에 실패했습니다: ' + response);
+            }
+        },
+        error: function(xhr, status, error) {
+            alert('서버와의 통신 중 오류가 발생했습니다: ' + error);
+        }
+    });
+});
+$('#approverModal').on('shown.bs.modal', function () {
+    loadEmployeeList();
+});
+
+
+    
+    </script>
+    
   </body>
 </html>

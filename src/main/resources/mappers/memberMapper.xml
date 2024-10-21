@@ -12,16 +12,9 @@
   	
   	<!-- 퇴사신청 -->
     <insert id="insertQuit" parameterType="com.Init.domain.QuitVO">
-        INSERT INTO quit_application (
-            emp_id, emp_name, emp_dept, emp_position, 
-            quit_date, quit_reason, quit_reason_detail, 
-            application_date
-        ) VALUES (
-            #{emp_id}, #{emp_name}, #{emp_dept}, #{emp_position}, 
-            #{quit_date}, #{quit_reason}, #{quit_reason_detail}, 
-            NOW()
-        )
-    </insert>
+    INSERT INTO quit_application (emp_id, emp_name, emp_dnum, emp_position, quit_date, quit_reason, quit_reason_detail, emp_status, approver1, approver2, approver3)
+    VALUES (#{emp_id}, #{emp_name}, #{emp_dnum}, #{emp_position}, #{quit_date}, #{quit_reason}, #{quit_reason_detail}, '신청', #{approver1}, #{approver2}, #{approver3})
+	</insert>
     
     <!-- 비밀번호 찾기 -->
     <select id="isValidEmployee" resultType="int">
@@ -345,6 +338,10 @@
                 emp_job LIKE #{keyword}
             </if>
         </where>
+    </select>
+    
+    <select id="getAllQuitApplications" resultType="com.Init.domain.QuitVO">
+        SELECT * FROM quit_application
     </select>
 	
 </mapper>

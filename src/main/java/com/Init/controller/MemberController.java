@@ -66,6 +66,21 @@ public class MemberController implements ServletContextAware {
 		return "redirect:/member/main";
 	}
 	
+	// 결재선
+	@GetMapping("/listAllMembers")
+	@ResponseBody
+	public ResponseEntity<List<MemberVO>> listAllMembers() {
+	    try {
+	        List<MemberVO> members = mService.getAllMembers();
+	        logger.info("Returning {} members", members.size());
+	        members.forEach(m -> logger.debug("Member: {}", m));
+	        return ResponseEntity.ok(members);
+	    } catch (Exception e) {
+	        logger.error("Error fetching all members", e);
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+	    }
+	}
+	
 	// 비밀번호 찾기
 	@GetMapping("/forgotPassword")
     public String showForgotPasswordForm() {

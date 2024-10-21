@@ -325,6 +325,12 @@ public class MemberServiceImpl implements MemberService {
         mdao.insertMember(vo);
     }
     
+    // 결재선
+    @Override
+    public List<MemberVO> getAllMembers() {
+        return mdao.getAllMembers();
+    }
+    
     // 관리자 수정
     @Transactional
     public boolean updateEmployeeInfo(MemberVO vo) {
@@ -340,5 +346,4 @@ public class MemberServiceImpl implements MemberService {
         throw new RuntimeException("사원 정보 업데이트 실패", e);
       }
     }
-    
 }

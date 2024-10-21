@@ -1,6 +1,8 @@
 package com.Init.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +11,10 @@ import com.Init.domain.MemberVO;
 import com.Init.domain.QuitVO;
 import com.Init.service.MemberService;
 import com.Init.service.QuitService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -17,8 +23,10 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/quit")
 public class QuitController {
-
-    @Autowired
+	
+private static final Logger logger = LoggerFactory.getLogger(QuitController.class);
+    
+	@Autowired
     private MemberService mService;
 
     @Autowired
@@ -31,15 +39,27 @@ public class QuitController {
         model.addAttribute("memberVO", member);
         return "member/quit";
     }
+    
+    @GetMapping("/listAllMembers")
+    @ResponseBody
+    public ResponseEntity<List<MemberVO>> listAllMembers() {
+        try {
+            List<MemberVO> members = mService.getAllMembers();
+            logger.info("Returning {} members", members.size());
+            return ResponseEntity.ok(members);
+        } catch (Exception e) {
+            logger.error("Error fetching all members", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
     @PostMapping("/submit")
-    @ResponseBody
-    public String submitQuit(@RequestBody QuitVO quitVO) {
+    public ResponseEntity<String> submitQuit(@RequestBody QuitVO quitVO) {
         try {
             quitService.submitQuit(quitVO);
-            return "success";
+            return ResponseEntity.ok("success");
         } catch (Exception e) {
-            return "error: " + e.getMessage();
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
 }
