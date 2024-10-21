@@ -412,47 +412,61 @@ public class MemberController implements ServletContextAware {
 	}
 
 	@GetMapping("/filter")
-	public String filterMembers(@RequestParam String filterType, @RequestParam String filterValue,
-			@RequestParam(defaultValue = "1") int page, @RequestParam(required = false) String pageType, Model model) {
-		int pageSize = 8;
-		List<MemberVO> members = mService.getFilteredMembers(filterType, filterValue, page, pageSize);
-		int totalMembers = mService.getFilteredMembersCount(filterType, filterValue);
-		int totalPages = (int) Math.ceil((double) totalMembers / pageSize);
+    public String filterMembers(@RequestParam String filterType, 
+                                @RequestParam String filterValue,
+                                @RequestParam(defaultValue = "1") int page, 
+                                @RequestParam(required = false) String pageType, 
+                                Model model) {
+        int pageSize = 8;
+        List<MemberVO> members = mService.getFilteredMembers(filterType, filterValue, page, pageSize);
+        int totalMembers = mService.getFilteredMembersCount(filterType, filterValue);
+        int totalPages = (int) Math.ceil((double) totalMembers / pageSize);
 
-		model.addAttribute("members", members);
-		model.addAttribute("currentPage", page);
-		model.addAttribute("totalPages", totalPages);
+        model.addAttribute("members", members);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("filterType", filterType);
+        model.addAttribute("filterValue", filterValue);
 
-		logger.debug("Received pageType: " + pageType);
+        logger.debug("Filtered members: " + members.size());
+        logger.debug("Total filtered members: " + totalMembers);
+        logger.debug("Received pageType: " + pageType);
 
-		if ("manager".equals(pageType)) {
-			return "member/manager";
-		} else {
-			return "member/list";
-		}
-	}
+        if ("manager".equals(pageType)) {
+            return "member/manager";
+        } else {
+            return "member/list";
+        }
+    }
 
 	// 검색기능
 	@GetMapping("/search")
-	public String searchMembers(@RequestParam String searchType, @RequestParam String keyword,
-			@RequestParam(defaultValue = "1") int page, @RequestParam(required = false) String pageType, Model model) {
-		int pageSize = 8;
-		List<MemberVO> members = mService.searchMembers(searchType, keyword, page, pageSize);
-		int totalMembers = mService.getSearchMembersCount(searchType, keyword);
-		int totalPages = (int) Math.ceil((double) totalMembers / pageSize);
+    public String searchMembers(@RequestParam String searchType, 
+                                @RequestParam String keyword,
+                                @RequestParam(defaultValue = "1") int page, 
+                                @RequestParam(required = false) String pageType, 
+                                Model model) {
+        int pageSize = 8;
+        List<MemberVO> members = mService.searchMembers(searchType, keyword, page, pageSize);
+        int totalMembers = mService.getSearchMembersCount(searchType, keyword);
+        int totalPages = (int) Math.ceil((double) totalMembers / pageSize);
 
-		model.addAttribute("members", members);
-		model.addAttribute("currentPage", page);
-		model.addAttribute("totalPages", totalPages);
+        model.addAttribute("members", members);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("keyword", keyword);
 
-		logger.debug("Received pageType: " + pageType);
+        logger.debug("Searched members: " + members.size());
+        logger.debug("Total searched members: " + totalMembers);
+        logger.debug("Received pageType: " + pageType);
 
-		if ("manager".equals(pageType)) {
-			return "member/manager";
-		} else {
-			return "member/list";
-		}
-	}
+        if ("manager".equals(pageType)) {
+            return "member/manager";
+        } else {
+            return "member/list";
+        }
+    }
 	
 	// 사원 등록
 	@PostMapping("/register")

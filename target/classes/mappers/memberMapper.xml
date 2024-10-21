@@ -296,45 +296,47 @@
 
 	<!-- 필터링된 회원 목록 가져오기 -->
 	<select id="getFilteredMembers" parameterType="map" resultType="MemberVO">
-	    SELECT * FROM employee
-	    <where>
-	        <if test="filterType != null and filterValue != null">
-	            ${filterType} = #{filterValue}
-	        </if>
-	    </where>
-	    ORDER BY emp_id
-	    LIMIT #{offset}, #{pageSize}
-	</select>
-	
-	<!-- 필터링된 회원 수 가져오기 -->
-	<select id="getFilteredMembersCount" parameterType="map" resultType="int">
-	    SELECT COUNT(*) FROM employee
-	    <where>
-	        <if test="filterType != null and filterValue != null">
-	            ${filterType} = #{filterValue}
-	        </if>
-	    </where>
-	</select>
-	
-	<!-- 검색기능 -->
-	<select id="searchMembers" parameterType="map" resultType="MemberVO">
         SELECT * FROM employee
         <where>
-            <if test="searchType == 'emp_id'">
-                emp_id LIKE #{keyword}
+            <if test="filterType != null and filterValue != null">
+                ${filterType} = #{filterValue}
             </if>
-            <if test="searchType == 'emp_name'">
-                emp_name LIKE #{keyword}
+        </where>
+        ORDER BY emp_id
+        LIMIT #{offset}, #{pageSize}
+    </select>
+    
+    <!-- 필터링된 회원 수 가져오기 -->
+    <select id="getFilteredMembersCount" parameterType="map" resultType="int">
+        SELECT COUNT(*) FROM employee
+        <where>
+            <if test="filterType != null and filterValue != null">
+                ${filterType} = #{filterValue}
             </if>
-            <if test="searchType == 'emp_dnum'">
-                emp_dnum LIKE #{keyword}
-            </if>
-            <if test="searchType == 'emp_position'">
-                emp_position LIKE #{keyword}
-            </if>
-            <if test="searchType == 'emp_job'">
-                emp_job LIKE #{keyword}
-            </if>
+        </where>
+    </select>
+    
+    <!-- 검색기능 -->
+    <select id="searchMembers" parameterType="map" resultType="MemberVO">
+        SELECT * FROM employee
+        <where>
+            <choose>
+                <when test="searchType == 'emp_id'">
+                    emp_id LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'emp_name'">
+                    emp_name LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'emp_dnum'">
+                    emp_dnum LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'emp_position'">
+                    emp_position LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'emp_job'">
+                    emp_job LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+            </choose>
         </where>
         ORDER BY emp_id
         LIMIT #{offset}, #{pageSize}
@@ -343,21 +345,23 @@
     <select id="getSearchMembersCount" parameterType="map" resultType="int">
         SELECT COUNT(*) FROM employee
         <where>
-            <if test="searchType == 'emp_id'">
-                emp_id LIKE #{keyword}
-            </if>
-            <if test="searchType == 'emp_name'">
-                emp_name LIKE #{keyword}
-            </if>
-            <if test="searchType == 'emp_dnum'">
-                emp_dnum LIKE #{keyword}
-            </if>
-            <if test="searchType == 'emp_position'">
-                emp_position LIKE #{keyword}
-            </if>
-            <if test="searchType == 'emp_job'">
-                emp_job LIKE #{keyword}
-            </if>
+            <choose>
+                <when test="searchType == 'emp_id'">
+                    emp_id LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'emp_name'">
+                    emp_name LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'emp_dnum'">
+                    emp_dnum LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'emp_position'">
+                    emp_position LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'emp_job'">
+                    emp_job LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+            </choose>
         </where>
     </select>
 
