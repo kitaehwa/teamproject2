@@ -294,7 +294,7 @@ footer {
 					</thead>
 					<tbody>
 						<c:forEach var="member" items="${members}">
-							<c:if test="${member.emp_status ne '퇴직'}">
+							<c:if test="${member.emp_status ne '퇴직' and member.emp_id ne 'system'}">
 								<tr>
 									<td>${member.emp_id}</td>
 									<td>${member.emp_name}</td>

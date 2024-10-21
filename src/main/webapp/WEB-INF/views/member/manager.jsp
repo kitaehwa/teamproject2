@@ -330,6 +330,7 @@ footer {
 						</thead>
 						<tbody>
 							<c:forEach var="member" items="${members}">
+								<c:if test="${member.emp_id ne 'system'}">
 								<tr>
 									<td>${member.emp_id}</td>
 									<td>${member.emp_name}</td>
@@ -351,6 +352,7 @@ footer {
 									<td>${member.emp_quit_date}</td>
 									<td><button class="btn btn-info btn-sm" onclick="showEditModal('${member.emp_id}')">수정</button></td>
 								</tr>
+								</c:if>
 							</c:forEach>
 						</tbody>
 					</table>
