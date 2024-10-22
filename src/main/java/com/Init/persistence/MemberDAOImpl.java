@@ -54,8 +54,21 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 	// 퇴직신청
 	@Override
-	public int insertQuitRequest(MemberVO quitMember) {
-	    return sqlSession.insert(NAMESPACE + ".insertQuitRequest", quitMember);
+	public int insertQuitEmployee(MemberVO memberVO) {
+	    return sqlSession.insert(NAMESPACE + ".insertQuitEmployee", memberVO);
+	}
+	
+	@Override
+	public void updateQuitApproval(String emp_id, int approval) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("emp_id", emp_id);
+	    params.put("approval", approval);
+	    sqlSession.update(NAMESPACE + ".updateQuitApproval", params);
+	}
+
+	@Override
+	public void updateEmployeeStatus(String emp_id) {
+	    sqlSession.update(NAMESPACE + ".updateEmployeeStatus", emp_id);
 	}
 	
 	// 비밀번호 찾기

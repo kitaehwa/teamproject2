@@ -11,22 +11,44 @@
   	</select>
   	
   	<!-- 퇴사신청 -->
-    <insert id="insertQuitRequest" parameterType="MemberVO">
-    INSERT INTO employee (
-        emp_id, emp_pw, emp_name, emp_birth, emp_gender, emp_tel, emp_email, 
-        emp_addr, emp_bnum, emp_dnum, emp_position, emp_job, 
-        emp_salary, emp_work_type, emp_bank_name, emp_account_num, 
-        emp_account_name, emp_profile, emp_start_date, emp_break_date, 
-        emp_restart_date, emp_quit_date, emp_status, approval
-    )
-    VALUES (
-        #{emp_id}, #{emp_pw}, #{emp_name}, #{emp_birth}, #{emp_gender}, #{emp_tel}, #{emp_email},
-        #{emp_addr}, #{emp_bnum}, #{emp_dnum}, #{emp_position}, #{emp_job},
-        #{emp_salary}, #{emp_work_type}, #{emp_bank_name}, #{emp_account_num},
-        #{emp_account_name}, #{emp_profile}, #{emp_start_date}, #{emp_break_date},
-        #{emp_restart_date}, #{emp_quit_date}, '퇴직', -1
-    )
+	  <insert id="insertQuitEmployee" parameterType="MemberVO">
+	    INSERT INTO quit (
+	        emp_id, emp_pw, emp_name, emp_birth, emp_gender, 
+	        emp_tel, emp_email, emp_addr, emp_bnum, emp_dnum, 
+	        emp_position, emp_job, emp_salary, emp_work_type, 
+	        emp_bank_name, emp_account_num, emp_account_name, 
+	        emp_profile, emp_start_date, emp_break_date, 
+	        emp_restart_date, emp_quit_date, emp_status, approval, 
+	        request_date, reason, reason_detail
+	    )
+	    SELECT 
+	        emp_id, emp_pw, emp_name, emp_birth, emp_gender,
+	        emp_tel, emp_email, emp_addr, emp_bnum, emp_dnum,
+	        emp_position, emp_job, emp_salary, emp_work_type,
+	        emp_bank_name, emp_account_num, emp_account_name,
+	        emp_profile, emp_start_date, emp_break_date,
+	        emp_restart_date, #{emp_quit_date}, '퇴직요청', -1,
+	        NOW(), #{reason}, #{reason_detail}
+	    FROM employee
+	    WHERE emp_id = #{emp_id}
+	    AND emp_status = '재직'
 	</insert>
+		
+		<!-- quit 테이블의 승인 상태 업데이트 -->
+		<update id="updateQuitApproval">
+		    UPDATE quit 
+		    SET approval = #{approval},
+		        update_date = NOW()
+		    WHERE emp_id = #{emp_id}
+		</update>
+		
+		<!-- employee 테이블의 상태 업데이트 -->
+		<update id="updateEmployeeStatus">
+		    UPDATE employee 
+		    SET emp_status = '퇴직',
+		        emp_quit_date = NOW()
+		    WHERE emp_id = #{emp_id}
+		</update>
     
     <!-- 비밀번호 찾기 -->
     <select id="isValidEmployee" resultType="int">
@@ -99,9 +121,18 @@
   	
   	<!-- 회원정보 조회 -->
   	<select id="getMember" resultType="MemberVO">
-  		select * from employee
-  		where emp_id=#{emp_id}
-  	</select>
+	    SELECT * FROM employee
+	    WHERE emp_id = #{emp_id}
+	    ORDER BY 
+	        CASE 
+	            WHEN emp_status = '재직' THEN 1
+	            WHEN emp_status = '퇴직요청' THEN 2
+	            WHEN emp_status = '퇴직' THEN 3
+	            ELSE 4
+	        END,
+	        emp_quit_date DESC
+	    LIMIT 1
+	</select>
   	
   	<!-- 회원 정보 수정 -->
 	<update id="updateMember">

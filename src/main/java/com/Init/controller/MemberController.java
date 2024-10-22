@@ -21,11 +21,13 @@ import javax.servlet.http.HttpSession;
 
 import java.io.File;
 import java.io.IOException;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.sql.Date;
 
 //http://localhost:8088/member/login
 
@@ -67,14 +69,39 @@ public class MemberController implements ServletContextAware {
 	    session.setAttribute("emp_id", resultVO.getEmp_id());
 	    return "redirect:/member/main";
 	}
-	// 퇴직신청
-	@PostMapping("/quit/submit")
+	// 퇴직신청 - GET
+	@GetMapping("/quit")
+	public String quitPage(HttpSession session, Model model) {
+	    String emp_id = (String) session.getAttribute("emp_id");
+	    // 로그인 체크
+	    if(emp_id == null) {
+	        return "redirect:/member/login";
+	    }
+	    
+	    MemberVO memberVO = mService.memberInfo(emp_id);
+	    model.addAttribute("memberVO", memberVO);
+	    
+	    return "member/quit";  
+	}
+	
+	// 퇴직신청 - POST
+	@PostMapping("/submitQuit")
 	@ResponseBody
-	public ResponseEntity<Map<String, Object>> submitQuitRequest(@RequestBody MemberVO currentMember) {
+	public ResponseEntity<Map<String, Object>> submitQuit(
+	        @RequestParam("emp_id") String emp_id,
+	        @RequestParam("reason") String reason,
+	        @RequestParam("emp_quit_date") Date emp_quit_date,  // 이 변수명을 사용
+	        @RequestParam("reason_detail") String reason_detail) {
 	    Map<String, Object> response = new HashMap<>();
 	    try {
-	        boolean result = mService.processQuitRequest(currentMember);
-	        if (result) {
+	        MemberVO memberVO = new MemberVO();
+	        memberVO.setEmp_id(emp_id);
+	        memberVO.setReason(reason);
+	        memberVO.setEmp_quit_date(emp_quit_date);  
+	        memberVO.setReason_detail(reason_detail);
+	        
+	        boolean result = mService.insertQuitEmployee(memberVO);
+	        if(result) {
 	            response.put("success", true);
 	            response.put("message", "퇴직 신청이 완료되었습니다.");
 	        } else {
@@ -85,6 +112,25 @@ public class MemberController implements ServletContextAware {
 	    } catch (Exception e) {
 	        response.put("success", false);
 	        response.put("message", "서버 오류: " + e.getMessage());
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+	    }
+	}
+	
+	// employee 테이블 퇴직 업데이트
+	@PostMapping("/updateApproval")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> updateApproval(
+	        @RequestParam String emp_id,
+	        @RequestParam int approval) {
+	    Map<String, Object> response = new HashMap<>();
+	    try {
+	        mService.updateApprovalAndStatus(emp_id, approval);
+	        response.put("success", true);
+	        response.put("message", "퇴직 신청이 완료되었습니다.");
+	        return ResponseEntity.ok(response);
+	    } catch (Exception e) {
+	        response.put("success", false);
+	        response.put("message", "처리 중 오류가 발생했습니다: " + e.getMessage());
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 	    }
 	}

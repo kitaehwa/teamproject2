@@ -134,7 +134,7 @@
             </tr>
             <tr>
                 <th>퇴사희망일</th>
-                <td><input type="date" class="form-control datepicker" id="quit_date" name="quit_date"></td>
+                <td><input type="date" class="form-control datepicker" id="emp_quit_date" name="emp_quit_date"></td>
             </tr>
             <tr>
                 <th>퇴사사유</th>
@@ -283,7 +283,7 @@
             alert('퇴사 규칙에 동의해주세요.');
             return;
         }
-        if (!$('#quit_date').val()) {
+        if (!$('#emp_quit_date').val()) {
             alert('퇴사희망일을 선택해주세요.');
             return;
         }
@@ -296,24 +296,20 @@
             return;
         }
 
-        // 현재 사원 정보 가져오기
-        const currentMember = {
-            emp_id: $('#emp_id').val(),
-            emp_name: $('#emp_name').val(),
-            emp_dnum: $('#emp_dnum').val(),
-            emp_position: $('#emp_position').val()
-        };
-
         // AJAX 요청
         $.ajax({
-            url: '/member/quit/submit',
+            url: '/member/submitQuit',
             type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(currentMember),
+            data: {
+                emp_id: $('#emp_id').val(),
+                reason: $('#quit_reason').val(),
+                emp_quit_date: $('#emp_quit_date').val(),
+                reason_detail: $('#quit_reason_detail').val()
+            },
             success: function(response) {
                 if (response.success) {
                     alert(response.message);
-                    window.location.href = '/member/main'; // 메인 페이지로 리다이렉트
+                    window.location.href = '/member/main';
                 } else {
                     alert(response.message);
                 }

@@ -56,29 +56,41 @@ public class MemberServiceImpl implements MemberService {
     // 퇴직신청
     @Override
     @Transactional
-    public boolean processQuitRequest(MemberVO currentMember) {
+    public boolean insertQuitEmployee(MemberVO memberVO) {
         try {
-            // 현재 사원의 정보를 조회
-            MemberVO existingMember = mdao.getMember(currentMember.getEmp_id());
-            if (existingMember == null) {
-                throw new RuntimeException("사원 정보를 찾을 수 없습니다.");
+        	// 1. 기존 직원 정보 조회
+            MemberVO existingEmployee = mdao.getMember(memberVO.getEmp_id()); 
+            if(existingEmployee == null) {
+                throw new RuntimeException("직원 정보를 찾을 수 없습니다.");
             }
-
-            // 새로운 레코드를 위한 MemberVO 객체 생성
-            MemberVO quitMember = new MemberVO();
             
-            // 기존 정보 복사
-            BeanUtils.copyProperties(existingMember, quitMember);
+            // 2. 신청한 퇴직 사유와 상세사유 설정
+            existingEmployee.setReason(memberVO.getReason());
+            existingEmployee.setEmp_quit_date(memberVO.getEmp_quit_date());
+            existingEmployee.setReason_detail(memberVO.getReason_detail());
             
-            // 퇴직 상태 및 결재 상태 설정
-            quitMember.setEmp_status("퇴직");
-            quitMember.setApproval(-1);
-            
-            // 새로운 레코드 삽입
-            return mdao.insertQuitRequest(quitMember) > 0;
-        } catch (Exception e) {
+            // 3. 새로운 레코드 삽입
+            return mdao.insertQuitEmployee(existingEmployee) > 0;
+        } catch(Exception e) {
             logger.error("퇴직 신청 처리 중 오류 발생", e);
             throw new RuntimeException("퇴직 신청 처리 실패", e);
+        }
+    }
+    
+    @Override
+    @Transactional
+    public void updateApprovalAndStatus(String emp_id, int approval) {
+        try {
+            // quit 테이블의 approval 업데이트
+            mdao.updateQuitApproval(emp_id, approval);
+            
+            // approval이 0인 경우 employee 테이블의 상태 업데이트
+            if (approval == 0) {
+                mdao.updateEmployeeStatus(emp_id);
+            }
+        } catch (Exception e) {
+            logger.error("퇴직 승인 처리 중 오류 발생: " + emp_id, e);
+            throw new RuntimeException("퇴직 승인 처리 실패", e);
         }
     }
     
