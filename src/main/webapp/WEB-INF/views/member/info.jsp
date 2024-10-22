@@ -135,14 +135,6 @@
         font-weight: bold;
       }
       
-      .profile-pic-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 20px;
-        width: 110px;
-      }
-     
       #addLicenseBtn {
       	padding: 8px 15px;
         margin-top: 1%;
@@ -161,6 +153,31 @@
         color: white;
         cursor: pointer;
       }
+      
+      .profile-pic-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+	    height: 100%;
+	    padding: 10px;
+      }
+
+      .profile-pic-container img {
+        width: 160px;       
+	    height: 200px;      
+	    object-fit: cover;  
+	    border-radius: 5px;
+	    margin-bottom: 10px;
+      }
+      
+      .info-table td.profile-cell {
+	    width: 180px;  
+		height: 240px; 
+		padding: 10px;
+		vertical-align: middle;
+	  }
+      
       
     </style>
  <!------------------------------------------------------------------------------------------------------------------>

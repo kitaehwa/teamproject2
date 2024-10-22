@@ -68,7 +68,5 @@
 	         /profiles/ 경로 아래의 모든 요청을 처리
 	   </servlet-mapping>
 	   imageServeServlet
-	
-		
 
 </web-app>

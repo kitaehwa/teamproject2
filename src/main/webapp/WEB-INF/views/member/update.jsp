@@ -131,27 +131,36 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-bottom: 20px;
-        width: 110px;
+        width: 100%;
+	    height: 100%;
+	    padding: 10px;
       }
 
       .profile-pic-container img {
-        margin-bottom: 10px;
-        max-width: 150px;
-        height: auto;
+        width: 160px;       
+	    height: 200px;      
+	    object-fit: cover;  
+	    border-radius: 5px;
+	    margin-bottom: 10px;
       }
+      
+      .info-table td.profile-cell {
+	    width: 180px;  
+		height: 240px; 
+		padding: 10px;
+		vertical-align: middle;
+	  }
 
       #uploadProfilePic {
         margin-top: 10px;
       }
       
       .profile-pic-container input[type="file"] {
-	    margin-top: 10px;
-	    display: block;
-	    width: 80%; 
-	    text-align: center; 
+	    width: 160px;
+	    margin-top: 5px;
+	    font-size: 12px;
 	  }
-      
+	  
     </style>
   </head>
   <body>
@@ -170,11 +179,22 @@
               <form method="post" action="/member/update" id="updateForm" enctype="multipart/form-data">
                 <table class="info-table" style="width: 70%;">
                   <tr>
-                    <td rowspan="4" style="width: 8%;">
+                     <td rowspan="4" class="profile-cell">
                     <div class="profile-pic-container">
-					    <img id="profilePicPreview" src="${memberVO.emp_profile != null ? memberVO.emp_profile : '/resources/assets/img/profile.png'}" alt="증명사진" style="max-width: 150px; height: auto;"/>
-						<input type="file" name="emp_profile" id="profilePicInput" accept="image/*">
-					</div>
+				    <c:choose>
+				        <c:when test="${not empty memberVO.emp_profile}">
+				            <img id="profilePicPreview" 
+				                 src="${memberVO.emp_profile}" 
+				                 alt="증명사진"/>
+				        </c:when>
+				        <c:otherwise>
+				            <img id="profilePicPreview" 
+				                 src="${pageContext.request.contextPath}/resources/assets/img/profile-default.png" 
+				                 alt="기본 증명사진"/>
+				        </c:otherwise>
+				    </c:choose>
+				    <input type="file" name="emp_profile" id="profilePicInput" accept="image/*">
+				</div>
                     
                     
                     </td>

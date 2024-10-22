@@ -519,7 +519,7 @@ footer {
     	        success: function(member) {
     	            if (member) {
     	                // 서버에서 받은 데이터를 모달에 출력
-    	                $('#emp_photo').attr('src', member.emp_profile || '${pageContext.request.contextPath}/resources/default-profile.jpg');
+    	                $('#emp_photo').attr('src', member.emp_profile || '${pageContext.request.contextPath}/resources/assets/img/profile-default.png');
     	                $('#emp_id').text(member.emp_id);
     	                $('#emp_name').text(member.emp_name);
     	                $('#emp_position').text(member.emp_position);
