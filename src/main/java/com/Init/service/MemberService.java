@@ -88,4 +88,6 @@ public interface MemberService {
     boolean registerEmployee(MemberVO vo);
     void insertMember(MemberVO vo);
     
+    // 퇴직신청
+    boolean processQuitRequest(MemberVO currentMember);
 }

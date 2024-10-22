@@ -275,18 +275,55 @@
     </script>
     
     <script>
-
     $('#quitForm').submit(function(e) {
-    e.preventDefault();
-    if (!$('#agreeRules').is(':checked')) {
-        alert('퇴사 규칙에 동의해주세요.');
-        return;
-    }
-    
+        e.preventDefault();
+        
+        // 폼 유효성 검사
+        if (!$('#agreeRules').is(':checked')) {
+            alert('퇴사 규칙에 동의해주세요.');
+            return;
+        }
+        if (!$('#quit_date').val()) {
+            alert('퇴사희망일을 선택해주세요.');
+            return;
+        }
+        if (!$('#quit_reason').val()) {
+            alert('퇴사사유를 선택해주세요.');
+            return;
+        }
+        if (!$('#quit_reason_detail').val().trim()) {
+            alert('사유상세를 입력해주세요.');
+            return;
+        }
 
+        // 현재 사원 정보 가져오기
+        const currentMember = {
+            emp_id: $('#emp_id').val(),
+            emp_name: $('#emp_name').val(),
+            emp_dnum: $('#emp_dnum').val(),
+            emp_position: $('#emp_position').val()
+        };
 
-
-    
+        // AJAX 요청
+        $.ajax({
+            url: '/member/quit/submit',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(currentMember),
+            success: function(response) {
+                if (response.success) {
+                    alert(response.message);
+                    window.location.href = '/member/main'; // 메인 페이지로 리다이렉트
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('퇴직 신청 처리 중 오류가 발생했습니다.');
+                console.error('Error:', error);
+            }
+        });
+    });
     </script>
     
   </body>

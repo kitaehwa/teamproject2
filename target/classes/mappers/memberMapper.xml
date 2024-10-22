@@ -11,9 +11,21 @@
   	</select>
   	
   	<!-- 퇴사신청 -->
-    <insert id="insertQuit" parameterType="com.Init.domain.QuitVO">
-    INSERT INTO quit_application (emp_id, emp_name, emp_dnum, emp_position, quit_date, quit_reason, quit_reason_detail, emp_status, approver1, approver2, approver3)
-    VALUES (#{emp_id}, #{emp_name}, #{emp_dnum}, #{emp_position}, #{quit_date}, #{quit_reason}, #{quit_reason_detail}, '신청', #{approver1}, #{approver2}, #{approver3})
+    <insert id="insertQuitRequest" parameterType="MemberVO">
+    INSERT INTO employee (
+        emp_id, emp_pw, emp_name, emp_birth, emp_gender, emp_tel, emp_email, 
+        emp_addr, emp_bnum, emp_dnum, emp_position, emp_job, 
+        emp_salary, emp_work_type, emp_bank_name, emp_account_num, 
+        emp_account_name, emp_profile, emp_start_date, emp_break_date, 
+        emp_restart_date, emp_quit_date, emp_status, approval
+    )
+    VALUES (
+        #{emp_id}, #{emp_pw}, #{emp_name}, #{emp_birth}, #{emp_gender}, #{emp_tel}, #{emp_email},
+        #{emp_addr}, #{emp_bnum}, #{emp_dnum}, #{emp_position}, #{emp_job},
+        #{emp_salary}, #{emp_work_type}, #{emp_bank_name}, #{emp_account_num},
+        #{emp_account_name}, #{emp_profile}, #{emp_start_date}, #{emp_break_date},
+        #{emp_restart_date}, #{emp_quit_date}, '퇴직', -1
+    )
 	</insert>
     
     <!-- 비밀번호 찾기 -->

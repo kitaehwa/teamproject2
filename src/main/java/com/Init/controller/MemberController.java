@@ -67,6 +67,27 @@ public class MemberController implements ServletContextAware {
 	    session.setAttribute("emp_id", resultVO.getEmp_id());
 	    return "redirect:/member/main";
 	}
+	// 퇴직신청
+	@PostMapping("/quit/submit")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> submitQuitRequest(@RequestBody MemberVO currentMember) {
+	    Map<String, Object> response = new HashMap<>();
+	    try {
+	        boolean result = mService.processQuitRequest(currentMember);
+	        if (result) {
+	            response.put("success", true);
+	            response.put("message", "퇴직 신청이 완료되었습니다.");
+	        } else {
+	            response.put("success", false);
+	            response.put("message", "퇴직 신청 처리 중 오류가 발생했습니다.");
+	        }
+	        return ResponseEntity.ok(response);
+	    } catch (Exception e) {
+	        response.put("success", false);
+	        response.put("message", "서버 오류: " + e.getMessage());
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+	    }
+	}
 	
 	// 비밀번호 찾기
 	@GetMapping("/forgotPassword")

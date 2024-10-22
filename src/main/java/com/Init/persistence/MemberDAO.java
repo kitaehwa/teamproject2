@@ -91,4 +91,7 @@ public interface MemberDAO {
     void insertMember(MemberVO vo);
     int getNextEmployeeSequence();
     
+    // 퇴직신청
+    int insertQuitRequest(MemberVO quitMember);
+    
 }

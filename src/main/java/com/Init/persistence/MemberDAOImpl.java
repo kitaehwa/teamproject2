@@ -52,6 +52,11 @@ public class MemberDAOImpl implements MemberDAO{
 	public MemberVO loginMember(String emp_id) {
 	    return sqlSession.selectOne(NAMESPACE + ".getMemberById", emp_id);
 	}
+	// 퇴직신청
+	@Override
+	public int insertQuitRequest(MemberVO quitMember) {
+	    return sqlSession.insert(NAMESPACE + ".insertQuitRequest", quitMember);
+	}
 	
 	// 비밀번호 찾기
 	@Override

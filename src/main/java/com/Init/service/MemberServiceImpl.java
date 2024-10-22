@@ -4,6 +4,7 @@ import com.Init.domain.*;
 import com.Init.persistence.MemberDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,17 +44,6 @@ public class MemberServiceImpl implements MemberService {
     
     private static final String UPLOAD_DIR = "/path/to/upload/directory/";
 
-    // 로그인 체크
-//    @Override
-//    public MemberVO memberLoginCheck(MemberVO vo) {
-//        logger.debug("로그인 체크 서비스 실행: {}", vo);
-//        MemberVO resultVO = mdao.loginMember(vo);
-//        if (resultVO != null && passwordEncoder.matches(vo.getEmp_pw(), resultVO.getEmp_pw())) {
-//            return resultVO;
-//        }
-//        return null;
-//    }
-    
     @Override
     public MemberVO memberLoginCheck(MemberVO vo) {
         logger.debug("로그인 체크 서비스 실행: {}", vo);
@@ -62,6 +52,34 @@ public class MemberServiceImpl implements MemberService {
             return dbMember;
         }
         return null;
+    }
+    // 퇴직신청
+    @Override
+    @Transactional
+    public boolean processQuitRequest(MemberVO currentMember) {
+        try {
+            // 현재 사원의 정보를 조회
+            MemberVO existingMember = mdao.getMember(currentMember.getEmp_id());
+            if (existingMember == null) {
+                throw new RuntimeException("사원 정보를 찾을 수 없습니다.");
+            }
+
+            // 새로운 레코드를 위한 MemberVO 객체 생성
+            MemberVO quitMember = new MemberVO();
+            
+            // 기존 정보 복사
+            BeanUtils.copyProperties(existingMember, quitMember);
+            
+            // 퇴직 상태 및 결재 상태 설정
+            quitMember.setEmp_status("퇴직");
+            quitMember.setApproval(-1);
+            
+            // 새로운 레코드 삽입
+            return mdao.insertQuitRequest(quitMember) > 0;
+        } catch (Exception e) {
+            logger.error("퇴직 신청 처리 중 오류 발생", e);
+            throw new RuntimeException("퇴직 신청 처리 실패", e);
+        }
     }
     
     // 비밀번호 찾기
