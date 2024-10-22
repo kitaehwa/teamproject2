@@ -791,38 +791,48 @@ footer {
     	            // 날짜 데이터 처리
     	            try {
     	                // 날짜 형식 처리
-    	                if(member.emp_birth) {
-    	                    const birthDate = typeof member.emp_birth === 'string' 
-    	                        ? member.emp_birth.split(' ')[0] 
-    	                        : new Date(member.emp_birth).toISOString().split('T')[0];
-    	                    $('#edit_emp_birth').val(birthDate);
-    	                }
+    	                if (member.emp_birth) {
+					        const birthDate = typeof member.emp_birth === 'string'
+					            ? member.emp_birth.split(' ')[0]
+					            : new Date(new Date(member.emp_birth).getTime() - (new Date(member.emp_birth).getTimezoneOffset() * 60000))
+					                .toISOString()
+					                .split('T')[0];
+					        $('#edit_emp_birth').val(birthDate);
+					    }
 
-    	                if(member.emp_start_date) {
+    	                if (member.emp_start_date) {
     	                    const startDate = typeof member.emp_start_date === 'string'
     	                        ? member.emp_start_date.split(' ')[0]
-    	                        : new Date(member.emp_start_date).toISOString().split('T')[0];
+    	                        : new Date(new Date(member.emp_start_date).getTime() - (new Date(member.emp_start_date).getTimezoneOffset() * 60000))
+    	                            .toISOString()
+    	                            .split('T')[0];
     	                    $('#edit_emp_start_date').val(startDate);
     	                }
 
-    	                if(member.emp_break_date) {
+    	                if (member.emp_break_date) {
     	                    const breakDate = typeof member.emp_break_date === 'string'
     	                        ? member.emp_break_date.split(' ')[0]
-    	                        : new Date(member.emp_break_date).toISOString().split('T')[0];
+    	                        : new Date(new Date(member.emp_break_date).getTime() - (new Date(member.emp_break_date).getTimezoneOffset() * 60000))
+    	                            .toISOString()
+    	                            .split('T')[0];
     	                    $('#edit_emp_break_date').val(breakDate);
     	                }
 
-    	                if(member.emp_restart_date) {
+    	                if (member.emp_restart_date) {
     	                    const restartDate = typeof member.emp_restart_date === 'string'
     	                        ? member.emp_restart_date.split(' ')[0]
-    	                        : new Date(member.emp_restart_date).toISOString().split('T')[0];
+    	                        : new Date(new Date(member.emp_restart_date).getTime() - (new Date(member.emp_restart_date).getTimezoneOffset() * 60000))
+    	                            .toISOString()
+    	                            .split('T')[0];
     	                    $('#edit_emp_restart_date').val(restartDate);
     	                }
 
-    	                if(member.emp_quit_date) {
+    	                if (member.emp_quit_date) {
     	                    const quitDate = typeof member.emp_quit_date === 'string'
     	                        ? member.emp_quit_date.split(' ')[0]
-    	                        : new Date(member.emp_quit_date).toISOString().split('T')[0];
+    	                        : new Date(new Date(member.emp_quit_date).getTime() - (new Date(member.emp_quit_date).getTimezoneOffset() * 60000))
+    	                            .toISOString()
+    	                            .split('T')[0];
     	                    $('#edit_emp_quit_date').val(quitDate);
     	                }
 
