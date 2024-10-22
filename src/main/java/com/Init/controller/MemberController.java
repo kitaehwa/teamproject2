@@ -61,7 +61,7 @@ public class MemberController implements ServletContextAware {
 	public String loginMemberPOST(@ModelAttribute MemberVO vo, HttpSession session, RedirectAttributes rttr) {
 	    MemberVO resultVO = mService.memberLoginCheck(vo);
 	    if (resultVO == null) {
-	        rttr.addFlashAttribute("loginError", "아이디 또는 비밀번호가 올바르지 않습니다.");
+	        rttr.addFlashAttribute("loginError", "사원번호 또는 비밀번호가 올바르지 않습니다.");
 	        return "redirect:/member/login";
 	    }
 	    session.setAttribute("emp_id", resultVO.getEmp_id());

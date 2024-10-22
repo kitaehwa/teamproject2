@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 
 <!DOCTYPE html>
 <html>
@@ -150,6 +151,12 @@ body{
     
 </script>
 
+	<c:if test="${not empty loginError}">
+	    <script type="text/javascript">
+	        alert("${loginError}");
+	    </script>
+	</c:if>
+
 	<div class="login-wrapper">
 		<h2>login</h2>
 			<form method="post" id="login-form" onsubmit="return frm_check();"> <!-- action 속성이 없을 때 자신의 주소를 호출  -->
@@ -158,7 +165,7 @@ body{
 				<label for="remember-check">
                 <input type="checkbox" class="save_id" name="checkId" id="saveId"> 사원번호 저장</label>	
 				<input type="submit" value="로그인">
-         	  		   
                 <a href="/member/forgotPassword">비밀번호를 잊으셨나요?</a>
+         	</form>  		   
 	</div>	
 
