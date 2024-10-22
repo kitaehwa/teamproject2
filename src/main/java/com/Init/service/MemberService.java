@@ -25,6 +25,9 @@ public interface MemberService {
     boolean verifyCode(String emp_id, String verificationCode);
     void resetPassword(String emp_id, String newPassword);
 	
+    // 정보수정 비밀번호 인증
+    boolean verifyPassword(String emp_id, String password);
+    
 	// 회원정보 조회 및 수정
 	public MemberVO memberInfo(String emp_id);
 	public int memberUpdate(MemberVO uvo);

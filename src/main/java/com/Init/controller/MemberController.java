@@ -134,6 +134,23 @@ public class MemberController implements ServletContextAware {
 		model.addAttribute("memberVO", mService.memberInfo(emp_id));
 		return "member/info";
 	}
+	// 정보수정 비밀번호 인증
+	@PostMapping("/verifyPassword")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> verifyPassword(
+	        @RequestParam String emp_id, 
+	        @RequestParam String password) {
+	    Map<String, Object> response = new HashMap<>();
+	    try {
+	        boolean isValid = mService.verifyPassword(emp_id, password);
+	        response.put("success", isValid);
+	        return ResponseEntity.ok(response);
+	    } catch (Exception e) {
+	        response.put("success", false);
+	        response.put("message", "비밀번호 확인 중 오류가 발생했습니다.");
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+	    }
+	}
 
 	// 회원정보 수정 - 입력GET
 	 	@RequestMapping(value = "/update",method = RequestMethod.GET)

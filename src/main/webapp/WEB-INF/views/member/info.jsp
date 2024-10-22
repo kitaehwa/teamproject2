@@ -222,9 +222,9 @@
             </div>
              
             <!-- 버튼 영역 -->                      
-            <div class="info-actions">
-              <a href="/member/update"><button>수정</button></a>
-            </div>
+            <div class="info-actions">               
+			    <button type="button" id="checkPasswordBtn">수정</button>
+			</div>
             
 			<div class="tabs" style="width: 70%;">
 			  <a href="#" class="account">계좌 정보</a>
@@ -247,9 +247,63 @@
       <!-- main-panel -->
     </div>
     <!-- main-wrapper -->
+    <div class="modal fade" id="passwordCheckModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">비밀번호 확인</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="passwordCheckForm">
+                    <div class="mb-3">
+                        <label for="checkPassword" class="form-label">비밀번호를 입력하세요</label>
+                        <input type="password" class="form-control" id="checkPassword" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-primary" id="confirmPassword">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
     
 	<script>
 	$(document).ready(function() {
+		$('#checkPasswordBtn').click(function() {
+	        $('#passwordCheckModal').modal('show');
+	    });
+
+	    $('#confirmPassword').click(function() {
+	        var password = $('#checkPassword').val();
+	        if (!password) {
+	            alert('비밀번호를 입력하세요.');
+	            return;
+	        }
+
+	        $.ajax({
+	            url: '${pageContext.request.contextPath}/member/verifyPassword',
+	            type: 'POST',
+	            data: {
+	                emp_id: '${memberVO.emp_id}',
+	                password: password
+	            },
+	            success: function(response) {
+	                if (response.success) {
+	                    window.location.href = '${pageContext.request.contextPath}/member/update';
+	                } else {
+	                    alert('비밀번호가 일치하지 않습니다.');
+	                    $('#checkPassword').val('');
+	                }
+	            },
+	            error: function() {
+	                alert('서버와의 통신 중 오류가 발생했습니다.');
+	            }
+	        });
+	    });
+		
 	    function formatDate(timestamp) {
 	        if (!timestamp || isNaN(timestamp)) {
 	            return '--';

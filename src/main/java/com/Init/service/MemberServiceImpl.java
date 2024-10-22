@@ -119,6 +119,15 @@ public class MemberServiceImpl implements MemberService {
         logger.debug("회원 정보 조회 서비스 실행: {}", emp_id);
         return mdao.getMember(emp_id);
     }
+    // 정보수정 비밀번호 인증
+    @Override
+    public boolean verifyPassword(String emp_id, String password) {
+        MemberVO member = mdao.getMember(emp_id);
+        if (member != null) {
+            return passwordEncoder.matches(password, member.getEmp_pw());
+        }
+        return false;
+    }
 
     @Override
 	public int memberUpdate(MemberVO uvo) {
