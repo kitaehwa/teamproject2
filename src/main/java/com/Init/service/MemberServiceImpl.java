@@ -55,7 +55,6 @@ public class MemberServiceImpl implements MemberService {
     }
     // 퇴직신청
     @Override
-    @Transactional
     public boolean insertQuitEmployee(MemberVO memberVO) {
         try {
         	// 1. 기존 직원 정보 조회
@@ -74,32 +73,6 @@ public class MemberServiceImpl implements MemberService {
         } catch(Exception e) {
             logger.error("퇴직 신청 처리 중 오류 발생", e);
             throw new RuntimeException("퇴직 신청 처리 실패", e);
-        }
-    }
-    
-    @Override
-    @Transactional
-    public void updateApprovalAndStatus(String emp_id, int approval) {
-        try {
-            logger.info("퇴직 승인 처리 시작 - emp_id: {}, approval: {}", emp_id, approval);
-            
-            // quit 테이블의 approval 업데이트
-            mdao.updateQuitApproval(emp_id, approval);
-            logger.info("quit 테이블 approval 업데이트 완료");
-            
-            // approval이 0인 경우 employee 테이블의 상태 업데이트
-            if (approval == 0) {
-                logger.info("employee 테이블 상태 업데이트 시작");
-                mdao.updateEmployeeStatus(emp_id);
-                logger.info("employee 테이블 상태 업데이트 완료");
-                
-                // 업데이트 결과 확인
-                MemberVO updatedMember = mdao.getMember(emp_id);
-                logger.info("업데이트 후 상태: {}", updatedMember.getEmp_status());
-            }
-        } catch (Exception e) {
-            logger.error("퇴직 승인 처리 중 오류 발생: " + emp_id, e);
-            throw new RuntimeException("퇴직 승인 처리 실패", e);
         }
     }
     

@@ -90,5 +90,4 @@ public interface MemberService {
     
     // 퇴직신청
     boolean insertQuitEmployee(MemberVO memberVO);
-    void updateApprovalAndStatus(String emp_id, int approval);
 }
