@@ -51,7 +51,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/demo.css" />
  
  <!------------------------------------------------------------------------------------------------------------------>
-  <style>
+
+<style>
   	  .page-title {
 	  font-size: 24px;
 	  font-weight: bold;
@@ -87,29 +88,15 @@
         text-align: left; 
       }
 
-      .info-actions button {
-        padding: 8px 15px;
-        margin-left: 74%;
-        border: none;
-        border-radius: 4px;
-        background-color: #0055FF;
-        color: white;
-        cursor: pointer;     
-      }
-      
       .btn-modal {
         padding: 8px 15px;
-        margin-left: 91%;
+        margin-left: 92%;
         margin-top: 1%;
         border: none;
         border-radius: 4px;
         background-color: #0055FF;
         color: white;
         cursor: pointer;     
-      }
-
-      .info-actions button.delete {
-        background-color: #f44336;
       }
 
       /* 탭 스타일 */
@@ -138,7 +125,7 @@
       #addLicenseBtn {
       	padding: 8px 15px;
         margin-top: 1%;
-        margin-left: 90%;
+        margin-left: 92%;
         border: none;
         border-radius: 4px;
         background-color: #0055FF;
@@ -178,8 +165,65 @@
 		vertical-align: middle;
 	  }
       
+        .tabs {
+    display: flex;
+    border-bottom: 2px solid #ebedf2;
+    margin-bottom: 20px;
+    margin-top: 30px;
+    background-color: #fff;
+    padding: 0;
+  }
+
+  .tabs a {
+    padding: 15px 25px;
+    text-decoration: none;
+    color: #1a2035;
+    position: relative;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    background: none;
+    margin-right: 5px;
+  }
+
+  .tabs a:hover {
+    color: #0055FF;
+    background-color: rgba(0, 85, 255, 0.1);
+  }
+
+  /* active 클래스 스타일 */
+  .tabs a.active {
+    color: #0055FF;
+    background-color: transparent;
+    border-bottom: 2px solid #0055FF;
+    margin-bottom: -2px;
+  }
+
+  /* 탭 내용을 감싸는 카드 스타일 */
+  .tab-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .btn-modal, #addLicenseBtn {
+    padding: 8px 20px;
+    border-radius: 4px;
+    background-color: #0055FF;
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+  }
+
+  .btn-modal:hover, #addLicenseBtn:hover {
+    background-color: #0044cc;
+    box-shadow: 0 2px 6px rgba(0, 85, 255, 0.2);
+  }
+  
       
-    </style>
+   
+</style>
  <!------------------------------------------------------------------------------------------------------------------>
  
   </head>
@@ -194,22 +238,26 @@
         <div class="container">
           <div class="page-inner">
 <!------------------------------------------------------------------------------------------------------------------>
- <h1 class="page-title">내정보</h1>
-	<div class="info-container">
-            <!-- 사진 및 기본 정보 -->
-              <table class="table table-bordered table-head-bg-info mt-4" style="width: 80%;">
-                <tr>
-                  <td colspan="2" rowspan="4" style="width: 8%;">
-                  <div class="profile-pic-container">
-                    <img src="${memberVO.emp_profile }" alt="증명사진" style="max-width: 150px; height: auto;"/>
-                  </td>
-                  </div>
-                  <th>사원번호</th>
-                  <td>${memberVO.emp_id}</td>              
-                  <th>이름</th>
-                  <td>${memberVO.emp_name}</td>           
-                  <th>성별</th>
-                  <td>${memberVO.emp_gender}</td>
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title">내정보</h4>
+  </div>
+  <div class="card-body">
+    <!-- 프로필 및 기본 정보 테이블 -->
+    <div class="info-container">
+      <table class="table table-bordered table-head-bg-info">
+        <tr>
+          <td colspan="2" rowspan="4" style="width: 8%;">
+            <div class="profile-pic-container">
+              <img src="${memberVO.emp_profile}" alt="증명사진" style="max-width: 150px; height: auto;"/>
+            </div>
+          </td>
+          <th>사원번호</th>
+          <td>${memberVO.emp_id}</td>              
+          <th>이름</th>
+          <td>${memberVO.emp_name}</td>           
+          <th>성별</th>
+          <td>${memberVO.emp_gender}</td>
                 </tr>
                 <tr>                
         		  <th>생년월일</th>
@@ -239,11 +287,11 @@
             </div>
              
             <!-- 버튼 영역 -->                      
-            <div class="info-actions">               
-			    <button type="button" id="checkPasswordBtn">수정</button>
-			</div>
+            <div class="text-end mt-3 mb-4">
+	          <button type="button" id="checkPasswordBtn" class="btn btn-primary">수정</button>
+	        </div>
             
-			<div class="tabs" style="width: 80%;">
+			<div class="tabs" style="width: 100%;">
 			  <a href="#" class="account">계좌 정보</a>
 			  <a href="#" class="license">자격증</a>
 			  <a href="#" class="his_edu">교육 이력</a>
@@ -251,7 +299,7 @@
 			  <a href="#" class="eval">인사 평가</a>
 			</div>            
  
-			<div class="tab-content" style="width: 80%;">
+			<div class="tab-content" style="width: 100%;">
 				<!-- 탭 클릭 시 정보가 여기에 표시됩니다. -->
 			</div>
 <!------------------------------------------------------------------------------------------------------------------>

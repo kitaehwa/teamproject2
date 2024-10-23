@@ -35,7 +35,7 @@ public class MemberVO {
 	private Date emp_quit_date; 
 	private String emp_power; 
 	private String emp_level;
-	private Timestamp update_date;	
+	private Date update_date;	
 	private String newPassword;
 	private Integer approval;
 	private String reason;
