@@ -240,6 +240,122 @@ footer {
 	width: auto;
 	flex-grow: 2;
 }
+
+.card {
+	border-radius: 8px;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+	margin-bottom: 30px;
+}
+
+.card-header {
+	background-color: #f8f9fa;
+	border-bottom: 1px solid #ebedf2;
+	padding: 1.5rem;
+}
+
+.card-title {
+	margin-bottom: 0;
+	color: #1a2035;
+	font-size: 1.25rem;
+}
+
+.card-body {
+	padding: 1.5rem;
+}
+
+.controls-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 1rem;
+	margin-bottom: 1.5rem;
+}
+
+#filterForm, #searchForm {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.table {
+	margin-bottom: 0;
+	width: 100%;
+	white-space: nowrap;
+}
+
+.table th {
+	background-color: #f8f9fa;
+	font-weight: 600;
+}
+
+.table td, .table th {
+	padding: 0.75rem;
+	vertical-align: middle;
+	border: 1px solid #ebedf2;
+}
+
+.pagination {
+	margin: 0;
+}
+
+.pagination ul {
+	display: flex;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	gap: 0.5rem;
+}
+
+.pagination ul li a {
+	padding: 0.5rem 1rem;
+	background-color: #f8f9fa;
+	border-radius: 4px;
+	text-decoration: none;
+	color: #1a2035;
+	transition: all 0.3s ease;
+}
+
+.pagination ul li.active a {
+	background-color: #0055FF;
+	color: white;
+}
+
+.btn {
+	padding: 0.5rem 1rem;
+	border-radius: 4px;
+	transition: all 0.3s ease;
+}
+
+.btn-primary {
+	background-color: #0055FF;
+	border-color: #0055FF;
+}
+
+.btn-secondary {
+	background-color: #6c757d;
+	border-color: #6c757d;
+}
+
+.table-responsive {
+	overflow-x: auto;
+	margin-bottom: 1.5rem;
+}
+
+/* 모달 스타일 */
+.modal-content {
+	border-radius: 8px;
+}
+
+.modal-header {
+	background-color: #f8f9fa;
+	border-bottom: 1px solid #ebedf2;
+}
+
+.modal-footer {
+	background-color: #f8f9fa;
+	border-top: 1px solid #ebedf2;
+}
 </style>
 
 
@@ -258,483 +374,493 @@ footer {
 			<div class="container">
 				<div class="page-inner">
 					<!------------------------------------------------------------------------------------------------------------------>
-					<h1>관리자 페이지</h1>
-					<div class="controls-container"
-						style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
-						<!-- 필터 폼 추가 -->
-						<form id="filterForm" class="form-inline"
-							action="${pageContext.request.contextPath}/member/filter"
-							method="get">
-							<input type="hidden" name="pageType" value="manager"> <select
-								name="filterType" id="filterType" class="form-control">
-								<option value="">필터 선택</option>
-								<option value="emp_dnum">부서</option>
-								<option value="emp_bnum">근무지</option>
-								<option value="emp_position">직급</option>
-								<option value="emp_job">직책</option>
-								<option value="emp_status">재직구분</option>
-							</select> <select name="filterValue" id="filterValue" class="form-control">
-								<option value="">선택하세요</option>
-							</select>
-							<button type="button" id="applyFilter" class="btn btn-primary">필터
-								적용</button>
-							<button type="button" id="resetFilter" class="btn btn-primary">초기화</button>
-						</form>
-
-						<!-- 검색 폼 추가 -->
-						<form id="searchForm" class="form-inline">
-							<input type="hidden" name="pageType" value="manager"> <select
-								name="searchType" id="searchType" class="form-control">
-								<option value="emp_id">사원번호</option>
-								<option value="emp_name">사원명</option>
-								<option value="emp_dnum">부서명</option>
-								<option value="emp_position">직급</option>
-								<option value="emp_job">직책</option>
-							</select> <input type="text" name="keyword" id="keyword"
-								class="form-control" placeholder="검색어 입력">
-							<button type="button" id="searchBtn" class="btn btn-primary">검색</button>
-						</form>
-
-						<!-- 조직도 버튼 추가 -->
-						<button id="showOrgChart" class="btn btn-primary">조직도 보기</button>
-					</div>
-				</div>
-
-
-				<!-- 사원 목록 테이블 -->
-				<div class="table-responsive">
-					<table class="table table-bordered" id="memberTable">
-						<thead>
-							<tr>
-								<th>사원번호</th>
-								<th>이름</th>
-								<th>생년월일</th>
-								<th>성별</th>
-								<th>연락처</th>
-								<th>이메일</th>
-								<th>주소</th>
-								<th>지점명</th>
-								<th>부서</th>
-								<th>직급</th>
-								<th>직책</th>
-								<th>연봉</th>
-								<th>근무형태</th>
-								<th>재직구분</th>
-								<th>입사일</th>
-								<th>휴직일</th>
-								<th>복직일</th>
-								<th>퇴사일</th>
-								<th>정보수정</th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach var="member" items="${members}">
-								<c:if test="${member.emp_id ne 'system'}">
-									<tr>
-										<td>${member.emp_id}</td>
-										<td>${member.emp_name}</td>
-										<td>${member.emp_birth}</td>
-										<td>${member.emp_gender}</td>
-										<td>${member.emp_tel}</td>
-										<td>${member.emp_email}</td>
-										<td>${member.emp_addr}</td>
-										<td>${member.emp_bnum}</td>
-										<td>${member.emp_dnum}</td>
-										<td>${member.emp_position}</td>
-										<td>${member.emp_job}</td>
-										<td>${member.emp_salary}</td>
-										<td>${member.emp_work_type}</td>
-										<td>${member.emp_status}</td>
-										<td>${member.emp_start_date}</td>
-										<td>${member.emp_break_date}</td>
-										<td>${member.emp_restart_date}</td>
-										<td>${member.emp_quit_date}</td>
-										<td><button type="button" class="btn btn-info btn-sm edit-btn" data-id="${member.emp_id}">수정</button></td>
-									</tr>
-								</c:if>
-							</c:forEach>
-						</tbody>
-					</table>
-				</div>
-
-				<!-- 페이징  -->
-				<div class="pagination-container">
-					<div class="pagination">
-						<ul>
-							<!-- 이전 페이지로 가는 링크 (첫 페이지에서는 비활성화) -->
-							<li class="${currentPage == 1 ? 'disabled' : ''}"><a
-								href="?page=${currentPage - 1}" aria-label="Previous">&laquo;
-									이전</a></li>
-
-							<!-- 페이지 숫자 링크 -->
-							<c:forEach var="i" begin="1" end="${totalPages}">
-								<li class="${currentPage == i ? 'active' : ''}"><a
-									href="?page=${i}">${i}</a></li>
-							</c:forEach>
-
-							<!-- 다음 페이지로 가는 링크 (마지막 페이지에서는 비활성화) -->
-							<li class="${currentPage == totalPages ? 'disabled' : ''}"><a
-								href="?page=${currentPage + 1}" aria-label="Next">다음 &raquo;</a>
-							</li>
-						</ul>
-					</div>
-
-					<button id="register" class="btn btn-primary">사원등록</button>
-				</div>
-				<!-- 조직도 모달 -->
-				<div class="modal fade" id="orgChartModal" tabindex="-1"
-					role="dialog" aria-hidden="true">
-					<div class="modal-dialog modal-lg" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title">조직도</h5>
-								<button type="button" class="close" data-dismiss="modal"
-									aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<div class="form-group">
-									<label for="branchSelect">지부 선택:</label> <select
-										id="branchSelect" class="form-control">
-										<!-- 옵션들은 JavaScript로 동적으로 추가될 것입니다 -->
+					<div class="card">
+						<div class="card-header">
+							<h4 class="card-title">관리자 페이지</h4>
+						</div>
+						<div class="card-body">
+							<!-- 컨트롤 영역 (필터, 검색, 조직도 버튼) -->
+							<div class="controls-container mb-4">
+								<!-- 필터 폼 -->
+								<form id="filterForm" class="form-inline">
+									<input type="hidden" name="pageType" value="manager"> <select
+										name="filterType" id="filterType" class="form-control">
+										<option value="">필터 선택</option>
+										<option value="emp_dnum">부서</option>
+										<option value="emp_bnum">근무지</option>
+										<option value="emp_position">직급</option>
+										<option value="emp_job">직책</option>
+										<option value="emp_status">재직구분</option>
+									</select> <select name="filterValue" id="filterValue"
+										class="form-control">
+										<option value="">선택하세요</option>
 									</select>
+									<button type="button" id="applyFilter" class="btn btn-primary">필터
+										적용</button>
+									<button type="button" id="resetFilter"
+										class="btn btn-secondary">초기화</button>
+								</form>
+
+								<!-- 검색 폼 추가 -->
+								<form id="searchForm" class="form-inline">
+									<input type="hidden" name="pageType" value="manager"> <select
+										name="searchType" id="searchType" class="form-control">
+										<option value="emp_id">사원번호</option>
+										<option value="emp_name">사원명</option>
+										<option value="emp_dnum">부서명</option>
+										<option value="emp_position">직급</option>
+										<option value="emp_job">직책</option>
+									</select> <input type="text" name="keyword" id="keyword"
+										class="form-control" placeholder="검색어 입력">
+									<button type="button" id="searchBtn" class="btn btn-primary">검색</button>
+								</form>
+
+								<!-- 조직도 버튼 -->
+								<button id="showOrgChart" class="btn btn-info">조직도 보기</button>
+							</div>
+
+
+							<!-- 사원 목록 테이블 -->
+							<div class="table-responsive">
+								<table class="table" id="memberTable">
+									<thead>
+										<tr>
+											<th>사원번호</th>
+											<th>이름</th>
+											<th>생년월일</th>
+											<th>성별</th>
+											<th>연락처</th>
+											<th>이메일</th>
+											<th>주소</th>
+											<th>지점명</th>
+											<th>부서</th>
+											<th>직급</th>
+											<th>직책</th>
+											<th>연봉</th>
+											<th>근무형태</th>
+											<th>재직구분</th>
+											<th>입사일</th>
+											<th>휴직일</th>
+											<th>복직일</th>
+											<th>퇴사일</th>
+											<th>정보수정</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach var="member" items="${members}">
+											<c:if test="${member.emp_id ne 'system'}">
+												<tr>
+													<td>${member.emp_id}</td>
+													<td>${member.emp_name}</td>
+													<td>${member.emp_birth}</td>
+													<td>${member.emp_gender}</td>
+													<td>${member.emp_tel}</td>
+													<td>${member.emp_email}</td>
+													<td>${member.emp_addr}</td>
+													<td>${member.emp_bnum}</td>
+													<td>${member.emp_dnum}</td>
+													<td>${member.emp_position}</td>
+													<td>${member.emp_job}</td>
+													<td>${member.emp_salary}</td>
+													<td>${member.emp_work_type}</td>
+													<td>${member.emp_status}</td>
+													<td>${member.emp_start_date}</td>
+													<td>${member.emp_break_date}</td>
+													<td>${member.emp_restart_date}</td>
+													<td>${member.emp_quit_date}</td>
+													<td><button type="button"
+															class="btn btn-info btn-sm edit-btn"
+															data-id="${member.emp_id}">수정</button></td>
+												</tr>
+											</c:if>
+										</c:forEach>
+									</tbody>
+								</table>
+							</div>
+
+							<!-- 페이징  -->
+							<div class="pagination-container">
+								<div class="pagination">
+									<ul>
+										<!-- 이전 페이지로 가는 링크 (첫 페이지에서는 비활성화) -->
+										<li class="${currentPage == 1 ? 'disabled' : ''}"><a
+											href="?page=${currentPage - 1}" aria-label="Previous">&laquo;
+												이전</a></li>
+
+										<!-- 페이지 숫자 링크 -->
+										<c:forEach var="i" begin="1" end="${totalPages}">
+											<li class="${currentPage == i ? 'active' : ''}"><a
+												href="?page=${i}">${i}</a></li>
+										</c:forEach>
+
+										<!-- 다음 페이지로 가는 링크 (마지막 페이지에서는 비활성화) -->
+										<li class="${currentPage == totalPages ? 'disabled' : ''}"><a
+											href="?page=${currentPage + 1}" aria-label="Next">다음
+												&raquo;</a></li>
+									</ul>
 								</div>
-								<div id="orgChart" style="height: 600px;"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- 사원 등록 모달  -->
-				<div class="modal fade" id="registerModal" tabindex="-1"
-					role="dialog" aria-hidden="true">
-					<div class="modal-dialog modal-lg" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title">사원 등록</h5>
-								<button type="button" class="close" data-dismiss="modal"
-									aria-label="Close" onclick="$('#registerModal').modal('hide');">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<form id="registerForm">
-									<div class="form-group">
-										<label for="reg_emp_name">이름</label> <input type="text"
-											class="form-control" id="reg_emp_name" name="emp_name"
-											required>
-									</div>
-									<div class="form-group">
-										<label for="reg_emp_birth">생년월일</label> <input type="date"
-											class="form-control" id="reg_emp_birth" name="emp_birth"
-											required>
-									</div>
-									<div class="form-group">
-										<label for="reg_emp_gender">성별 <span
-											class="text-danger">*</span></label> <select class="form-control"
-											id="reg_emp_gender" name="emp_gender" required>
-											<option value="">선택하세요</option>
-											<option value="남자">남자</option>
-											<option value="여자">여자</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<label for="reg_emp_bnum">지점명 <span
-											class="text-danger">*</span></label> <select class="form-control"
-											id="reg_emp_bnum" name="emp_bnum" required>
-											<option value="">선택하세요</option>
-											<option value="서울본부">서울본부</option>
-											<option value="부산본부">부산본부</option>
-											<option value="대전본부">대전본부</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<label for="reg_emp_dnum">부서 <span class="text-danger">*</span></label>
-										<select class="form-control" id="reg_emp_dnum" name="emp_dnum"
-											required>
-											<option value="">선택하세요</option>
-											<option value="인사부">인사부</option>
-											<option value="개발부">개발부</option>
-											<option value="영업부">영업부</option>
-											<option value="마케팅부">마케팅부</option>
-											<option value="재무부">재무부</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<label for="reg_emp_position">직급 <span
-											class="text-danger">*</span></label> <select class="form-control"
-											id="reg_emp_position" name="emp_position" required>
-											<option value="">선택하세요</option>
-											<option value="사원">사원</option>
-											<option value="대리">대리</option>
-											<option value="과장">과장</option>
-											<option value="부장">부장</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<label for="reg_emp_job">직책 <span class="text-danger">*</span></label>
-										<select class="form-control" id="reg_emp_job" name="emp_job"
-											required>
-											<option value="">선택하세요</option>
-											<option value="개발자">개발자</option>
-											<option value="기획자">기획자</option>
-											<option value="디자이너">디자이너</option>
-											<option value="매니저">매니저</option>
-											<option value="영업사원">영업사원</option>
-											<option value="부서장">부서장</option>
-											<option value="본부장">본부장</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<label for="reg_emp_salary">연봉</label> <input type="number"
-											class="form-control" id="reg_emp_salary" name="emp_salary"
-											required>
-									</div>
-									<div class="form-group">
-										<label for="reg_emp_work_type">근무형태 <span
-											class="text-danger">*</span></label> <select class="form-control"
-											id="reg_emp_work_type" name="emp_work_type" required>
-											<option value="">선택하세요</option>
-											<option value="통상">통상</option>
-											<option value="교대">교대</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<label for="reg_emp_status">재직구분 <span
-											class="text-danger">*</span></label> <select class="form-control"
-											id="reg_emp_status" name="emp_status" required>
-											<option value="">선택하세요</option>
-											<option value="재직">재직</option>
-											<option value="휴직">휴직</option>
-											<option value="퇴직">퇴직</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<label for="reg_emp_start_date">입사일</label> <input type="date"
-											class="form-control" id="reg_emp_start_date"
-											name="emp_start_date" required>
-									</div>
-								</form>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary"
-									data-dismiss="modal">취소</button>
-								<button type="button" class="btn btn-primary"
-									id="submitRegister">등록</button>
-							</div>
-						</div>
-					</div>
-				</div>
 
-				<!-- 사원 정보수정 모달 -->
-				<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
-					aria-hidden="true">
-					<div class="modal-dialog modal-lg" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title">사원 정보</h5>
-								<button type="button" class="close" data-dismiss="modal"
-									aria-label="Close" onclick="$('#editModal').modal('hide');">
-									<span aria-hidden="true">&times;</span>
-								</button>
+								<button id="register" class="btn btn-primary">사원등록</button>
 							</div>
-							<div class="modal-body">
-								<form id="editForm">
-									<div class="form-group">
-										<label for="edit_emp_id">사원번호</label> <input type="text"
-											class="form-control" id="edit_emp_id" name="emp_id">
+							<!-- 조직도 모달 -->
+							<div class="modal fade" id="orgChartModal" tabindex="-1"
+								role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-lg" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">조직도</h5>
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<div class="form-group">
+												<label for="branchSelect">지부 선택:</label> <select
+													id="branchSelect" class="form-control">
+													<!-- 옵션들은 JavaScript로 동적으로 추가될 것입니다 -->
+												</select>
+											</div>
+											<div id="orgChart" style="height: 600px;"></div>
+										</div>
 									</div>
-									<div class="form-group">
-										<label for="edit_emp_name">이름</label> <input type="text"
-											class="form-control" id="edit_emp_name" name="emp_name">
+								</div>
+							</div>
+							<!-- 사원 등록 모달  -->
+							<div class="modal fade" id="registerModal" tabindex="-1"
+								role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-lg" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">사원 등록</h5>
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close"
+												onclick="$('#registerModal').modal('hide');">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<form id="registerForm">
+												<div class="form-group">
+													<label for="reg_emp_name">이름</label> <input type="text"
+														class="form-control" id="reg_emp_name" name="emp_name"
+														required>
+												</div>
+												<div class="form-group">
+													<label for="reg_emp_birth">생년월일</label> <input type="date"
+														class="form-control" id="reg_emp_birth" name="emp_birth"
+														required>
+												</div>
+												<div class="form-group">
+													<label for="reg_emp_gender">성별 <span
+														class="text-danger">*</span></label> <select class="form-control"
+														id="reg_emp_gender" name="emp_gender" required>
+														<option value="">선택하세요</option>
+														<option value="남자">남자</option>
+														<option value="여자">여자</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label for="reg_emp_bnum">지점명 <span
+														class="text-danger">*</span></label> <select class="form-control"
+														id="reg_emp_bnum" name="emp_bnum" required>
+														<option value="">선택하세요</option>
+														<option value="서울본부">서울본부</option>
+														<option value="부산본부">부산본부</option>
+														<option value="대전본부">대전본부</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label for="reg_emp_dnum">부서 <span
+														class="text-danger">*</span></label> <select class="form-control"
+														id="reg_emp_dnum" name="emp_dnum" required>
+														<option value="">선택하세요</option>
+														<option value="인사부">인사부</option>
+														<option value="개발부">개발부</option>
+														<option value="영업부">영업부</option>
+														<option value="마케팅부">마케팅부</option>
+														<option value="재무부">재무부</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label for="reg_emp_position">직급 <span
+														class="text-danger">*</span></label> <select class="form-control"
+														id="reg_emp_position" name="emp_position" required>
+														<option value="">선택하세요</option>
+														<option value="사원">사원</option>
+														<option value="대리">대리</option>
+														<option value="과장">과장</option>
+														<option value="부장">부장</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label for="reg_emp_job">직책 <span
+														class="text-danger">*</span></label> <select class="form-control"
+														id="reg_emp_job" name="emp_job" required>
+														<option value="">선택하세요</option>
+														<option value="개발자">개발자</option>
+														<option value="기획자">기획자</option>
+														<option value="디자이너">디자이너</option>
+														<option value="매니저">매니저</option>
+														<option value="영업사원">영업사원</option>
+														<option value="부서장">부서장</option>
+														<option value="본부장">본부장</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label for="reg_emp_salary">연봉</label> <input type="number"
+														class="form-control" id="reg_emp_salary" name="emp_salary"
+														required>
+												</div>
+												<div class="form-group">
+													<label for="reg_emp_work_type">근무형태 <span
+														class="text-danger">*</span></label> <select class="form-control"
+														id="reg_emp_work_type" name="emp_work_type" required>
+														<option value="">선택하세요</option>
+														<option value="통상">통상</option>
+														<option value="교대">교대</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label for="reg_emp_status">재직구분 <span
+														class="text-danger">*</span></label> <select class="form-control"
+														id="reg_emp_status" name="emp_status" required>
+														<option value="">선택하세요</option>
+														<option value="재직">재직</option>
+														<option value="휴직">휴직</option>
+														<option value="퇴직">퇴직</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label for="reg_emp_start_date">입사일</label> <input
+														type="date" class="form-control" id="reg_emp_start_date"
+														name="emp_start_date" required>
+												</div>
+											</form>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">취소</button>
+											<button type="button" class="btn btn-primary"
+												id="submitRegister">등록</button>
+										</div>
 									</div>
-									<div class="form-group">
-										<label for="edit_emp_birth">생년월일</label> <input type="date"
-											class="form-control" id="edit_emp_birth" name="emp_birth">
-									</div>
-									<div class="form-group">
-										<label for="edit_emp_gender">성별</label> <select
-											class="form-control" id="edit_emp_gender" name="emp_gender">
-											<option value="남자">남자</option>
-											<option value="여자">여자</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<label for="edit_emp_tel">연락처</label> <input type="text"
-											class="form-control" id="edit_emp_tel" name="emp_tel">
-									</div>
-									<div class="form-group">
-										<label for="edit_emp_email">이메일</label> <input type="text"
-											class="form-control" id="edit_emp_email" name="emp_email">
-									</div>
-									<div class="form-group">
-										<label for="edit_emp_addr">주소</label> <input type="text"
-											class="form-control" id="edit_emp_addr" name="emp_addr">
-									</div>
-									<div class="form-group">
-										<label for="edit_emp_bnum">지점명</label> <select
-											class="form-control" id="edit_emp_bnum" name="emp_bnum">
-											<option value="서울본부">서울본부</option>
-											<option value="부산본부">부산본부</option>
-											<option value="대전본부">대전본부</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<label for="edit_emp_dnum">부서</label> <select
-											class="form-control" id="edit_emp_dnum" name="emp_dnum">
-											<option value="인사부">인사부</option>
-											<option value="개발부">개발부</option>
-											<option value="영업부">영업부</option>
-											<option value="마케팅부">마케팅부</option>
-											<option value="재무부">재무부</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<label for="edit_emp_position">직급</label> <select
-											class="form-control" id="edit_emp_position"
-											name="emp_position">
-											<option value="사원">사원</option>
-											<option value="대리">대리</option>
-											<option value="과장">과장</option>
-											<option value="부장">부장</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<label for="edit_emp_job">직책</label> <select
-											class="form-control" id="edit_emp_job" name="emp_job">
-											<option value="개발자">개발자</option>
-											<option value="기획자">기획자</option>
-											<option value="디자이너">디자이너</option>
-											<option value="매니저">매니저</option>
-											<option value="영업사원">영업사원</option>
-											<option value="부서장">부서장</option>
-											<option value="본부장">본부장</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<label for="edit_emp_salary">연봉</label> <input type="text"
-											class="form-control" id="edit_emp_salary" name="emp_salary">
-									</div>
-									<div class="form-group">
-										<label for="edit_emp_work_type">근무형태</label> <select
-											class="form-control" id="edit_emp_work_type"
-											name="emp_work_type">
-											<option value="통상">통상</option>
-											<option value="교대">교대</option>
-											<option value="시급">시급</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<label for="edit_emp_status">재직구분</label> <select
-											class="form-control" id="edit_emp_status" name="emp_status">
-											<option value="재직">재직</option>
-											<option value="휴직">휴직</option>
-											<option value="퇴직">퇴직</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<label for="edit_emp_start_date">입사일</label> <input
-											type="date" class="form-control" id="edit_emp_start_date"
-											name="emp_start_date">
-									</div>
-									<div class="form-group">
-										<label for="edit_emp_break_date">휴직일</label> <input
-											type="date" class="form-control" id="edit_emp_break_date"
-											name="emp_break_date">
-									</div>
-									<div class="form-group">
-										<label for="edit_emp_restart_date">복직일</label> <input
-											type="date" class="form-control" id="edit_emp_restart_date"
-											name="emp_restart_date">
-									</div>
+								</div>
+							</div>
 
-									<div class="form-group">
-										<label for="edit_emp_quit_date">퇴사일</label> <input type="date"
-											class="form-control" id="edit_emp_quit_date"
-											name="emp_quit_date">
+							<!-- 사원 정보수정 모달 -->
+							<div class="modal fade" id="editModal" tabindex="-1"
+								role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-lg" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">사원 정보</h5>
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close" onclick="$('#editModal').modal('hide');">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<form id="editForm">
+												<div class="form-group">
+													<label for="edit_emp_id">사원번호</label> <input type="text"
+														class="form-control" id="edit_emp_id" name="emp_id">
+												</div>
+												<div class="form-group">
+													<label for="edit_emp_name">이름</label> <input type="text"
+														class="form-control" id="edit_emp_name" name="emp_name">
+												</div>
+												<div class="form-group">
+													<label for="edit_emp_birth">생년월일</label> <input type="date"
+														class="form-control" id="edit_emp_birth" name="emp_birth">
+												</div>
+												<div class="form-group">
+													<label for="edit_emp_gender">성별</label> <select
+														class="form-control" id="edit_emp_gender"
+														name="emp_gender">
+														<option value="남자">남자</option>
+														<option value="여자">여자</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label for="edit_emp_tel">연락처</label> <input type="text"
+														class="form-control" id="edit_emp_tel" name="emp_tel">
+												</div>
+												<div class="form-group">
+													<label for="edit_emp_email">이메일</label> <input type="text"
+														class="form-control" id="edit_emp_email" name="emp_email">
+												</div>
+												<div class="form-group">
+													<label for="edit_emp_addr">주소</label> <input type="text"
+														class="form-control" id="edit_emp_addr" name="emp_addr">
+												</div>
+												<div class="form-group">
+													<label for="edit_emp_bnum">지점명</label> <select
+														class="form-control" id="edit_emp_bnum" name="emp_bnum">
+														<option value="서울본부">서울본부</option>
+														<option value="부산본부">부산본부</option>
+														<option value="대전본부">대전본부</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label for="edit_emp_dnum">부서</label> <select
+														class="form-control" id="edit_emp_dnum" name="emp_dnum">
+														<option value="인사부">인사부</option>
+														<option value="개발부">개발부</option>
+														<option value="영업부">영업부</option>
+														<option value="마케팅부">마케팅부</option>
+														<option value="재무부">재무부</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label for="edit_emp_position">직급</label> <select
+														class="form-control" id="edit_emp_position"
+														name="emp_position">
+														<option value="사원">사원</option>
+														<option value="대리">대리</option>
+														<option value="과장">과장</option>
+														<option value="부장">부장</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label for="edit_emp_job">직책</label> <select
+														class="form-control" id="edit_emp_job" name="emp_job">
+														<option value="개발자">개발자</option>
+														<option value="기획자">기획자</option>
+														<option value="디자이너">디자이너</option>
+														<option value="매니저">매니저</option>
+														<option value="영업사원">영업사원</option>
+														<option value="부서장">부서장</option>
+														<option value="본부장">본부장</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label for="edit_emp_salary">연봉</label> <input type="text"
+														class="form-control" id="edit_emp_salary"
+														name="emp_salary">
+												</div>
+												<div class="form-group">
+													<label for="edit_emp_work_type">근무형태</label> <select
+														class="form-control" id="edit_emp_work_type"
+														name="emp_work_type">
+														<option value="통상">통상</option>
+														<option value="교대">교대</option>
+														<option value="시급">시급</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label for="edit_emp_status">재직구분</label> <select
+														class="form-control" id="edit_emp_status"
+														name="emp_status">
+														<option value="재직">재직</option>
+														<option value="휴직">휴직</option>
+														<option value="퇴직">퇴직</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label for="edit_emp_start_date">입사일</label> <input
+														type="date" class="form-control" id="edit_emp_start_date"
+														name="emp_start_date">
+												</div>
+												<div class="form-group">
+													<label for="edit_emp_break_date">휴직일</label> <input
+														type="date" class="form-control" id="edit_emp_break_date"
+														name="emp_break_date">
+												</div>
+												<div class="form-group">
+													<label for="edit_emp_restart_date">복직일</label> <input
+														type="date" class="form-control"
+														id="edit_emp_restart_date" name="emp_restart_date">
+												</div>
+
+												<div class="form-group">
+													<label for="edit_emp_quit_date">퇴사일</label> <input
+														type="date" class="form-control" id="edit_emp_quit_date"
+														name="emp_quit_date">
+												</div>
+											</form>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">취소</button>
+											<button type="button" class="btn btn-primary"
+												id="submitUpdate">저장</button>
+										</div>
+										<!-- page-inner -->
+
+										<!-- container -->
+										<%-- 	    <%@ include file="/resources/assets/inc/footer.jsp" %> --%>
 									</div>
-								</form>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary"
-									data-dismiss="modal">취소</button>
-								<button type="button" class="btn btn-primary" id="submitUpdate">저장</button>
+								</div>
+
+								<!------------------------------------------------------------------------------------------------------------------>
 							</div>
 							<!-- page-inner -->
-
-							<!-- container -->
-							<%-- 	    <%@ include file="/resources/assets/inc/footer.jsp" %> --%>
 						</div>
+						<!-- container -->
+						<%@ include file="/resources/assets/inc/footer.jsp"%>
 					</div>
-
-					<!------------------------------------------------------------------------------------------------------------------>
+					<!-- main-panel -->
 				</div>
-				<!-- page-inner -->
-			</div>
-			<!-- container -->
-			<%@ include file="/resources/assets/inc/footer.jsp"%>
-		</div>
-		<!-- main-panel -->
-	</div>
-	<!-- main-wrapper -->
+				<!-- main-wrapper -->
 
-	<!--   Core JS Files   -->
-	<script
-		src="${pageContext.request.contextPath }/resources/assets/js/core/jquery-3.7.1.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath }/resources/assets/js/core/popper.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath }/resources/assets/js/core/bootstrap.min.js"></script>
+				<!--   Core JS Files   -->
+				<script
+					src="${pageContext.request.contextPath }/resources/assets/js/core/jquery-3.7.1.min.js"></script>
+				<script
+					src="${pageContext.request.contextPath }/resources/assets/js/core/popper.min.js"></script>
+				<script
+					src="${pageContext.request.contextPath }/resources/assets/js/core/bootstrap.min.js"></script>
 
-	<script
-		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+				<script
+					src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+				<script
+					src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-	<!-- jQuery Scrollbar -->
-	<script
-		src="${pageContext.request.contextPath }/resources/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+				<!-- jQuery Scrollbar -->
+				<script
+					src="${pageContext.request.contextPath }/resources/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 
-	<!-- Chart JS -->
-	<script
-		src="${pageContext.request.contextPath }/resources/assets/js/plugin/chart.js/chart.min.js"></script>
+				<!-- Chart JS -->
+				<script
+					src="${pageContext.request.contextPath }/resources/assets/js/plugin/chart.js/chart.min.js"></script>
 
-	<!-- jQuery Sparkline -->
-	<script
-		src="${pageContext.request.contextPath }/resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+				<!-- jQuery Sparkline -->
+				<script
+					src="${pageContext.request.contextPath }/resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
 
-	<!-- Chart Circle -->
-	<script
-		src="${pageContext.request.contextPath }/resources/assets/js/plugin/chart-circle/circles.min.js"></script>
+				<!-- Chart Circle -->
+				<script
+					src="${pageContext.request.contextPath }/resources/assets/js/plugin/chart-circle/circles.min.js"></script>
 
-	<!-- Datatables -->
-	<script
-		src="${pageContext.request.contextPath }/resources/assets/js/plugin/datatables/datatables.min.js"></script>
+				<!-- Datatables -->
+				<script
+					src="${pageContext.request.contextPath }/resources/assets/js/plugin/datatables/datatables.min.js"></script>
 
-	<!-- Bootstrap Notify -->
-	<script
-		src="${pageContext.request.contextPath }/resources/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+				<!-- Bootstrap Notify -->
+				<script
+					src="${pageContext.request.contextPath }/resources/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
 
-	<!-- jQuery Vector Maps -->
-	<script
-		src="${pageContext.request.contextPath }/resources/assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath }/resources/assets/js/plugin/jsvectormap/world.js"></script>
+				<!-- jQuery Vector Maps -->
+				<script
+					src="${pageContext.request.contextPath }/resources/assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+				<script
+					src="${pageContext.request.contextPath }/resources/assets/js/plugin/jsvectormap/world.js"></script>
 
-	<!-- Sweet Alert -->
-	<script
-		src="${pageContext.request.contextPath }/resources/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+				<!-- Sweet Alert -->
+				<script
+					src="${pageContext.request.contextPath }/resources/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
 
-	<!-- Kaiadmin JS -->
-	<script
-		src="${pageContext.request.contextPath }/resources/assets/js/kaiadmin.min.js"></script>
+				<!-- Kaiadmin JS -->
+				<script
+					src="${pageContext.request.contextPath }/resources/assets/js/kaiadmin.min.js"></script>
 
-	<!-- Kaiadmin DEMO methods, don't include it in your project! -->
-	<script
-		src="${pageContext.request.contextPath }/resources/assets/js/setting-demo.js"></script>
-	<script
-		src="${pageContext.request.contextPath }/resources/assets/js/demo.js"></script>
-	<script>
+				<!-- Kaiadmin DEMO methods, don't include it in your project! -->
+				<script
+					src="${pageContext.request.contextPath }/resources/assets/js/setting-demo.js"></script>
+				<script
+					src="${pageContext.request.contextPath }/resources/assets/js/demo.js"></script>
+				<script>
       $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
         type: "line",
         height: "70",
