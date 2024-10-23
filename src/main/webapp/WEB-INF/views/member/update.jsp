@@ -70,6 +70,7 @@
       }
 
       .info-table th {
+      	background-color: #ebedf2;
         font-weight: bold;
       }
       

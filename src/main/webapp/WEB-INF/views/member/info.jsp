@@ -126,12 +126,12 @@
         color: #333;
         border: 1px solid #ddd;
         border-bottom: none;
-        background-color: white;
+        background-color: #ebedf2;
         margin-right: 5px;
       }
 
       .tabs a.active {
-        background-color: #E4EFFF;
+        background-color: white;
         font-weight: bold;
       }
       
