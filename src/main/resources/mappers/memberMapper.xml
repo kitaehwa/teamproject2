@@ -27,13 +27,13 @@
 	        e.emp_position, e.emp_job, e.emp_salary, e.emp_work_type,
 	        e.emp_bank_name, e.emp_account_num, e.emp_account_name,
 	        e.emp_profile, e.emp_start_date, e.emp_break_date,
-	        e.emp_restart_date, #{quitDate}, '퇴직', -1,
-	        NOW(), #{reason}, #{reasonDetail}
+	        e.emp_restart_date, #{emp_quit_date}, '퇴직', -1,
+	        NOW(), #{reason}, #{reason_detail}
 	    FROM employee e
-	    WHERE e.emp_id = #{empId}
+	    WHERE e.emp_id = #{emp_id}
 	    AND NOT EXISTS (
 	        SELECT 1 FROM quit q 
-	        WHERE q.emp_id = #{empId}
+	        WHERE q.emp_id = #{emp_id}
 	    )
 	</insert>
 		
@@ -48,8 +48,9 @@
 		<!-- employee 테이블의 상태 업데이트 -->
 		<update id="updateEmployeeStatus" parameterType="string">
 		    UPDATE employee
-		    SET emp_status = '퇴직'
-		    WHERE emp_id = #{emp_id}
+		    SET emp_status = '퇴직', 
+			    emp_quit_date = (SELECT emp_quit_date FROM quit WHERE emp_id = #{emp_id})
+			WHERE emp_id = #{emp_id};
 		</update>
 		
 		<!-- 퇴직시 퇴사일 업데이트  -->
@@ -149,7 +150,8 @@
 	    set emp_name=#{emp_name}, emp_birth=#{emp_birth}, emp_gender=#{emp_gender}, emp_tel=#{emp_tel}, emp_email=#{emp_email}, 
 	    emp_addr=#{emp_addr}, emp_dnum=#{emp_dnum}, emp_position=#{emp_position}, emp_job=#{emp_job}, emp_status=#{emp_status}, emp_bnum=#{emp_bnum}, 
 		emp_work_type=#{emp_work_type}, emp_bank_name=#{emp_bank_name}, emp_account_num=#{emp_account_num}, emp_account_name=#{emp_account_name}, 
-		emp_start_date=#{emp_start_date}, emp_salary=#{emp_salary}, emp_break_date=#{emp_break_date}, emp_restart_date=#{emp_restart_date},	emp_quit_date=#{emp_quit_date}    
+		emp_start_date=#{emp_start_date}, emp_salary=#{emp_salary}, emp_break_date=#{emp_break_date}, emp_restart_date=#{emp_restart_date},	
+		emp_quit_date=#{emp_quit_date}    
 	     
 	    where emp_id=#{emp_id}
 	</update>
