@@ -8,12 +8,13 @@ import lombok.Data;
 public class EvalVO {
 	private String eval_id;
 	private String eval_name;
-    private String score1;
-    private String score2;
-    private String score3;
-    private String total;
-    private String feadback;
-    private String valuator;
-    private Date eval_date;
+    private String score_total;
+    private String eval_grade;
+    private String eval_comment;
+    private String eval_his_status;
+    private String evaluator;
+    private Date eval_end_date;
+    private String emp_name;
     
 }
+

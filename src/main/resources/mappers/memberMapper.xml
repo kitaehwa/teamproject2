@@ -11,42 +11,53 @@
   	</select>
   	
   	<!-- 퇴사신청 -->
-	  <insert id="insertQuitEmployee" parameterType="MemberVO">
+	  <insert id="insertQuitEmployee" parameterType="map">
 	    INSERT INTO quit (
-	        emp_id, emp_pw, emp_name, emp_birth, emp_gender, 
-	        emp_tel, emp_email, emp_addr, emp_bnum, emp_dnum, 
-	        emp_position, emp_job, emp_salary, emp_work_type, 
-	        emp_bank_name, emp_account_num, emp_account_name, 
-	        emp_profile, emp_start_date, emp_break_date, 
-	        emp_restart_date, emp_quit_date, emp_status, approval, 
-	        request_date, reason, reason_detail
-	    )
-	    SELECT 
 	        emp_id, emp_pw, emp_name, emp_birth, emp_gender,
 	        emp_tel, emp_email, emp_addr, emp_bnum, emp_dnum,
 	        emp_position, emp_job, emp_salary, emp_work_type,
 	        emp_bank_name, emp_account_num, emp_account_name,
 	        emp_profile, emp_start_date, emp_break_date,
-	        emp_restart_date, #{emp_quit_date}, '퇴직', -1,
-	        NOW(), #{reason}, #{reason_detail}
-	    FROM employee
-	    WHERE emp_id = #{emp_id}
-	    AND emp_status = '재직'
+	        emp_restart_date, emp_quit_date, emp_status, approval,
+	        request_date, reason, reason_detail
+	    )
+	    SELECT 
+	        e.emp_id, e.emp_pw, e.emp_name, e.emp_birth, e.emp_gender,
+	        e.emp_tel, e.emp_email, e.emp_addr, e.emp_bnum, e.emp_dnum,
+	        e.emp_position, e.emp_job, e.emp_salary, e.emp_work_type,
+	        e.emp_bank_name, e.emp_account_num, e.emp_account_name,
+	        e.emp_profile, e.emp_start_date, e.emp_break_date,
+	        e.emp_restart_date, #{quitDate}, '퇴직', -1,
+	        NOW(), #{reason}, #{reasonDetail}
+	    FROM employee e
+	    WHERE e.emp_id = #{empId}
+	    AND NOT EXISTS (
+	        SELECT 1 FROM quit q 
+	        WHERE q.emp_id = #{empId}
+	    )
 	</insert>
 		
 		<!-- quit 테이블의 승인 상태 업데이트 -->
 		<update id="updateQuitApproval" parameterType="map">
-		    UPDATE quit 
+		    UPDATE quit
 		    SET approval = #{approval},
 		        update_date = NOW()
 		    WHERE emp_id = #{emp_id}
 		</update>
 		
 		<!-- employee 테이블의 상태 업데이트 -->
-		<update id="updateEmployeeStatus" parameterType="map">
-		    UPDATE employee 
+		<update id="updateEmployeeStatus" parameterType="string">
+		    UPDATE employee
 		    SET emp_status = '퇴직'
 		    WHERE emp_id = #{emp_id}
+		</update>
+		
+		<!-- 퇴직시 퇴사일 업데이트  -->
+		<update id="updateEmployeeQuitDate" parameterType="string">
+		    UPDATE employee e
+		    INNER JOIN quit q ON e.emp_id = q.emp_id
+		    SET e.emp_quit_date = q.emp_quit_date
+		    WHERE e.emp_id = #{emp_id}
 		</update>
     
     <!-- 비밀번호 찾기 -->
@@ -238,12 +249,13 @@
 
     <!-- 교육이력 정보 조회 -->
     <select id="getHis_edu" parameterType="String" resultType="His_eduVO">
-        SELECT his_edu.emp_id, his_edu.edu_complete_date, his_edu.edu_status, 
-        	   edu_list.edu_name, edu_list.edu_teacher
-        FROM his_edu JOIN edu_list 
-        ON his_edu.edu_id = edu_list.edu_id
-        WHERE his_edu.emp_id = #{emp_id}
-    </select>
+	    SELECT his_edu.emp_id, edu_list.edu_end_date, his_edu.edu_status, 
+	           edu_list.edu_name, edu_list.edu_teacher
+	    FROM his_edu 
+	    JOIN edu_list ON his_edu.edu_id = edu_list.edu_id
+	    WHERE his_edu.emp_id = #{emp_id} 
+	    AND his_edu.edu_status = '교육이수'
+	</select>
 	
 
     <!-- 포상/징계 정보 조회 -->
@@ -255,9 +267,12 @@
 
     <!-- 인사평가 정보 조회 -->
     <select id="getEval" parameterType="String" resultType="EvalVO">
-        SELECT eval_name, score1, score2, score3, total, feedback, valuator, eval_date
-        FROM eval
-        WHERE emp_id = #{emp_id}
+        SELECT eval_name, score_total, eval_grade, eval_comment, eval_his_status, employee.emp_name, eval_end_date
+        FROM eval_his_list
+        JOIN eval_list ON eval_his_list.eval_id = eval_list.eval_id
+        JOIN employee ON eval_his_list.evaluator = employee.emp_id
+        WHERE eval_his_list.emp_id = #{emp_id}
+        AND eval_his_list.eval_his_status = '평가종료'
     </select>
     
     <!-- 프로필 사진 업데이트 -->

@@ -344,14 +344,14 @@
 	                        content = generateLicenseContent(data);
 	                        break;
 	                    case 'his_edu':
-	                        content = generateTableContent(data, ['edu_name', 'edu_teacher', 'edu_status', 'edu_complete_date'], ['교육명', '강사명', '수료현황', '수료일']);
+	                        content = generateTableContent(data, ['edu_name', 'edu_teacher', 'edu_status', 'edu_end_date'], ['교육명', '강사명', '수료현황', '수료일']);
 	                        break;
 	                    case 'reward':
 	                        content = generateTableContent(data, ['division', 'rname', 'reason', 'rdate'], ['유형', '이름', '사유', '날짜']);
 	                        break;
 	                    case 'eval':
-	                        content = generateTableContent(data, ['eval_name', 'score1', 'score2', 'score3', 'total', 'feedback', 'valuator', 'eval_date'], 
-	                                                      ['평가명', '기준점수1', '기준점수2', '기준점수3', '종합등급', '피드백', '평가자', '평가일']);
+	                        content = generateTableContent(data, ['eval_name', 'score_total', 'eval_grade', 'eval_comment', 'emp_name', 'eval_end_date'], 
+	                                                      ['평가명', '종합점수', '종합등급', '피드백', '평가자', '평가일']);
 	                        break;
 	                }
 	                $(".tab-content").html(content);
