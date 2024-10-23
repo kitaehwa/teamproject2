@@ -48,119 +48,130 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/demo.css" />
     
     <style>
-      .page-title {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 20px;
-      }
-      
-      .info-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        font-size: 14px;
-      }
+       /* 페이지 및 카드 스타일 */
+  .page-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
 
-      .info-table th,
-      .info-table td {
-        padding: 10px;
-        border: 1px solid #ddd;
-        text-align: left;
-        background-color: WHITE;
-      }
+  .card {
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+  }
 
-      .info-table th {
-      	background-color: #ebedf2;
-        font-weight: bold;
-      }
-      
-      .info-table img {
-        border-radius: 5px;
-        max-width: 150px;
-        height: auto;
-      }
+  .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ebedf2;
+    padding: 1.5rem;
+  }
 
-      .info-actions {
-        text-align: left;
-        margin-left: 72%;
-        margin-top: 5px;                     
-      }
-      
-      .info-actions button {
-        padding: 8px 15px;  
-        border: none;
-        border-radius: 4px;
-        background-color: #0055FF;
-        color: white;
-        cursor: pointer;
-        float: left;
-        margin-left: 5px; 
-      }
-      
-      .info-actions button.delete {
-        background-color: #f44336;
-      }
+  .card-title {
+    margin-bottom: 0;
+    color: #1a2035;
+    font-size: 1.25rem;
+  }
 
-      .tabs {
-        display: flex;
-        border-bottom: 2px solid #ddd;
-        margin-bottom: 20px;
-        margin-top: 60px;
-      }
+  .card-body {
+    padding: 1.5rem;
+  }
 
-      .tabs a {
-        padding: 10px 20px;
-        text-decoration: none;
-        color: #333;
-        border: 1px solid #ddd;
-        border-bottom: none;
-        background-color: #f4f4f4;
-        margin-right: 5px;
-      }
+  /* 테이블 스타일 */
+  .info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+  }
 
-      .tabs a.active {
-        background-color: white;
-        font-weight: bold;
-      }
-      
-      input[readonly] {
-        background-color: #f0f0f0;
-        color: #333;
-      }
+  .info-table th,
+  .info-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+    background-color: white;
+    vertical-align: middle;
+  }
 
-      .profile-pic-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-	    height: 100%;
-	    padding: 10px;
-      }
+  .info-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+  }
 
-      .profile-pic-container img {
-        width: 160px;       
-	    height: 200px;      
-	    object-fit: cover;  
-	    border-radius: 5px;
-	    margin-bottom: 10px;
-      }
-      
-      .info-table td.profile-cell {
-	    width: 180px;  
-		height: 240px; 
-		padding: 10px;
-		vertical-align: middle;
-	  }
+  /* 버튼 및 액션 스타일 */
+  .info-actions {
+    text-align: left;
+    margin-left: 72%;
+    margin-top: 5px;                     
+  }
 
-      #uploadProfilePic {
-        margin-top: 10px;
-      }
-      
-      .profile-pic-container input[type="file"] {
-	    width: 160px;
-	    margin-top: 5px;
-	    font-size: 12px;
-	  }
+  .info-actions button {
+    padding: 8px 15px;  
+    border: none;
+    border-radius: 4px;
+    background-color: #0055FF;
+    color: white;
+    cursor: pointer;
+    float: left;
+    margin-left: 5px; 
+  }
+
+  .info-actions button.delete {
+    background-color: #f44336;
+  }
+
+  /* 프로필 관련 스타일 */
+  .profile-pic-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+  }
+
+  .profile-pic-container img {
+    width: 160px;       
+    height: 200px;      
+    object-fit: cover;  
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+
+  .profile-pic-container input[type="file"] {
+    width: 160px;
+    margin-top: 5px;
+    font-size: 12px;
+  }
+
+  .info-table td.profile-cell {
+    width: 180px;  
+    height: 240px; 
+    padding: 10px;
+  }
+
+  /* 입력 필드 스타일 */
+  input[readonly] {
+    background-color: #f8f9fa;
+    border: 1px solid #ebedf2;
+    color: #333;
+  }
+
+  .form-control:focus {
+    border-color: #0055FF;
+    box-shadow: 0 0 0 0.2rem rgba(0, 85, 255, 0.25);
+  }
+
+  /* 기타 스타일 */
+  #uploadProfilePic {
+    margin-right: 92%;
+  }
+
+  .info-container {
+    background: #fff;
+    padding: 20px;
+  } 
 	  
     </style>
   </head>
@@ -174,14 +185,20 @@
         </div>
         <div class="container">
           <div class="page-inner">
-            <h1 class="page-title">내정보</h1>
+           
+           <div class="card">
+			  <div class="card-header">
+			    <h4 class="card-title">내정보</h4>
+			  </div>
+			  <div class="card-body">
+         
             <div class="info-container">
               <!-- 사진 및 기본 정보 입력 -->
               <form method="post" action="/member/update" id="updateForm" enctype="multipart/form-data">
-                <table class="table table-bordered table-head-bg-info mt-4" style="width: 80%;">
+        <table class="table table-bordered table-head-bg-info">
                   <tr>
-                     <td rowspan="4" class="profile-cell">
-                    <div class="profile-pic-container">
+                     <td colspan="2" rowspan="4" style="width: 8%;">
+              <div class="profile-pic-container">
 				    <c:choose>
 				        <c:when test="${not empty memberVO.emp_profile}">
 				            <img id="profilePicPreview" 
@@ -233,45 +250,45 @@
                   </tr>
                 </table>
                 
-                  <input type="hidden" name="emp_account_num" value="${memberVO.emp_account_num}" />
-				  <input type="hidden" name="emp_bank_name" value="${memberVO.emp_bank_name}" />
-				  <input type="hidden" name="emp_account_name" value="${memberVO.emp_account_name}" />
-				  <input type="hidden" name="emp_position" value="${memberVO.emp_position}" />
-				  <input type="hidden" name="emp_status" value="${memberVO.emp_status}" />
-				  <input type="hidden" name="emp_job" value="${memberVO.emp_job}" />	                
-                
-                <button type="button" id="uploadProfilePic" class="btn btn-primary btn-sm mt-2">프로필 사진 등록</button>
-                <!-- 버튼 영역 -->              
-                <div class="info-actions">               
-                  <button type="submit">저장</button>
-                  <button type="button" class="delete" onclick="location.href='/member/info'">취소</button>
-                </div>
-              </form>
-                
+              <input type="hidden" name="emp_account_num" value="${memberVO.emp_account_num}" />
+        <input type="hidden" name="emp_bank_name" value="${memberVO.emp_bank_name}" />
+        <input type="hidden" name="emp_account_name" value="${memberVO.emp_account_name}" />
+        <input type="hidden" name="emp_position" value="${memberVO.emp_position}" />
+        <input type="hidden" name="emp_status" value="${memberVO.emp_status}" />
+        <input type="hidden" name="emp_job" value="${memberVO.emp_job}" />
+
+        <div class="text-end mt-3">
+          <button type="button" id="uploadProfilePic" class="btn btn-primary btn-sm">프로필 사진 등록</button>
+          <button type="submit" class="btn btn-primary">저장</button>
+          <button type="button" class="btn btn-danger" onclick="location.href='/member/info'">취소</button>
+        </div>
+      </form>
+                <hr class="my-4">
                 <!-- 비밀번호 수정 -->
-                <form id="passwordForm" action="" method="get">
-				    <input type="hidden" name="emp_id" value="${memberVO.emp_id}" />
-				    <table class="info-table" style="width: 80%;">
-				        <tr>
-				            <th>현재 비밀번호</th>
-				            <td><input type="password" name="current_password" required /></td>
-				        </tr>
-				        <tr>
-				            <th>새 비밀번호</th>
-				            <td><input type="password" name="new_password" required /></td>
-				        </tr>
-				        <tr>
-				            <th>새 비밀번호 확인</th>
-				            <td><input type="password" name="confirm_password" required /></td>
-				        </tr>
-				    </table>
-				    <div class="info-actions">  
-				    <button type="submit">비밀번호 변경</button>
-				    </div>
-				 </form>
-                
-            </div> 
-          </div>
+                <form id="passwordForm" action="" method="get" class="mt-4">
+        <h5 class="mb-3">비밀번호 변경</h5>
+        <input type="hidden" name="emp_id" value="${memberVO.emp_id}" />
+        <table class="table table-bordered">
+          <tr>
+            <th style="width: 20%">현재 비밀번호</th>
+            <td><input type="password" class="form-control" name="current_password" required /></td>
+          </tr>
+          <tr>
+            <th>새 비밀번호</th>
+            <td><input type="password" class="form-control" name="new_password" required /></td>
+          </tr>
+          <tr>
+            <th>새 비밀번호 확인</th>
+            <td><input type="password" class="form-control" name="confirm_password" required /></td>
+          </tr>
+        </table>
+        <div class="text-end mt-3">
+          <button type="submit" class="btn btn-primary">비밀번호 변경</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
           <!-- page-inner -->
         </div>
         <!-- container -->
