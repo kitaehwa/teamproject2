@@ -66,10 +66,10 @@
         padding: 10px;
         border: 1px solid #ddd;
         text-align: left;
+        background-color: WHITE;
       }
 
       .info-table th {
-        background-color: #f4f4f4;
         font-weight: bold;
       }
       
@@ -81,8 +81,8 @@
 
       .info-actions {
         text-align: left;
-        margin-left: 62%;
-        margin-top: 10px;                     
+        margin-left: 72%;
+        margin-top: 5px;                     
       }
       
       .info-actions button {
@@ -177,7 +177,7 @@
             <div class="info-container">
               <!-- 사진 및 기본 정보 입력 -->
               <form method="post" action="/member/update" id="updateForm" enctype="multipart/form-data">
-                <table class="info-table" style="width: 70%;">
+                <table class="table table-bordered table-head-bg-info mt-4" style="width: 80%;">
                   <tr>
                      <td rowspan="4" class="profile-cell">
                     <div class="profile-pic-container">
@@ -250,7 +250,7 @@
                 <!-- 비밀번호 수정 -->
                 <form id="passwordForm" action="" method="get">
 				    <input type="hidden" name="emp_id" value="${memberVO.emp_id}" />
-				    <table class="info-table" style="width: 70%;">
+				    <table class="info-table" style="width: 80%;">
 				        <tr>
 				            <th>현재 비밀번호</th>
 				            <td><input type="password" name="current_password" required /></td>

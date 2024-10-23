@@ -69,10 +69,10 @@
         padding: 10px;
         border: 1px solid #ddd;
         text-align: left;
+        background-color: white;
       }
 
       .info-table th {
-        background-color: #f4f4f4;
         font-weight: bold;
       }
 
@@ -89,7 +89,7 @@
 
       .info-actions button {
         padding: 8px 15px;
-        margin-left: 65%;
+        margin-left: 74%;
         border: none;
         border-radius: 4px;
         background-color: #0055FF;
@@ -126,12 +126,12 @@
         color: #333;
         border: 1px solid #ddd;
         border-bottom: none;
-        background-color: #f4f4f4;
+        background-color: white;
         margin-right: 5px;
       }
 
       .tabs a.active {
-        background-color: white;
+        background-color: #E4EFFF;
         font-weight: bold;
       }
       
@@ -197,7 +197,7 @@
  <h1 class="page-title">내정보</h1>
 	<div class="info-container">
             <!-- 사진 및 기본 정보 -->
-              <table class="info-table" style="width: 70%;">
+              <table class="table table-bordered table-head-bg-info mt-4" style="width: 80%;">
                 <tr>
                   <td colspan="2" rowspan="4" style="width: 8%;">
                   <div class="profile-pic-container">
@@ -243,7 +243,7 @@
 			    <button type="button" id="checkPasswordBtn">수정</button>
 			</div>
             
-			<div class="tabs" style="width: 70%;">
+			<div class="tabs" style="width: 80%;">
 			  <a href="#" class="account">계좌 정보</a>
 			  <a href="#" class="license">자격증</a>
 			  <a href="#" class="his_edu">교육 이력</a>
@@ -251,7 +251,7 @@
 			  <a href="#" class="eval">인사 평가</a>
 			</div>            
  
-			<div class="tab-content" style="width: 70%;">
+			<div class="tab-content" style="width: 80%;">
 				<!-- 탭 클릭 시 정보가 여기에 표시됩니다. -->
 			</div>
 <!------------------------------------------------------------------------------------------------------------------>
