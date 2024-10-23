@@ -52,166 +52,337 @@
 
 <style>
 
+K
 table {
-	width: 100%;
-	border-collapse: collapse;
-	margin-bottom: 10px;
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
 }
-
 th, td {
-	border: 1px solid #ddd;
-	padding: 6px;
-	text-align: left;
+    border: 1px solid #ddd;
+    padding: 6px;
+    text-align: left;
 }
-
 .btn-info {
-	padding: 4px 8px;
-	font-size: 12px;
+    padding: 4px 8px;
+    font-size: 12px;
 }
-
 .modal-dialog {
-	max-width: 800px;
+    max-width: 800px;
 }
-
 .pagination ul {
-	list-style: none;
-	display: flex;
-	justify-content: center;
-	padding: 0;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 0;
 }
-
 .pagination ul li {
-	margin: 0 5px;
+    margin: 0 5px;
 }
-
 .pagination ul li a {
-	display: block;
-	padding: 5px 10px;
-	background-color: #f1f1f1;
-	border-radius: 3px;
-	text-decoration: none;
-	color: #333;
+    display: block;
+    padding: 5px 10px;
+    background-color: #f1f1f1;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #333;
 }
-
 .pagination ul li.active a {
-	background-color: #007bff;
-	color: white;
+    background-color: #007bff;
+    color: white;
 }
-
 .pagination ul li.disabled a {
-	pointer-events: none;
-	background-color: #ddd;
+    pointer-events: none;
+    background-color: #ddd;
 }
-
 .img-fluid {
-	max-width: 100%;
-	height: auto;
+    max-width: 100%;
+    height: auto;
 }
-
 .rounded-circle {
-	border-radius: 50%;
+    border-radius: 50%;
 }
-
 .table-bordered th {
-	width: 20%;
+    width: 20%;
 }
-
 .table-bordered th, .table-bordered td {
-	padding: 10px;
-	vertical-align: middle;
+    padding: 10px;
+    vertical-align: middle;
 }
-
 .table-bordered th {
-	background-color: #f2f2f2;
-	width: 30%;
+    background-color: #f2f2f2;
+    width: 30%;
 }
-
 .btn {
-	padding: 0.375rem 0.75rem;
+    padding: 0.375rem 0.75rem;
 }
-
 #keyword {
-	width: auto;
-	flex-grow: 2;
+    width: auto;
+    flex-grow: 2;
 }
-
 html, body {
-	height: 100%;
-	margin: 0;
+    height: 100%;
+    margin: 0;
 }
-
 body {
-	display: flex;
-	flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
-
 .main-panel {
-	flex: 1 0 auto;
-	display: flex;
-	flex-direction: column;
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
 }
-
 .container {
-	flex: 1 0 auto;
+    flex: 1 0 auto;
 }
-
 .page-inner {
-	flex: 1 0 auto;
-	display: flex;
-	flex-direction: column;
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
 }
-
 #memberTable {
-	flex: 1 0 auto;
-	overflow-y: auto;
+    flex: 1 0 auto;
+    overflow-y: auto;
 }
-
 footer {
-	flex-shrink: 0;
+    flex-shrink: 0;
 }
-
 .table-responsive {
-	overflow-x: auto;
-	max-width: 100%;
+    overflow-x: auto;
+    max-width: 100%;
 }
-
 #infoDetail {
-	width: max-content;
-	min-width: 100%;
+    width: max-content;
+    min-width: 100%;
 }
-
 #infoDetail th, #infoDetail td {
-	white-space: nowrap;
-	padding: 8px;
+    white-space: nowrap;
+    padding: 8px;
 }
-
 .controls-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-
 #filterForm, #searchForm {
   display: flex;
   align-items: center;
 }
-
 #filterForm select, #searchForm select, #searchForm input, .btn {
   margin-right: 5px;
   height: 38px; /* 높이 통일 */
 }
-
 #filterForm {
   width: 40%;
 }
-
 #searchForm {
   width: 40%;
 }
-
 #showOrgChart {
   width: auto;
   white-space: nowrap;
+}
+#filterType, #filterValue, #searchType {
+  width: auto;
+  flex-grow: 1;
+}
+#keyword {
+  width: auto;
+  flex-grow: 2;
+}
+.card {
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  margin-bottom: 30px;
+}
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ebedf2;
+  padding: 1.5rem;
+}
+.card-title {
+  margin-bottom: 0;
+  color: #1a2035;
+  font-size: 1.25rem;
+}
+.card-body {
+  padding: 1.5rem;
+}
+.controls-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.form-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.table {
+  margin-bottom: 0;
+}
+.table th {
+  background-color: #f8f9fa;
+  border-top: none;
+}
+.pagination {
+  margin-top: 1.5rem;
+  justify-content: center;
+}
+.pagination ul {
+  list-style: none;
+  display: flex;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+}
+.pagination li a {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  color: #1a2035;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.pagination li.active a {
+  background-color: #0055FF;
+  color: #fff;
+}
+.pagination li.disabled a {
+  background-color: #ebedf2;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+중복요소는 제거해줘
+
+
+중복을 제거한 정리된 CSS입니다:
+
+css
+
+Copy
+/* 기본 레이아웃 */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-panel {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  flex: 1 0 auto;
+}
+
+.page-inner {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+footer {
+  flex-shrink: 0;
+}
+
+/* 카드 스타일 */
+.card {
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  margin-bottom: 30px;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ebedf2;
+  padding: 1.5rem;
+}
+
+.card-title {
+  margin-bottom: 0;
+  color: #1a2035;
+  font-size: 1.25rem;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+/* 테이블 스타일 */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0;
+}
+
+.table th, .table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  border-top: none;
+  width: 20%;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+#memberTable {
+  flex: 1 0 auto;
+  overflow-y: auto;
+}
+
+#infoDetail {
+  width: max-content;
+  min-width: 100%;
+}
+
+#infoDetail th, #infoDetail td {
+  white-space: nowrap;
+  padding: 8px;
+}
+
+/* 컨트롤 영역 스타일 */
+.controls-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+#filterForm, #searchForm {
+  display: flex;
+  align-items: center;
+  width: 40%;
+}
+
+#filterForm select, 
+#searchForm select, 
+#searchForm input, 
+.btn {
+  margin-right: 5px;
+  height: 38px;
 }
 
 #filterType, #filterValue, #searchType {
@@ -222,6 +393,73 @@ footer {
 #keyword {
   width: auto;
   flex-grow: 2;
+}
+
+/* 버튼 스타일 */
+.btn {
+  padding: 0.375rem 0.75rem;
+}
+
+.btn-info {
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+#showOrgChart {
+  width: auto;
+  white-space: nowrap;
+}
+
+/* 이미지 스타일 */
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+.rounded-circle {
+  border-radius: 50%;
+}
+
+/* 페이지네이션 */
+.pagination {
+  margin-top: 1.5rem;
+  justify-content: center;
+}
+
+.pagination ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  gap: 0.5rem;
+}
+
+.pagination ul li a {
+  display: block;
+  padding: 0.5rem 1rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #1a2035;
+  transition: all 0.3s ease;
+}
+
+.pagination ul li.active a {
+  background-color: #0055FF;
+  color: white;
+}
+
+.pagination ul li.disabled a {
+  background-color: #ebedf2;
+  color: #6c757d;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* 모달 */
+.modal-dialog {
+  max-width: 800px;
 }
 
 </style>
@@ -242,92 +480,101 @@ footer {
 			<div class="container">
 				<div class="page-inner">
 					<!------------------------------------------------------------------------------------------------------------------>
-					<h1>사원 목록</h1>
-					<div class="controls-container"
-						style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
-						<!-- 필터 폼 추가 -->
-						<form id="filterForm" class="form-inline">
+					<div class="card">
+					  <div class="card-header">
+					    <h4 class="card-title">사원 목록</h4>
+					  </div>
+					  <div class="card-body">
+					    <!-- 컨트롤 영역 (검색, 필터, 조직도 버튼) -->
+					    <div class="controls-container mb-4">
+					      <!-- 필터 폼 -->
+					      <form id="filterForm" class="form-inline">
 							<select name="filterType" id="filterType" class="form-control">
-								<option value="">필터 선택</option>
-								<option value="emp_dnum">부서</option>
-								<option value="emp_bnum">근무지</option>
-								<option value="emp_position">직급</option>
-								<option value="emp_job">직책</option>
-							</select> <select name="filterValue" id="filterValue" class="form-control">
-								<option value="">선택하세요</option>
-							</select>
-							<button type="button" id="applyFilter" class="btn btn-primary">필터
-								적용</button>
-							<button type="button" id="resetFilter" class="btn btn-primary">초기화</button>
-						</form>
+					          <option value="">필터 선택</option>
+					          <option value="emp_dnum">부서</option>
+					          <option value="emp_bnum">근무지</option>
+					          <option value="emp_position">직급</option>
+					          <option value="emp_job">직책</option>
+					        </select>
+					        <select name="filterValue" id="filterValue" class="form-control">
+					          <option value="">선택하세요</option>
+					        </select>
+					        <button type="button" id="applyFilter" class="btn btn-primary">필터 적용</button>
+					        <button type="button" id="resetFilter" class="btn btn-secondary">초기화</button>
+					      </form>
 
 						<!-- 검색 폼 추가 -->
 						<form id="searchForm" class="form-inline">
-							<select name="searchType" id="searchType" class="form-control">
-								<option value="emp_id">사원번호</option>
-								<option value="emp_name">사원명</option>
-								<option value="emp_dnum">부서명</option>
-								<option value="emp_position">직급</option>
-								<option value="emp_job">직책</option>
-							</select> <input type="text" name="keyword" id="keyword"
-								class="form-control" placeholder="검색어 입력">
-							<button type="button" id="searchBtn" class="btn btn-primary">검색</button>
-						</form>
+					        <select name="searchType" id="searchType" class="form-control">
+					          <option value="emp_id">사원번호</option>
+					          <option value="emp_name">사원명</option>
+					          <option value="emp_dnum">부서명</option>
+					          <option value="emp_position">직급</option>
+					          <option value="emp_job">직책</option>
+					        </select>
+					        <input type="text" name="keyword" id="keyword" class="form-control" placeholder="검색어 입력">
+					        <button type="button" id="searchBtn" class="btn btn-primary">검색</button>
+					      </form>
 
 						<!-- 조직도 버튼 추가 -->
-						<button id="showOrgChart" class="btn btn-primary">조직도 보기</button>
-					</div>
+						<button id="showOrgChart" class="btn btn-info">조직도 보기</button>
+    					</div>
 
 				</div>
 
 
 				<!-- 사원 목록 테이블 -->
-				<table class="table table-striped" id="memberTable">
-					<thead>
-						<tr>
-							<th>사원번호</th>
-							<th>이름</th>
-							<th>직급</th>
-							<th>부서</th>
-							<th>상세정보</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="member" items="${members}">
-							<c:if test="${member.emp_status ne '퇴직' and member.emp_id ne 'system'}">
-								<tr>
-									<td>${member.emp_id}</td>
-									<td>${member.emp_name}</td>
-									<td>${member.emp_position}</td>
-									<td>${member.emp_dnum}</td>
-									<td><button class="btn btn-info btn-sm"
-											onclick="showDetail('${member.emp_id}')">상세보기</button></td>
-								</tr>
-							</c:if>
-						</c:forEach>
-					</tbody>
-				</table>
+				<div class="table-responsive">
+      <table class="table table-striped" id="memberTable">
+        <thead class="bg-light">
+          <tr>
+            <th>사원번호</th>
+            <th>이름</th>
+            <th>직급</th>
+            <th>부서</th>
+            <th>상세정보</th>
+          </tr>
+        </thead>
+        <tbody>
+          <c:forEach var="member" items="${members}">
+            <c:if test="${member.emp_status ne '퇴직' and member.emp_id ne 'system'}">
+              <tr>
+                <td>${member.emp_id}</td>
+                <td>${member.emp_name}</td>
+                <td>${member.emp_position}</td>
+                <td>${member.emp_dnum}</td>
+                <td>
+                  <button class="btn btn-info btn-sm" onclick="showDetail('${member.emp_id}')">
+                    상세보기
+                  </button>
+                </td>
+              </tr>
+            </c:if>
+          </c:forEach>
+        </tbody>
+      </table>
+    </div>
 
 				<!-- 페이징  -->
-				<div class="pagination">
-					<ul>
-						<!-- 이전 페이지로 가는 링크 (첫 페이지에서는 비활성화) -->
-						<li class="${currentPage == 1 ? 'disabled' : ''}"><a
-							href="?page=${currentPage - 1}" aria-label="Previous">&laquo;
-								이전</a></li>
-
-						<!-- 페이지 숫자 링크 -->
-						<c:forEach var="i" begin="1" end="${totalPages}">
-							<li class="${currentPage == i ? 'active' : ''}"><a
-								href="?page=${i}">${i}</a></li>
-						</c:forEach>
-
-						<!-- 다음 페이지로 가는 링크 (마지막 페이지에서는 비활성화) -->
-						<li class="${currentPage == totalPages ? 'disabled' : ''}"><a
-							href="?page=${currentPage + 1}" aria-label="Next">다음 &raquo;</a>
-						</li>
-					</ul>
-				</div>
+				<div class="d-flex justify-content-center mt-4">
+      <div class="pagination">
+        <ul>
+          <li class="${currentPage == 1 ? 'disabled' : ''}">
+            <a href="?page=${currentPage - 1}">&laquo; 이전</a>
+          </li>
+          <c:forEach var="i" begin="1" end="${totalPages}">
+            <li class="${currentPage == i ? 'active' : ''}">
+              <a href="?page=${i}">${i}</a>
+            </li>
+          </c:forEach>
+          <li class="${currentPage == totalPages ? 'disabled' : ''}">
+            <a href="?page=${currentPage + 1}">다음 &raquo;</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
 
 				<!-- 조직도 모달 -->
 				<div class="modal fade" id="orgChartModal" tabindex="-1"
