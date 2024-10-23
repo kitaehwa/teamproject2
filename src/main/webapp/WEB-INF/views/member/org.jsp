@@ -50,43 +50,63 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/demo.css" />
     
     <style>
-        #chart-container {
-            height: 700px;
-            border: 1px solid #aaa;
-            overflow: auto;
-        }
-        .orgchart { background: #fff; }
-        .orgchart .node { width: 150px; }
-        .orgchart .node .title { background-color: #006699; }
-        .orgchart .node .content { border: 1px solid #006699; }
-        #team-info {
-            margin-top: 20px;
-            display: none;
-        }
-        .node-content { 
-            height: 20px;
-            font-size: 11px;
-            line-height: 18px;
-            overflow: hidden;
-        }
-        .orgchart .node .title {
-            font-size: 15px;
-        }
+    /* 차트 컨테이너 */
+    #chart-container {
+        height: 700px;
+        border: none; /* 경계 제거 */
+        overflow: auto;
+        background: #f8f9fa; /* 배경색을 밝게 변경 */
+        border-radius: 8px; /* 모서리 둥글게 */
+    }
+    /* 조직도 기본 스타일 */
+    .orgchart {
+        background: #fff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+        border-radius: 8px; /* 모서리 둥글게 */
+    }
+    /* 노드 스타일 */
+    .orgchart .node {
+        width: 180px; /* 노드 너비 증가 */
+        height: 150px;
+        transition: transform 0.3s; /* 호버 시 애니메이션 효과 */
+    }
+    .orgchart .node:hover {
+        transform: scale(1.05); /* 호버 시 확대 효과 */
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* 그림자 변경 */
+    }
+    /* 노드 제목 스타일 */
+    .orgchart .node .title {
+        background-color: #007bff; /* 기본 블루색으로 변경 */
+        height: 40px;
+        color: #fff; /* 제목 텍스트 색상 */
+        padding: 10px; /* 여백 추가 */
+        font-size: 16px; /* 글꼴 크기 증가 */
+        border-top-left-radius: 8px; /* 모서리 둥글게 */
+        border-top-right-radius: 8px; /* 모서리 둥글게 */
+    }
+    /* 노드 내용 스타일 */
+    .orgchart .node .content {
+        border: 1px solid #007bff; /* 경계 색상 변경 */
+        height: 60px;
+        padding: 10px; /* 여백 추가 */
+        border-bottom-left-radius: 8px; /* 모서리 둥글게 */
+        border-bottom-right-radius: 8px; /* 모서리 둥글게 */
+        color: #333; /* 텍스트 색상 */
+        font-size: 16px; /* 글꼴 크기 증가 */
+        font-weight: bold; /* 글자 굵게 */
+        text-align: center; /* 가운데 정렬 */
+        display: flex; /* 플렉스 박스 사용 */
+        align-items: center; /* 세로 가운데 정렬 */
+        justify-content: center; /* 가로 가운데 정렬 */
         
-        .orgchart {
-		    text-align: center;
-		    justify-content: center;
-		}
-		
-		.orgchart .node {
-		    margin: 0 auto; /* 노드를 중앙으로 */
-		}
-		
-		.orgchart .nodes .node {
-		    margin-bottom: 20px;
-		}
-		
-    </style>
+    }
+    /* 노드 중앙 정렬 */
+    .orgchart {
+        text-align: center;
+        justify-content: center;
+    }
+    
+</style>
     
   </head>
   <body>
@@ -103,18 +123,7 @@
 	
 		<h1>조직도</h1>
             <div id="chart-container"></div>
-            <div id="team-info">
-                <h2>팀원 정보</h2>
-                <table id="team-table" border="1">
-                    <thead>
-                        <tr>
-                            <th>사원번호</th>
-                            <th>이름</th>
-                            <th>직급</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+                
             </div>
               
                  
@@ -212,6 +221,8 @@
     	        console.error("AJAX request failed:", textStatus, errorThrown);
     	    });
     	});
+
+    
       
     </script>
   </body>
