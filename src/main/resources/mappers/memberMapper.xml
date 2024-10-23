@@ -27,7 +27,7 @@
 	        emp_position, emp_job, emp_salary, emp_work_type,
 	        emp_bank_name, emp_account_num, emp_account_name,
 	        emp_profile, emp_start_date, emp_break_date,
-	        emp_restart_date, #{emp_quit_date}, '퇴직요청', -1,
+	        emp_restart_date, #{emp_quit_date}, '퇴직', -1,
 	        NOW(), #{reason}, #{reason_detail}
 	    FROM employee
 	    WHERE emp_id = #{emp_id}
@@ -35,7 +35,7 @@
 	</insert>
 		
 		<!-- quit 테이블의 승인 상태 업데이트 -->
-		<update id="updateQuitApproval">
+		<update id="updateQuitApproval" parameterType="map">
 		    UPDATE quit 
 		    SET approval = #{approval},
 		        update_date = NOW()
@@ -43,10 +43,9 @@
 		</update>
 		
 		<!-- employee 테이블의 상태 업데이트 -->
-		<update id="updateEmployeeStatus">
+		<update id="updateEmployeeStatus" parameterType="map">
 		    UPDATE employee 
-		    SET emp_status = '퇴직',
-		        emp_quit_date = NOW()
+		    SET emp_status = '퇴직'
 		    WHERE emp_id = #{emp_id}
 		</update>
     
@@ -126,9 +125,8 @@
 	    ORDER BY 
 	        CASE 
 	            WHEN emp_status = '재직' THEN 1
-	            WHEN emp_status = '퇴직요청' THEN 2
-	            WHEN emp_status = '퇴직' THEN 3
-	            ELSE 4
+	            WHEN emp_status = '퇴직' THEN 2
+	            ELSE 3
 	        END,
 	        emp_quit_date DESC
 	    LIMIT 1

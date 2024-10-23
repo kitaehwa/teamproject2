@@ -68,7 +68,9 @@ public class MemberDAOImpl implements MemberDAO{
 
 	@Override
 	public void updateEmployeeStatus(String emp_id) {
-	    sqlSession.update(NAMESPACE + ".updateEmployeeStatus", emp_id);
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("emp_id", emp_id);
+	    sqlSession.update(NAMESPACE + ".updateEmployeeStatus", params);
 	}
 	
 	// 비밀번호 찾기

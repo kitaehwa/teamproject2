@@ -135,6 +135,35 @@ public class MemberController implements ServletContextAware {
 	    }
 	}
 	
+	// 테스트용
+	@GetMapping("/test/approveQuit")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> testApproveQuit(@RequestParam("emp_id") String emp_id) {
+	    Map<String, Object> response = new HashMap<>();
+	    try {
+	        logger.info("퇴직 승인 테스트 시작 - emp_id: {}", emp_id);
+	        
+	        // 승인 처리 (approval = 0)
+	        mService.updateApprovalAndStatus(emp_id, 0);
+	        
+	        // 처리 결과 확인
+	        MemberVO member = mService.getMemberDetail(emp_id);
+	        
+	        response.put("success", true);
+	        response.put("message", "승인 처리 완료");
+	        response.put("employeeStatus", member.getEmp_status());
+	        
+	        logger.info("퇴직 승인 테스트 완료 - 최종 상태: {}", member.getEmp_status());
+	        
+	        return ResponseEntity.ok(response);
+	    } catch (Exception e) {
+	        logger.error("퇴직 승인 테스트 중 오류 발생", e);
+	        response.put("success", false);
+	        response.put("message", "처리 중 오류 발생: " + e.getMessage());
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+	    }
+	}
+	
 	// 비밀번호 찾기
 	@GetMapping("/forgotPassword")
     public String showForgotPasswordForm() {

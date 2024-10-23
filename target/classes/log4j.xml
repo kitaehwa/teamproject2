@@ -44,4 +44,8 @@
 		<appender-ref ref="console" />
 	</root>
 	
+	<logger name="jdbc.sqlonly" level="INFO"/>
+	<logger name="jdbc.sqltiming" level="INFO"/>
+	<logger name="com.Init.mapper" level="TRACE"/>
+	
 </log4j:configuration>
